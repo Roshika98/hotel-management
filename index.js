@@ -101,12 +101,7 @@ app.use(express.json());
 
 app.use('/hotel/admin', Router.admin);
 app.use('/hotel/customer', Router.customer);
-app.get('/hotel/basic/register', async (req, res) => {
-    const user = new User({ email: 'hello@gmail.com' });
-    const newUser = await User.register(user, 'boom');
-    console.log(newUser);
-    res.redirect('/hotel/customer/auth');
-});
+
 
 
 server.listen(port, () => {

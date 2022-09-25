@@ -17,6 +17,10 @@ router.get('/auth', (req, res) => {
     res.render('customer/partials/login', { layout: custLayout });
 });
 
+router.get('/signup', (req, res) => {
+    res.render('customer/signUp', { layout: custLayout });
+});
+
 router.get('/auth/logout', (req, res) => {
     req.logout((err) => {
         req.session.destroy();

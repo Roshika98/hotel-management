@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const User = require('../../models/user');
 
 router.get('/success', (req, res) => {
     console.log('Success came');
@@ -11,6 +12,16 @@ router.get('/success', (req, res) => {
 
     }
     else res.redirect('/hotel/customer/auth/google/failure');
+});
+
+
+router.post('/signup', async (req, res) => {
+    var { email, password } = req.body;
+    console.log(email + " " + password);
+    const user = new User({ email: email });
+    const newUser = await User.register(user, password);
+    console.log(newUser);
+    res.redirect('/hotel/customer/auth');
 });
 
 
