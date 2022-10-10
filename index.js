@@ -13,6 +13,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const localStrategy = require('passport-local');
 const User = require('./models/user');
 
@@ -49,6 +50,22 @@ passport.use(new GoogleStrategy({
             return cb(err, user);
         });
 }));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL: '/hotel/customer/auth/facebook/redirect',
+    profileFields: ['id', 'displayName', 'email', 'picture'],
+    auth_type: 'reauthenticate'
+}, (accessToken, refreshToken, profile, cb) => {
+    // console.log(profile);
+    User.findOrCreate({ facebookID: profile.id, facebookProfName: profile.displayName },
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value }, (err, user) => {
+            return cb(err, user);
+        });
+
+}));
+
 
 passport.use(new localStrategy({
     usernameField: 'email',

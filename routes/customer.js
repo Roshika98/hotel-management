@@ -6,7 +6,7 @@ const custLayout = 'customer/layout';
 
 router.use('/auth/google', auth.googleAuth);
 router.use('/auth/local', auth.localAuth);
-
+router.use('/auth/facebook', auth.facebookAuth);
 
 
 router.get('', (req, res) => {
