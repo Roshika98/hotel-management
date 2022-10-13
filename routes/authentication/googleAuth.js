@@ -16,7 +16,7 @@ router.get('/redirect', passport.authenticate('google', {
 router.get('/success', (req, res) => {
     if (req.isAuthenticated()) {
         res.send('Welcome ' + req.user.googleProfName);
-        console.log(req.user);
+        // console.log(req.user);
         // console.log(req.user.id);
     }
     else res.redirect('/hotel/customer/auth/google/failure');
