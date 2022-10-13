@@ -9,7 +9,10 @@ const userSchema = new Schema({
     googleProfName: String,
     profPicUrl: String,
     facebookID: String,
-    facebookProfName: String
+    facebookProfName: String,
+    twitterID: String,
+    twitterProfName: String,
+    isLoyaltyCustomer: Boolean
 });
 
 

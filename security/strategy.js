@@ -1,5 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const LocalStrategy = require('passport-local');
 const User = require('../models/user');
 
@@ -9,7 +10,7 @@ const googleStrategy = new GoogleStrategy({
     callbackURL: '/hotel/customer/auth/google/redirect'
 }, (accessToken, refreshToken, profile, cb) => {
     User.findOrCreate({ googleId: profile.id, googleProfName: profile.displayName },
-        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value }, (err, user) => {
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
             return cb(err, user);
         });
 });
@@ -23,7 +24,20 @@ const facebookStrategy = new FacebookStrategy({
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
     User.findOrCreate({ facebookID: profile.id, facebookProfName: profile.displayName },
-        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value }, (err, user) => {
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
+            return cb(err, user);
+        });
+});
+
+const twitterStrategy = new TwitterStrategy({
+    consumerKey: process.env.TWITTER_CLIENT_ID,
+    consumerSecret: process.env.TWITTER_CLIENT_SECRET,
+    callbackURL: '/hotel/customer/auth/twitter/redirect',
+    includeEmail: true
+}, (accessToken, refreshToken, profile, cb) => {
+    // console.log(profile);
+    User.findOrCreate({ twitterID: profile.id, twitterProfName: profile.displayName },
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
             return cb(err, user);
         });
 });
@@ -48,4 +62,4 @@ const localStrategy = new LocalStrategy({
     });
 });
 
-module.exports = { googleStrategy, facebookStrategy, localStrategy };
+module.exports = { googleStrategy, facebookStrategy, localStrategy, twitterStrategy };

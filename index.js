@@ -42,6 +42,8 @@ passport.use(strategies.googleStrategy);
 
 passport.use(strategies.facebookStrategy);
 
+passport.use(strategies.twitterStrategy);
+
 passport.use(strategies.localStrategy);
 
 passport.serializeUser((user, done) => {

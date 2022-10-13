@@ -7,7 +7,7 @@ const custLayout = 'customer/layout';
 router.use('/auth/google', auth.googleAuth);
 router.use('/auth/local', auth.localAuth);
 router.use('/auth/facebook', auth.facebookAuth);
-
+router.use('/auth/twitter', auth.twitterAuth);
 
 router.get('', (req, res) => {
     res.render('customer/partials/welcomePage', { layout: custLayout });
