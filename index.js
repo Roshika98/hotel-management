@@ -13,7 +13,10 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
 const passport = require('passport');
 const User = require('./models/user');
+
 const strategies = require('./security/strategy');
+
+
 
 const port = 3000;
 const dbUrl = process.env.MONGODB_URL;
@@ -45,6 +48,7 @@ passport.use(strategies.facebookStrategy);
 passport.use(strategies.twitterStrategy);
 
 passport.use(strategies.localStrategy);
+
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
