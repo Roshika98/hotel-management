@@ -14,7 +14,7 @@ const MongoDBStore = require('connect-mongo');
 const passport = require('passport');
 const User = require('./models/user');
 
-const strategies = require('./security/strategy');
+// const strategies = require('./security/strategy');
 
 
 
@@ -41,13 +41,13 @@ const sessionConfig = {
     saveUninitialized: true,
 };
 
-passport.use(strategies.googleStrategy);
+// passport.use(strategies.googleStrategy);
 
-passport.use(strategies.facebookStrategy);
+// passport.use(strategies.facebookStrategy);
 
-passport.use(strategies.twitterStrategy);
+// passport.use(strategies.twitterStrategy);
 
-passport.use(strategies.localStrategy);
+// passport.use(strategies.localStrategy);
 
 
 passport.serializeUser((user, done) => {
