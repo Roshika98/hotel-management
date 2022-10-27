@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const packageSchema = new Schema({
     packageType: {
         type: String,
-        enum: ['standard', 'Half Board', 'Full Board'],
-        default: 'standard'
+        enum: ['room only', 'bread & breakfast', 'Half Board', 'Full Board'],
+        default: 'room only'
     },
     description: String,
     itemsIncluded: [String]

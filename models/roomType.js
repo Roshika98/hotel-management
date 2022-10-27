@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const roomtypeSchema = new Schema({
     roomType: {
         type: String,
-        enum: ['standard', 'deluxe', 'super deluxe'],
-        default: 'standard'
+        enum: ['deluxe double room', 'superior double room', 'deluxe family room'],
+        default: 'deluxe double room'
     },
     maxGuests: Number,
     standardPrice: Number,

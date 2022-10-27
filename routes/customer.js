@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('./authentication');
+const database = require('../database/database');
 
 const custLayout = 'customer/layout';
 
@@ -20,7 +21,9 @@ router.get('/bookings', (req, res) => {
 router.get('/reservation', async (req, res) => {
     const params = req.query;
     console.log(params);
-    res.send(params);
+    const result = await database.getAvailableRooms(params.checkIn, params.checkOut);
+    console.log(result);
+    res.send("Hello");
 });
 
 // router.get('/auth', (req, res) => {
