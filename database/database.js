@@ -8,6 +8,21 @@ class Database {
         console.log('Db handler created!');
     }
 
+    async getDeluxeRoomDetails() {
+        const info = await RoomType.findOne({ roomType: 'deluxe double room' });
+        return info;
+    }
+
+    async getSuperiorRoomDetails() {
+        const info = await RoomType.findOne({ roomType: 'superior double room' });
+        return info;
+    }
+
+    async getFamilyRoomDetails() {
+        const info = await RoomType.findOne({ roomType: 'deluxe family room' });
+        return info;
+    }
+
     async getDeluxeRooms() {
         const type = await RoomType.findOne({ roomType: 'deluxe double room' });
         const rooms = await Room.find({ roomType: type }).populate('roomType');
@@ -35,7 +50,11 @@ class Database {
         const reserved = await Booking.find({
             $and: [
                 {
-                    checkIn: { $gte: new Date() }
+                    $or: [{
+                        checkIn: { $gte: new Date() }
+                    }, {
+                        checkOut: { $gte: new Date() }
+                    }]
                 }, {
                     $or: [
                         {
@@ -61,7 +80,7 @@ class Database {
                 }
             ]
         });
-        console.log(reserved);
+        // console.log(reserved);
         if (reserved.length == 0) return await this.getAllRooms();
         else {
             var reservedRoomIds = [];
@@ -72,12 +91,18 @@ class Database {
                         reservedRoomIds.push(array[i]);
                     }
                 }
-                console.log(element.roomNumbers[0]);
+                // console.log(element.roomNumbers[0]);
             });
             const available = await Room.find({ _id: { $nin: reservedRoomIds } }).populate('roomType');
             console.log("Available room count: " + available.length);
             return available;
         }
+    }
+
+
+    async reserveAvailableRooms(params) {
+        const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
+
     }
 }
 

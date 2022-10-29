@@ -2,8 +2,14 @@ const express = require('express');
 const router = express.Router();
 const auth = require('./authentication');
 const database = require('../database/database');
+const bookingUtil = require('../utility/bookingUtility');
 
 const custLayout = 'customer/layout';
+
+const scripts = {
+    booking: '/core/js/customer/bookingPage.js',
+    paymentRoom: '/core/js/customer/paymentPage.js'
+}
 
 // router.use('/auth/google', auth.googleAuth);
 // router.use('/auth/local', auth.localAuth);
@@ -11,20 +17,34 @@ const custLayout = 'customer/layout';
 // router.use('/auth/twitter', auth.twitterAuth);
 
 router.get('', (req, res) => {
-    res.render('customer/partials/welcomePage', { layout: custLayout });
+    res.render('customer/partials/welcomePage', { layout: custLayout, script: '' });
 });
 
-router.get('/bookings', (req, res) => {
-    res.render('customer/partials/bookings', { layout: custLayout });
-});
-
-router.get('/reservation', async (req, res) => {
+router.get('/bookings', async (req, res) => {
     const params = req.query;
-    console.log(params);
-    const result = await database.getAvailableRooms(params.checkIn, params.checkOut);
-    console.log(result);
-    res.send("Hello");
+    if (Object.keys(params).length > 0) {
+        const availableRooms = await database.getAvailableRooms(params.checkIn, params.checkOut);
+        const deluxeDouble = await database.getDeluxeRoomDetails();
+        const superiorDouble = await database.getSuperiorRoomDetails();
+        const deluxeFamily = await database.getFamilyRoomDetails();
+        // console.log(result);
+        res.render('customer/partials/makeReservation', { layout: custLayout, params, availableRooms, deluxeDouble, superiorDouble, deluxeFamily, script: scripts.booking });
+
+    } else
+        res.render('customer/partials/bookings', { layout: custLayout, script: '' });
 });
+
+router.get('/payments/rooms', async (req, res) => {
+    // console.log(req.session.basicRoomReserveData);
+    if (Object.keys(req.session.basicRoomReserveData).length > 0) {
+        const paymentInfo = await bookingUtil.estimatePayment(req.session.basicRoomReserveData);
+        // console.log(paymentInfo);
+        res.render('customer/partials/makeRoomPayment', { layout: custLayout, script: scripts.paymentRoom, paymentInfo });
+    } else
+        res.redirect('/hotel/customer/bookings');
+});
+
+
 
 // router.get('/auth', (req, res) => {
 //     res.render('customer/partials/login', { layout: custLayout });
@@ -40,6 +60,17 @@ router.get('/reservation', async (req, res) => {
 //         res.send('user logged out');
 //     });
 // });
+
+
+// *-----------------------POST REQUESTS-------------------------
+
+
+router.post('/bookings/rooms', async (req, res) => {
+    console.log(req.body);
+    const basicDetails = req.body;
+    req.session.basicRoomReserveData = basicDetails;
+    res.sendStatus(200);
+});
 
 module.exports = router;
 
