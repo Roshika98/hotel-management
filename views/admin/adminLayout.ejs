@@ -13,31 +13,73 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
         <!-- Material Kit CSS -->
         <link href="/admin/assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+            integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
 
     <body class="dark-edition">
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="black"
-                data-image="/assets/img/sidebar-2.jpg">
+                data-image="https://cdn.pixabay.com/photo/2019/07/08/04/23/traveling-4323759_960_720.png">
                 <!--
-      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-      Tip 2: you can also add an image using data-image tag
-  -->
-                <div class="logo">
-                    <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                        Creative Tim
-                    </a>
-                </div>
+                  Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+          
+                  Tip 2: you can also add an image using data-image tag
+              -->
+                <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                        Rainbow Hotel
+                    </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item active  ">
-                            <a class="nav-link" href="javascript:void(0)">
+                        <li class="nav-item  ">
+                            <a class="nav-link" href="./dashboard.html">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <!-- your sidebar here -->
+                        <li class="nav-item active ">
+                            <a class="nav-link" href="./user.html">
+                                <i class="material-icons">person</i>
+                                <p>User Profile</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="./tables.html">
+                                <i class="material-icons">content_paste</i>
+                                <p>Table List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="./typography.html">
+                                <i class="material-icons">library_books</i>
+                                <p>Typography</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="./icons.html">
+                                <i class="material-icons">bubble_chart</i>
+                                <p>Icons</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="./map.html">
+                                <i class="material-icons">location_ons</i>
+                                <p>Maps</p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="./notifications.html">
+                                <i class="material-icons">notifications</i>
+                                <p>Notifications</p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item active-pro ">
+                          <a class="nav-link" href="./upgrade.html">
+                              <i class="material-icons">unarchive</i>
+                              <p>Upgrade to PRO</p>
+                          </a>
+                      </li> -->
                     </ul>
                 </div>
             </div>
@@ -74,6 +116,7 @@
                 <div class="content">
                     <div class="container-fluid">
                         <!-- your content here -->
+                        <%- body  %>
                     </div>
                 </div>
                 <footer class="footer">
@@ -104,7 +147,7 @@
         <script src="/admin/assets/js/core/popper.min.js"></script>
         <script src="/admin/assets/js/core/bootstrap-material-design.min.js"></script>
         <script src="https://unpkg.com/default-passive-events"></script>
-        <script src="/admin/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+        <!-- <script src="/admin/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script> -->
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!--  Google Maps Plugin    -->
@@ -114,7 +157,7 @@
         <!--  Notifications Plugin    -->
         <script src="/admin/assets/js/plugins/bootstrap-notify.js"></script>
         <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-        <script src="/admin/assets/js/material-dashboard.js?v=2.1.0"></script>
+        <!-- <script src="/admin/assets/js/material-dashboard.js?v=2.1.0"></script> -->
         <!-- Material Dashboard DEMO methods, don't include it in your project! -->
         <script src="/admin/assets/demo/demo.js"></script>
         <script>
@@ -279,6 +322,7 @@
                 });
             });
         </script>
+        <script src="<%= script %>"></script>
     </body>
 
 </html>

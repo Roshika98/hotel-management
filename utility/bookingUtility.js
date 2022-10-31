@@ -1,4 +1,6 @@
 const database = require('../database/database');
+const User = require('../models/user');
+const Booking = require('../models/booking');
 
 class BookingUtility {
 
@@ -27,7 +29,62 @@ class BookingUtility {
         return { total: estimatedPrice, advance: Math.ceil((estimatedPrice * 20) / 100) };
     };
 
-
+    async createBooking(params, userData) {
+        const availableRooms = await database.getAvailableRooms(params.checkIn, params.checkOut);
+        var deluxeCount = parseInt(params.deluxe);
+        var superiorCount = parseInt(params.superior);
+        var familyCount = parseInt(params.family);
+        var currDeluxe = 0;
+        var currSuperior = 0;
+        var currFamily = 0;
+        var bookedRooms = [];
+        for (let i = 0; i < availableRooms.length; i++) {
+            const element = availableRooms[i];
+            if (element.roomType.roomType == 'deluxe double room' && currDeluxe < deluxeCount) {
+                currDeluxe++;
+                bookedRooms.push(element._id);
+            } else if (element.roomType.roomType == 'superior double room' && currSuperior < superiorCount) {
+                currSuperior++;
+                bookedRooms.push(element._id);
+            } else if (element.roomType.roomType == 'deluxe family room' && currFamily < familyCount) {
+                currFamily++;
+                bookedRooms.push(element._id);
+            }
+        }
+        const newUser = await database.createStandardUser({
+            email: userData.email,
+            mobile: userData.phone,
+            address: userData.address,
+            name: userData.fname + ' ' + userData.lname,
+        });
+        var pckg = null;
+        if (params.package == 0) {
+            pckg = await database.getPackageDetails('room only');
+        } else if (params.package == 1) {
+            pckg = await database.getPackageDetails('Half Board');
+        } else {
+            pckg = await database.getPackageDetails('Full Board');
+        }
+        const payment = await this.estimatePayment(params);
+        const bookingParams = {
+            roomCount: deluxeCount + superiorCount + familyCount,
+            roomNumbers: bookedRooms,
+            user: newUser,
+            checkIn: params.checkIn,
+            checkOut: params.checkOut,
+            advance: payment.advance,
+            total: payment.total,
+            adults: params.adults,
+            children: params.children,
+            package: pckg
+        };
+        const newBooking = await database.createRoomReservation(bookingParams);
+        console.log(bookedRooms);
+        console.log(newBooking);
+    }
 }
+
+
+
 
 module.exports = new BookingUtility();

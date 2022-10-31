@@ -4,6 +4,7 @@ const Package = require('./package');
 const RoomType = require('./roomType');
 const Room = require('./room');
 const User = require('./user');
+const Employee = require('./employee');
 const dbUrl = 'mongodb+srv://admin101:fT6edKMdIXMlyrMV@cluster0.ah4mmoo.mongodb.net/SE_Project?retryWrites=true&w=majority';
 
 
@@ -119,11 +120,18 @@ async function createBooking() {
     console.log(booked);
 }
 
+async function createAnEmployee(username, password) {
+    const employee = new Employee({ username: username });
+    const newEmployee = await Employee.register(employee, password);
+    console.log(newEmployee);
+}
+
 
 async function addData() {
     // await createPackages();
     // await createRoomTypes();
     // await createRooms();
     // await Booking.createCollection();
-    await createBooking();
+    // await createBooking();
+    await createAnEmployee('EMP001', 'Hello');
 }

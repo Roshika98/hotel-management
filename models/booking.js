@@ -20,6 +20,11 @@ const bookingSchema = new Schema({
     package: {
         type: Schema.Types.ObjectId,
         ref: 'Package'
+    },
+    status: {
+        type: String,
+        enum: ['booked', 'checkedIn', 'checkedOut'],
+        default: 'booked'
     }
 });
 

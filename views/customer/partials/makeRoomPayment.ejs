@@ -28,8 +28,8 @@
         <form id="multistepsform">
             <!-- progressbar -->
             <ul id="progressbar">
-                <li class="active">Personal Details</li>
-                <li>Payment Details</li>
+                <li class="items">Personal Details</li>
+                <li class="items">Payment Details</li>
                 <!-- <li>Social Profiles</li> -->
 
             </ul>
@@ -46,23 +46,27 @@
             <fieldset>
                 <h2 class="fs-title">Personal Details</h2>
                 <h3 class="fs-subtitle">Are you a Loyalty Member? <a href="">log in</a></h3>
-                <input type="text" name="fname" placeholder="First Name" />
-                <input type="text" name="lname" placeholder="Last Name" />
-                <input type="email" name="email" placeholder="abc@gmail.com" />
+                <input type="text" name="fname" placeholder="First Name" id="fname" />
+                <input type="text" name="lname" placeholder="Last Name" id="lname" />
+                <input type="email" name="email" placeholder="abc@gmail.com" id="email" />
                 <input type="text" name="phone" id="phone" placeholder="07x-xxxxxxx">
-                <textarea name="address" placeholder="Address"></textarea>
+                <textarea name="address" placeholder="Address" id="address"></textarea>
                 <!-- <input type="button" name="previous" class="previous action-button" value="Previous" /> -->
 
                 <input type="button" name="next" class="next action-button" value="Next" />
             </fieldset>
             <fieldset>
-                <h2 class="fs-title">Social Profiles</h2>
-                <h3 class="fs-subtitle">Your presence on the social network</h3>
-                <input type="text" name="twitter" placeholder="Twitter" />
+                <h2 class="fs-title">Payment Details</h2>
+                <h3 class="fs-subtitle">20% of total estimated price will have to be paid via online</h3>
+                <br>
+                <h3 class="fs-title">Estimated total : $ <%= paymentInfo.total %></h3>
+                <h3 class="fs-title">Advance Payment : $ <%= paymentInfo.advance %> </h3>
+                <!-- <input type="text" name="twitter" placeholder="Twitter" />
                 <input type="text" name="facebook" placeholder="Facebook" />
-                <input type="text" name="gplus" placeholder="Google Plus" />
+                <input type="text" name="gplus" placeholder="Google Plus" /> -->
+
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
-                <input type="submit" name="submit" class="submit action-button" value="Submit" />
+                <input type="submit" name="submit" class="submit action-button" value="Submit" id="submit" />
             </fieldset>
         </form>
     </div>

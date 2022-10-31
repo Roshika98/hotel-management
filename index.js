@@ -13,8 +13,9 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
 const passport = require('passport');
 const User = require('./models/user');
+const Employee = require('./models/employee');
 
-// const strategies = require('./security/strategy');
+const strategies = require('./security/strategy');
 
 
 
@@ -49,6 +50,8 @@ const sessionConfig = {
 
 // passport.use(strategies.localStrategy);
 
+passport.use('employee', strategies.employeeStrategy);
+
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -56,7 +59,13 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
-        done(null, user);
+        if (user !== null) {
+            done(null, user);
+        } else {
+            Employee.findById(id).then(employee => {
+                done(null, employee);
+            })
+        }
     });
 });
 

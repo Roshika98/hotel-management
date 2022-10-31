@@ -2,6 +2,7 @@ const Booking = require('../models/booking');
 const Package = require('../models/package');
 const RoomType = require('../models/roomType');
 const Room = require('../models/room');
+const User = require('../models/user');
 
 class Database {
     constructor() {
@@ -46,6 +47,22 @@ class Database {
         return rooms;
     }
 
+    async getPackageDetails(pckg) {
+        const details = await Package.findOne({ packageType: `${pckg}` });
+        return details;
+    }
+
+    async getBookingDetails(email, custName) {
+        const customer = await User.findOne({ email: email });
+        const details = await Booking.findOne({ user: customer }).populate(['roomNumbers', 'user', 'package']);
+        console.log(details);
+        return details;
+    }
+
+    async getAllReservationsToday() {
+
+    }
+
     async getAvailableRooms(start, end) {
         const reserved = await Booking.find({
             $and: [
@@ -80,7 +97,6 @@ class Database {
                 }
             ]
         });
-        // console.log(reserved);
         if (reserved.length == 0) return await this.getAllRooms();
         else {
             var reservedRoomIds = [];
@@ -91,7 +107,6 @@ class Database {
                         reservedRoomIds.push(array[i]);
                     }
                 }
-                // console.log(element.roomNumbers[0]);
             });
             const available = await Room.find({ _id: { $nin: reservedRoomIds } }).populate('roomType');
             console.log("Available room count: " + available.length);
@@ -103,6 +118,22 @@ class Database {
     async reserveAvailableRooms(params) {
         const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
 
+    }
+
+
+
+    // *----------------- CREATE OPERATIONS----------------------
+
+    async createStandardUser(data) {
+        const newUser = await User.create(data);
+        console.log(newUser);
+        return newUser;
+    }
+
+    async createRoomReservation(data) {
+        const newBooking = await Booking.create(data);
+        // console.log(newBooking);
+        return newBooking;
     }
 }
 
