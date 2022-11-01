@@ -52,14 +52,71 @@ class Database {
         return details;
     }
 
-    async getBookingDetails(email, custName) {
-        const customer = await User.findOne({ email: email });
-        const details = await Booking.findOne({ user: customer }).populate(['roomNumbers', 'user', 'package']);
+
+    async getBookingDetails() {
+
+        // Define two overloaded functions
+        var function1 = async function (id) {
+            const booking = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
+            return booking;
+        };
+
+        var function2 = async function (email, custName) {
+            const customer = await User.findOne({ email: email });
+            // TODO update the search filter by adding current date so only checkins for today are searched
+            const checkinDate = new Date();
+            // checkinDate.setHours(0, 0, 0, 0);
+            const dateString = checkinDate.toISOString().split('T')[0];
+            const details = await Booking.findOne({ user: customer, checkIn: new Date(`${dateString}`), status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
+            // console.log(details.checkIn);
+            // console.log(details);
+            return details;
+        };
+        if (arguments.length === 2) {
+            return function2(arguments[0], arguments[1]);
+        } else if (arguments.length === 1
+            && !Array.isArray(arguments[0])) {
+            return function1(arguments[0]);
+        }
+    }
+
+    // 
+    async getCheckedInCustomers() {
+        var dateVal = new Date();
+        var checkOutDate = dateVal.toISOString().split('T')[0];
+        const details = await Booking.find({ status: 'checkedIn', checkOut: new Date(`${checkOutDate}`) }).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
         console.log(details);
         return details;
     }
 
-    async getAllReservationsToday() {
+    // async getCheckedInCustomer(id) {
+    //     const details = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
+    //     return details;
+    // }
+
+    async getCheckedInCustomer() {
+        var function1 = async function (id) {
+            const details = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
+            return details;
+        };
+
+        var function2 = async function (email, custName) {
+            const customer = await User.findOne({ email: email });
+            // TODO update the search filter by adding current date so only checkins for today are searched
+            const details = await Booking.findOne({ user: customer, status: 'checkedIn' }).populate(['roomNumbers', 'user', 'package']);
+            console.log(details);
+            return details;
+        };
+        if (arguments.length === 2) {
+            return function2(arguments[0], arguments[1]);
+        } else if (arguments.length === 1
+            && !Array.isArray(arguments[0])) {
+            return function1(arguments[0]);
+        }
+    }
+
+
+    async getAllReservationsForToday() {
 
     }
 
@@ -134,6 +191,21 @@ class Database {
         const newBooking = await Booking.create(data);
         // console.log(newBooking);
         return newBooking;
+    }
+
+
+
+    // *-----------------UPDATE OPERATIONS-------------------------
+
+    async updateCheckInStatus(id) {
+        const booking = await Booking.findByIdAndUpdate(id, { status: 'checkedIn' });
+        console.log(booking);
+        return booking;
+    }
+
+    async performCheckout(id) {
+        const booking = await Booking.findByIdAndUpdate(id, { status: 'checkedOut' });
+        return booking;
     }
 }
 

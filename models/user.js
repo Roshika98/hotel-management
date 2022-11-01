@@ -15,7 +15,10 @@ const userSchema = new Schema({
     facebookProfName: String,
     twitterID: String,
     twitterProfName: String,
-    isLoyaltyCustomer: Boolean
+    isLoyaltyCustomer: {
+        type: Boolean,
+        default: false
+    }
 });
 
 

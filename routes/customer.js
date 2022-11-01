@@ -68,9 +68,10 @@ router.post('/bookings/rooms', async (req, res) => {
     // console.log(req.body);
     const basicDetails = req.body;
     req.session.basicRoomReserveData = basicDetails;
-    req.session.save(() => {
-        res.sendStatus(200);
-    });
+    // req.session.save(() => {
+    //     res.sendStatus(200);
+    // });
+    res.send('done');
 });
 
 router.post('/reservations/rooms', async (req, res) => {

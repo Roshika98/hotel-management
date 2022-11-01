@@ -1,8 +1,8 @@
+const pageIndicator = document.getElementById('checkout');
 const bookingSearch = document.getElementById('bookingSearch');
 const emailAddress = document.getElementById('email');
 const custName = document.getElementById('name');
 const dynamicContent = document.getElementById('dynamicContent');
-const pageIndicator = document.getElementById('checkin');
 pageIndicator.classList.add('active');
 
 
@@ -15,7 +15,7 @@ bookingSearch.addEventListener('click', async (event) => {
         name: custName.value
     }
     const params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/bookings', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/checkIns', params, { headers: { 'Content-Type': 'application/json' } });
     setUpDynamicContent(response.data);
 });
 

@@ -1,5 +1,4 @@
 <div class="col-xl-6 col-lg-12">
-    <% if (details!==null) { %>
     <div class="card card-chart">
         <div class="card-header card-header-success">
             <div class="text-end pt-1">
@@ -18,14 +17,11 @@
         </div>
         <div class="card-footer">
 
-            <form action="/hotel/admin/receptionist/reservation/<%= details.id %>" method="get">
+            <form action="/hotel/admin/receptionist/checkouts/<%= details.id %>" method="get">
                 <button type="submit" class="btn btn-warning itemCart" data-itemCode="<%= details.id %>"
                     id="processBooking">Process
-                    Check-in</button>
+                    Check-Out</button>
             </form>
         </div>
     </div>
-    <% } else { %>
-    <h4 class="text-warning">No reservations found!</h4>
-    <% } %>
 </div>

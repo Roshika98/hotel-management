@@ -78,8 +78,9 @@ class BookingUtility {
             children: params.children,
             package: pckg
         };
-        const newBooking = await database.createRoomReservation(bookingParams);
         console.log(bookedRooms);
+        const newBooking = await database.createRoomReservation(bookingParams);
+
         console.log(newBooking);
     }
 }

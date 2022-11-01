@@ -20,37 +20,46 @@
 
     <body class="dark-edition">
         <div class="wrapper ">
-            <div class="sidebar" data-color="purple" data-background-color="black"
+            <div class="sidebar" data-color="green" data-background-color="black"
                 data-image="https://cdn.pixabay.com/photo/2019/07/08/04/23/traveling-4323759_960_720.png">
                 <!--
                   Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
           
                   Tip 2: you can also add an image using data-image tag
               -->
-                <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                <div class="logo "><a href="http://www.creative-tim.com" class="simple-text logo-normal">
                         Rainbow Hotel
                     </a></div>
+                <% if (empType==='receptionist') { %>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item  ">
-                            <a class="nav-link" href="./dashboard.html">
+                        <li class="nav-item" id="checkin">
+                            <a class="nav-link" href="/hotel/admin/receptionist">
                                 <i class="material-icons">dashboard</i>
-                                <p>Dashboard</p>
+                                <p>CheckIns</p>
                             </a>
                         </li>
-                        <li class="nav-item active ">
+                        <li class="nav-item " id="checkout">
+                            <a class="nav-link" href="/hotel/admin/receptionist/checkouts">
+                                <i class="material-icons">content_paste</i>
+                                <p>CheckOuts</p>
+                            </a>
+                        </li>
+                        <li class="nav-item " id="bookings">
                             <a class="nav-link" href="./user.html">
                                 <i class="material-icons">person</i>
-                                <p>User Profile</p>
+                                <p>Bookings</p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="./tables.html">
-                                <i class="material-icons">content_paste</i>
-                                <p>Table List</p>
+                        <li class="nav-item " id="cancellations">
+                            <a class="nav-link" href="./user.html">
+                                <i class="material-icons">person</i>
+                                <p>Cancellations</p>
                             </a>
                         </li>
-                        <li class="nav-item ">
+
+
+                        <!-- <li class="nav-item ">
                             <a class="nav-link" href="./typography.html">
                                 <i class="material-icons">library_books</i>
                                 <p>Typography</p>
@@ -73,15 +82,11 @@
                                 <i class="material-icons">notifications</i>
                                 <p>Notifications</p>
                             </a>
-                        </li>
-                        <!-- <li class="nav-item active-pro ">
-                          <a class="nav-link" href="./upgrade.html">
-                              <i class="material-icons">unarchive</i>
-                              <p>Upgrade to PRO</p>
-                          </a>
-                      </li> -->
+                        </li> -->
+
                     </ul>
                 </div>
+                <% } %>
             </div>
             <div class="main-panel">
                 <!-- Navbar -->
@@ -160,7 +165,7 @@
         <!-- <script src="/admin/assets/js/material-dashboard.js?v=2.1.0"></script> -->
         <!-- Material Dashboard DEMO methods, don't include it in your project! -->
         <script src="/admin/assets/demo/demo.js"></script>
-        <script>
+        <!-- <script>
             $(document).ready(function () {
                 $().ready(function () {
                     $sidebar = $('.sidebar');
@@ -321,7 +326,7 @@
                     });
                 });
             });
-        </script>
+        </script> -->
         <script src="<%= script %>"></script>
     </body>
 
