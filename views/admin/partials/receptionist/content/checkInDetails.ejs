@@ -1,4 +1,5 @@
 <div class="col-xl-6 col-lg-12">
+    <% if (details!==null) { %>
     <div class="card card-chart">
         <div class="card-header card-header-success">
             <div class="text-end pt-1">
@@ -24,4 +25,7 @@
             </form>
         </div>
     </div>
+    <% } else { %>
+    <h4 class="text-warning">No reservations found!</h4>
+    <% } %>
 </div>
