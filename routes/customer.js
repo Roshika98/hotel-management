@@ -8,7 +8,8 @@ const custLayout = 'customer/layout';
 
 const scripts = {
     booking: '/core/js/customer/bookingPage.js',
-    paymentRoom: '/core/js/customer/paymentPage.js'
+    paymentRoom: '/core/js/customer/paymentPage.js',
+    dateReserve: '/core/js/customer/reserveDatePage.js'
 }
 
 // router.use('/auth/google', auth.googleAuth);
@@ -31,7 +32,7 @@ router.get('/bookings', async (req, res) => {
         res.render('customer/partials/makeReservation', { layout: custLayout, params, availableRooms, deluxeDouble, superiorDouble, deluxeFamily, script: scripts.booking });
 
     } else
-        res.render('customer/partials/bookings', { layout: custLayout, script: '' });
+        res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve });
 });
 
 router.get('/payments/rooms', async (req, res) => {
