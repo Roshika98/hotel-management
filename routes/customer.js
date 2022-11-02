@@ -36,8 +36,9 @@ router.get('/bookings', async (req, res) => {
 });
 
 router.get('/payments/rooms', async (req, res) => {
-    if (req.session.basicRoomReserveData && req.session.basicRoomReserveData !== null && req.session.basicRoomReserveData !== 'undefined') {
-        const paymentInfo = await bookingUtil.estimatePayment(req.session.basicRoomReserveData);
+    const reserveData = await database.getTempReserveData(req.sessionID);
+    if (reserveData !== null) {
+        const paymentInfo = await bookingUtil.estimatePayment(reserveData);
         // console.log(paymentInfo);
         res.render('customer/partials/makeRoomPayment', { layout: custLayout, script: scripts.paymentRoom, paymentInfo });
     } else
@@ -66,23 +67,17 @@ router.get('/payments/rooms', async (req, res) => {
 
 
 router.post('/bookings/rooms', async (req, res) => {
-    // console.log(req.body);
     const basicDetails = req.body;
-    req.session.basicRoomReserveData = basicDetails;
-    // req.session.save(() => {
-    //     res.sendStatus(200);
-    // });
+    const tempHolder = await database.createTempReserveData(req.sessionID, basicDetails);
+    console.log(tempHolder);
     res.send('done');
 });
 
 router.post('/reservations/rooms', async (req, res) => {
     console.log(req.body);
-    console.log(req.session.basicRoomReserveData);
-    const booking = await bookingUtil.createBooking(req.session.basicRoomReserveData, req.body);
-    req.session.destroy(() => {
-        res.sendStatus(200);
-    })
-    // res.send('boom');
+    const reserveData = await database.getTempReserveData(req.sessionID);
+    const booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
+    res.sendStatus(200);
 });
 
 module.exports = router;

@@ -29,7 +29,7 @@ class BookingUtility {
         return { total: estimatedPrice, advance: Math.ceil((estimatedPrice * 20) / 100) };
     };
 
-    async createBooking(params, userData) {
+    async createBooking(params, userData, id) {
         const availableRooms = await database.getAvailableRooms(params.checkIn, params.checkOut);
         var deluxeCount = parseInt(params.deluxe);
         var superiorCount = parseInt(params.superior);
@@ -80,7 +80,7 @@ class BookingUtility {
         };
         console.log(bookedRooms);
         const newBooking = await database.createRoomReservation(bookingParams);
-
+        const deleteData = await database.deleteTempReserveData(id);
         console.log(newBooking);
     }
 }

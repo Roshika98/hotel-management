@@ -3,6 +3,7 @@ const Package = require('../models/package');
 const RoomType = require('../models/roomType');
 const Room = require('../models/room');
 const User = require('../models/user');
+const TempReserve = require('../models/tempReserve');
 
 class Database {
     constructor() {
@@ -50,6 +51,11 @@ class Database {
     async getPackageDetails(pckg) {
         const details = await Package.findOne({ packageType: `${pckg}` });
         return details;
+    }
+
+    async getTempReserveData(id) {
+        const data = await TempReserve.findOne({ sessionID: `${id}` });
+        return data;
     }
 
 
@@ -193,7 +199,21 @@ class Database {
         return newBooking;
     }
 
-
+    async createTempReserveData(id, data) {
+        const params = {
+            sessionID: id,
+            checkIn: data.checkIn,
+            checkOut: data.checkOut,
+            deluxe: data.deluxe,
+            superior: data.superior,
+            family: data.family,
+            package: data.package,
+            adults: data.adults,
+            children: data.children
+        }
+        const tempReserve = await TempReserve.create(params);
+        return tempReserve;
+    }
 
     // *-----------------UPDATE OPERATIONS-------------------------
 
@@ -206,6 +226,16 @@ class Database {
     async performCheckout(id) {
         const booking = await Booking.findByIdAndUpdate(id, { status: 'checkedOut' });
         return booking;
+    }
+
+
+
+
+    // *------------------------DELETE OPERATIONS--------------------------------
+
+    async deleteTempReserveData(id) {
+        const tempData = await TempReserve.findOneAndDelete({ sessionID: `${id}` });
+        return tempData;
     }
 }
 
