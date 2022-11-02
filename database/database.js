@@ -10,6 +10,11 @@ class Database {
         console.log('Db handler created!');
     }
 
+    async getUserInfo(id) {
+        const user = await User.findById(id);
+        return user;
+    }
+
     async getDeluxeRoomDetails() {
         const info = await RoomType.findOne({ roomType: 'deluxe double room' });
         return info;
@@ -59,6 +64,46 @@ class Database {
     }
 
 
+    async getBookingsDueToday() {
+        var newDate = new Date();
+        var today = newDate.toISOString().split('T')[0];
+        const bookings = await Booking.find({ checkIn: new Date(today), status: 'booked' }).populate(['user']);
+        return bookings;
+    }
+
+    async getCheckedOutBookings() {
+        const bookings = await Booking.find({ status: 'checkedOut' }).populate(['user']).sort({ 'checkOut': -1 }).limit(10);
+        return bookings;
+    }
+
+    async getCheckedInBookings() {
+        const bookings = await Booking.find({ status: 'checkedIn' }).populate(['user']).sort({ 'checkIn': 1 }).limit(10);
+        return bookings;
+    }
+
+    async getFutureBookings() {
+        var newDate = new Date();
+        newDate.setDate(newDate.getDate() + 1);
+        var tomorrow = newDate.toISOString().split('T')[0];
+        const bookings = await Booking.find({ status: 'booked', checkIn: { $gte: new Date(tomorrow) } }).populate(['user']).sort({ 'checkIn': 1 }).limit(10);
+        return bookings;
+    }
+
+    async getCancelledBookings() {
+        const bookings = await Booking.find({ status: 'cancelled' }).populate(['user']).sort({ 'checkIn': 1 }).limit(10);
+        return bookings;
+    }
+
+
+
+
+    async getBookingToCancel(email) {
+        const user = await User.findOne({ email: email });
+        const booking = await Booking.findOne({ user: user, status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
+        return booking;
+    }
+
+
     async getBookingDetails() {
 
         // Define two overloaded functions
@@ -71,11 +116,8 @@ class Database {
             const customer = await User.findOne({ email: email });
             // TODO update the search filter by adding current date so only checkins for today are searched
             const checkinDate = new Date();
-            // checkinDate.setHours(0, 0, 0, 0);
             const dateString = checkinDate.toISOString().split('T')[0];
             const details = await Booking.findOne({ user: customer, checkIn: new Date(`${dateString}`), status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
-            // console.log(details.checkIn);
-            // console.log(details);
             return details;
         };
         if (arguments.length === 2) {
@@ -86,7 +128,7 @@ class Database {
         }
     }
 
-    // 
+
     async getCheckedInCustomers() {
         var dateVal = new Date();
         var checkOutDate = dateVal.toISOString().split('T')[0];
@@ -95,10 +137,7 @@ class Database {
         return details;
     }
 
-    // async getCheckedInCustomer(id) {
-    //     const details = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
-    //     return details;
-    // }
+
 
     async getCheckedInCustomer() {
         var function1 = async function (id) {
@@ -177,6 +216,18 @@ class Database {
         }
     }
 
+    async checkRoomAvailabilityToExtend(rooms, start, end) {
+        const reserved = await Booking.find({
+            $and: [{
+                roomNumbers: { $in: rooms }
+            }, {
+                status: 'booked'
+            }, {
+                checkIn: { $gte: start, $lte: end }
+            }]
+        });
+        return reserved;
+    }
 
     async reserveAvailableRooms(params) {
         const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
@@ -228,6 +279,11 @@ class Database {
         return booking;
     }
 
+
+    async cancelBooking(id) {
+        const booking = await Booking.findByIdAndUpdate(id, { status: 'cancelled' });
+        return booking;
+    }
 
 
 

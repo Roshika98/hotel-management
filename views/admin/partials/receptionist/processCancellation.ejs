@@ -1,0 +1,53 @@
+<div class="card card-nav-tabs text-center">
+    <h4 class="card-header card-header-success">
+        Process Cancellation
+    </h4>
+    <div class="card-body">
+        <h4 class="card-title">Customer : <%= cancelation.user.name %></h4>
+        <p class="card-text">E-mail : <span class="text-info"> <%= cancelation.user.email %> </span></p>
+        <p class="card-text">Package : <%= cancelation.package.packageType %> &nbsp; | &nbsp; Room Count :
+            <%= cancelation.roomCount %> </p>
+        <p class="card-text">Duration of the stay : <span
+                class="text-warning"><%= cancelation.checkIn.toDateString() %></span> To
+            <span class="text-warning"><%= cancelation.checkOut.toDateString() %></span>
+        </p>
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Room No
+                </th>
+                <th>
+                    Room Type
+                </th>
+                <th>
+                    Max Guests
+                </th>
+
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < cancelation.roomNumbers.length; i++ ) { %>
+                <% var element=cancelation.roomNumbers[i] %>
+                <tr>
+                    <td class="text-warning"><%= element.roomNo %></td>
+                    <td><%= element.roomType.roomType %></td>
+                    <td><%= element.roomType.maxGuests %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="row text-center">
+
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <form action="/hotel/admin/receptionist/cancellations/<%= cancelation.id %>" method="post">
+            <button class="btn btn-success" type="submit">Cancel Reservation</button>
+        </form>
+        <a href="/hotel/admin/receptionist/cancellations" class="btn btn-danger">Discard</a>
+    </div>
+</div>
+
+<script>
+    const pageIndicator = document.getElementById('cancellations');
+    pageIndicator.classList.add('active');
+</script>

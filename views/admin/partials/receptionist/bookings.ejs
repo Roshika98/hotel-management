@@ -1,0 +1,224 @@
+<div class="card">
+    <div class="card-header card-header-success">
+        <!-- <h2 class="card-title">Hello there!</h2> -->
+        <!-- <p class="card-category">Created using Roboto Font Family</p> -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Due Today</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Upcoming Reservations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab"
+                    aria-controls="messages" aria-selected="false">Checked Out Reservations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+                    aria-controls="settings" aria-selected="false">Checked In Reservations</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <% if (bookings.present.length>0) { %>
+                <table class="table">
+                    <thead class=" text-primary">
+                        <th>
+                            Reservation ID
+                        </th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            No of Guests
+                        </th>
+                        <th></th>
+                        <th></th>
+
+                    </thead>
+                    <tbody>
+                        <% const dueToday=bookings.present %>
+                        <% for( let i = 0; i < dueToday.length; i++ ) { %>
+                        <% var element=dueToday[i] %>
+                        <tr>
+                            <td class="text-warning"><%= element.id%></td>
+                            <td><%= element.user.name %></td>
+                            <td><%= element.adults %></td>
+                            <td><button class="btn btn-primary btn-sm userinfo"
+                                    data-userInfo="<%= element.user.id %>">user-info</button></td>
+                            <td><a href="/hotel/admin/receptionist/cancellations/<%= element.id %>"
+                                    class="btn btn-danger btn-sm">Cancel</a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <h4 class="text-warning">No reservations Today!</h4>
+                <% } %>
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                <% if (bookings.future.length>0) { %>
+                <table class="table">
+                    <thead class=" text-primary">
+                        <th>
+                            Reservation ID
+                        </th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            No of Guests
+                        </th>
+                        <th>Check In</th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <% const dueToday=bookings.future %>
+                        <% for( let i = 0; i < dueToday.length; i++ ) { %>
+                        <% var element=dueToday[i] %>
+                        <tr>
+                            <td class="text-warning"><%= element.id%></td>
+                            <td><%= element.user.name %></td>
+                            <td><%= element.adults %></td>
+                            <td><%= element.checkIn.toISOString().split('T')[0] %></td>
+                            <td><button class="btn btn-primary btn-sm userinfo"
+                                    data-userInfo="<%= element.user.id %>">user-info</button></td>
+                            <td><a href="/hotel/admin/receptionist/cancellations/<%= element.id %>"
+                                    class="btn btn-danger btn-sm">Cancel</a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <h4 class="text-warning">No future reservations!</h4>
+                <% } %>
+
+            </div>
+            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+
+                <% if (bookings.past.length>0) { %>
+                <table class="table">
+                    <thead class=" text-primary">
+                        <th>
+                            Reservation ID
+                        </th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            No of Guests
+                        </th>
+                        <th>Checked Out on</th>
+                        <th></th>
+
+                    </thead>
+                    <tbody>
+                        <% const dueToday=bookings.past %>
+                        <% for( let i = 0; i < dueToday.length; i++ ) { %>
+                        <% var element=dueToday[i] %>
+                        <tr>
+                            <td class="text-warning"><%= element.id%></td>
+                            <td><%= element.user.name %></td>
+                            <td><%= element.adults %></td>
+                            <td><%= element.checkOut.toISOString().split('T')[0] %></td>
+                            <td><button class="btn btn-primary btn-sm userinfo"
+                                    data-userInfo="<%= element.user.id %>">user-info</button></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <h4 class="text-warning">No past Checkouts</h4>
+                <% } %>
+
+            </div>
+            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+
+                <% if (bookings.checkedIn.length>0) { %>
+                <table class="table">
+                    <thead class=" text-primary">
+                        <th>
+                            Reservation ID
+                        </th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            No of Guests
+                        </th>
+                        <th>Checked In on</th>
+                        <th></th>
+                        <th></th>
+
+                    </thead>
+                    <tbody>
+                        <% const dueToday=bookings.checkedIn %>
+                        <% for( let i = 0; i < dueToday.length; i++ ) { %>
+                        <% var element=dueToday[i] %>
+                        <tr>
+                            <td class="text-warning"><%= element.id%></td>
+                            <td><%= element.user.name %></td>
+                            <td><%= element.adults %></td>
+                            <td><%= element.checkIn.toISOString().split('T')[0] %></td>
+                            <td><button class="btn btn-primary btn-sm userinfo"
+                                    data-userInfo="<%= element.user.id %>">user-info</button></td>
+                            <td><a href="/hotel/admin/receptionist/extension/<%= element.id %>"
+                                    class="btn btn-warning btn-sm">Extend Stay</a>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <h4 class="text-warning">No past Checkouts</h4>
+                <% } %>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal" style="display:none ;"
+    id="modalTrigger"></button>
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Customer Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="dynamicContent">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    const pageIndicator = document.getElementById('bookings');
+    pageIndicator.classList.add('active');
+</script>
