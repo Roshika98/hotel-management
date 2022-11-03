@@ -5,6 +5,10 @@ const RoomType = require('./roomType');
 const Room = require('./room');
 const User = require('./user');
 const Employee = require('./employee');
+const Hall = require('./hall');
+const HallType = require('./hallType');
+const HallBooking = require('./hallBooking');
+const Menu = require('./menu');
 const dbUrl = 'mongodb+srv://admin101:fT6edKMdIXMlyrMV@cluster0.ah4mmoo.mongodb.net/SE_Project?retryWrites=true&w=majority';
 
 
@@ -126,6 +130,28 @@ async function createAnEmployee(username, password) {
     console.log(newEmployee);
 }
 
+async function createHalls() {
+    const hallType1 = await HallType.insertMany([{
+        hallType: 'Master Banquet Hall',
+        maxGuests: 300,
+        rate: 5000,
+        description: 'Both Halls are fully air- conditioned, fully carpeted and fully curtained to match cozy five star ambience. A party may obtain also two halls together for the same function, in cases of high guest capacity.'
+    }, {
+        hallType: 'Grown Banquet Hall',
+        maxGuests: 300,
+        rate: 4000,
+        description: 'Both Halls are fully air- conditioned, fully carpeted and fully curtained to match cozy five star ambience. A party may obtain also two halls together for the same function, in cases of high guest capacity.'
+    }]);
+    for (let i = 0; i < hallType1.length; i++) {
+        const element = hallType1[i];
+        const hall = await Hall.create({
+            hallNo: i + 1,
+            hallType: element
+        });
+        console.log(hall);
+    }
+}
+
 
 async function addData() {
     // await createPackages();
@@ -133,5 +159,7 @@ async function addData() {
     // await createRooms();
     // await Booking.createCollection();
     // await createBooking();
-    await createAnEmployee('EMP001', 'Hello');
+    // await createAnEmployee('EMP001', 'Hello');
+    await createHalls();
+    // await HallBooking.createCollection();
 }

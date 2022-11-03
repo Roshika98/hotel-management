@@ -1,12 +1,15 @@
 const express = require('express');
 const database = require('../../database/database');
 const router = express.Router();
+const receptionUtil = require('../../utility/receptionUtility');
 const adminLayout = 'admin/adminLayout';
 
 const scripts = {
     homepage: '/core/js/admin/receptionist/homePageController.js',
     checkin: '',
-    checkout: '/core/js/admin/receptionist/checkoutPageController.js'
+    checkout: '/core/js/admin/receptionist/checkoutPageController.js',
+    booking: '/core/js/admin/receptionist/bookingViewController.js',
+    cancellation: '/core/js/admin/receptionist/cancellationController.js'
 }
 
 router.get('', (req, res) => {
@@ -34,7 +37,39 @@ router.get('/checkouts/:id', async (req, res) => {
     res.render('admin/partials/receptionist/processCheckout', { layout: adminLayout, empType, script: '', checkedIn });
 });
 
+router.get('/bookings', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    const bookings = await receptionUtil.getAllBookingsToDisplay();
+    res.render('admin/partials/receptionist/bookings', { layout: adminLayout, empType, script: scripts.booking, bookings });
+});
 
+router.get('/userInfo/:id', async (req, res) => {
+    const user = await database.getUserInfo(req.params.id);
+    res.render('admin/partials/receptionist/content/userDetails', { layout: false, user });
+});
+
+router.get('/cancellations', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    const cancellations = await database.getCancelledBookings();
+    res.render('admin/partials/receptionist/cancellations', { layout: adminLayout, empType, script: scripts.cancellation, cancellations });
+});
+
+
+router.get('/cancellations/:id', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    const cancelation = await database.getBookingDetails(req.params.id);
+    res.render('admin/partials/receptionist/processCancellation', { layout: adminLayout, empType, script: '', cancelation });
+});
+
+
+router.get('/extension/:id', async (req, res) => {
+
+});
+
+// router.get('/extend', async (req, res) => {
+//     const result = await receptionUtil.extendCustomerStay('635e2abd07a215f10f9fded9', 2);
+//     res.send("heloo");
+// });
 
 
 
@@ -57,6 +92,11 @@ router.post('/data/checkIns', async (req, res) => {
     res.render('admin/partials/receptionist/content/checkInDetails', { layout: false, details });
 });
 
+router.post('/data/cancelations', async (req, res) => {
+    const details = await database.getBookingToCancel(req.body.email);
+    res.render('admin/partials/receptionist/content/cancelationDetails', { layout: false, details });
+});
+
 router.post('/checkIn/:id', async (req, res) => {
     var id = req.params.id;
     const result = await database.updateCheckInStatus(id);
@@ -66,6 +106,11 @@ router.post('/checkIn/:id', async (req, res) => {
 router.post('/checkouts/:id', async (req, res) => {
     const result = await database.performCheckout(req.params.id);
     res.redirect('/hotel/admin/receptionist/checkouts');
+});
+
+router.post('/cancellations/:id', async (req, res) => {
+    const result = await database.cancelBooking(req.params.id);
+    res.redirect('/hotel/admin/receptionist/cancellations');
 });
 
 module.exports = router;
