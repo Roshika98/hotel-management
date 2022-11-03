@@ -20,9 +20,35 @@ class ReceptionUtility {
         const result = await database.checkRoomAvailabilityToExtend(rooms, checkOutDate, extendedDate);
         if (result.length > 0) {
             console.log('cannot extend the stay :(');
+            return false;
         } else {
             console.log('Can extend the stay :)');
+            return true;
         }
+    }
+
+
+    async performCustomerExtension(bookingID, count) {
+        const booking = await database.getBookingDetails(bookingID);
+        var checkOutDate = new Date(booking.checkOut);
+        checkOutDate.setDate(checkOutDate.getDate() + parseInt(count));
+        var currentPayment = booking.total - booking.advance;
+        var total = 0;
+        const pckg = booking.package.pacakgeType;
+        for (let i = 0; i < booking.roomNumbers.length; i++) {
+            const element = booking.roomNumbers[i].roomType;
+            if (pckg === 'room only') {
+                total += element.standardPrice * parseInt(count);
+            } else if (pckg === 'Half Board') {
+                total += element.halfBoardPrice * parseInt(count);
+            } else {
+                total += element.fullBoardPrice * parseInt(count);
+            }
+        }
+        const newTotal = currentPayment + total;
+        const updatedBooking = await database.extendBooking(bookingID, checkOutDate.toISOString().split('T')[0], newTotal);
+        console.log({ previous: currentPayment, now: newTotal });
+        return { previous: currentPayment, now: newTotal };
     }
 
 

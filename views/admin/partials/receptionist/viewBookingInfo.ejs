@@ -1,0 +1,51 @@
+<div class="card card-nav-tabs text-center">
+    <h4 class="card-header card-header-success">
+        Viewing Reservation <%= booking.id %>
+    </h4>
+    <div class="card-body">
+        <h4 class="card-title">Customer : <%= booking.user.name %></h4>
+        <p class="card-text">E-mail : <span class="text-info"> <%= booking.user.email %> </span></p>
+        <p class="card-text">Package : <%= booking.package.packageType %> &nbsp; | &nbsp; Room Count :
+            <%= booking.roomCount %> </p>
+        <p class="card-text">Duration of the stay : <span
+                class="text-warning"><%= booking.checkIn.toDateString() %></span> To
+            <span class="text-warning"><%= booking.checkOut.toDateString() %></span>
+        </p>
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Room No
+                </th>
+                <th>
+                    Room Type
+                </th>
+                <th>
+                    Max Guests
+                </th>
+
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < booking.roomNumbers.length; i++ ) { %>
+                <% var element=booking.roomNumbers[i] %>
+                <tr>
+                    <td class="text-warning"><%= element.roomNo %></td>
+                    <td><%= element.roomType.roomType %></td>
+                    <td><%= element.roomType.maxGuests %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="row text-center">
+
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <a href="/hotel/admin/receptionist/bookings" class="btn btn-danger">Return</a>
+    </div>
+</div>
+
+
+<script>
+    const pageIndicator = document.getElementById('bookings');
+    pageIndicator.classList.add('active');
+</script>

@@ -9,7 +9,8 @@ const scripts = {
     checkin: '',
     checkout: '/core/js/admin/receptionist/checkoutPageController.js',
     booking: '/core/js/admin/receptionist/bookingViewController.js',
-    cancellation: '/core/js/admin/receptionist/cancellationController.js'
+    cancellation: '/core/js/admin/receptionist/cancellationController.js',
+    extension: '/core/js/admin/receptionist/extensionController.js'
 }
 
 router.get('', (req, res) => {
@@ -43,6 +44,12 @@ router.get('/bookings', async (req, res) => {
     res.render('admin/partials/receptionist/bookings', { layout: adminLayout, empType, script: scripts.booking, bookings });
 });
 
+router.get('/bookings/:id', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    const booking = await database.getBookingDetails(req.params.id);
+    res.render('admin/partials/receptionist/viewBookingInfo', { layout: adminLayout, empType, script: '', booking });
+});
+
 router.get('/userInfo/:id', async (req, res) => {
     const user = await database.getUserInfo(req.params.id);
     res.render('admin/partials/receptionist/content/userDetails', { layout: false, user });
@@ -62,8 +69,11 @@ router.get('/cancellations/:id', async (req, res) => {
 });
 
 
-router.get('/extension/:id', async (req, res) => {
-
+router.get('/extensions/:id', async (req, res) => {
+    // TODO perform extending customer stay
+    const empType = getEmployeeDetails(req);
+    const details = await database.getBookingDetails(req.params.id);
+    res.render('admin/partials/receptionist/processExtensions', { layout: adminLayout, empType, script: scripts.extension, details });
 });
 
 // router.get('/extend', async (req, res) => {
@@ -97,6 +107,11 @@ router.post('/data/cancelations', async (req, res) => {
     res.render('admin/partials/receptionist/content/cancelationDetails', { layout: false, details });
 });
 
+router.post('/data/extensions', async (req, res) => {
+    const result = await receptionUtil.extendCustomerStay(req.body.id, req.body.days);
+    res.send({ status: result });
+});
+
 router.post('/checkIn/:id', async (req, res) => {
     var id = req.params.id;
     const result = await database.updateCheckInStatus(id);
@@ -111,6 +126,11 @@ router.post('/checkouts/:id', async (req, res) => {
 router.post('/cancellations/:id', async (req, res) => {
     const result = await database.cancelBooking(req.params.id);
     res.redirect('/hotel/admin/receptionist/cancellations');
+});
+
+router.post('/extensions', async (req, res) => {
+    const result = await receptionUtil.performCustomerExtension(req.body.id, req.body.days);
+    res.render('admin/partials/receptionist/content/extendDetails', { layout: false, result });
 });
 
 module.exports = router;

@@ -39,6 +39,7 @@
                         </th>
                         <th></th>
                         <th></th>
+                        <th></th>
 
                     </thead>
                     <tbody>
@@ -54,6 +55,8 @@
                             <td><a href="/hotel/admin/receptionist/cancellations/<%= element.id %>"
                                     class="btn btn-danger btn-sm">Cancel</a>
                             </td>
+                            <td><a href="/hotel/admin/receptionist/bookings/<%= element.id %>"
+                                    class="btn btn-info btn-sm">view</a></td>
                         </tr>
                         <% } %>
                     </tbody>
@@ -79,6 +82,7 @@
                         <th>Check In</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </thead>
                     <tbody>
                         <% const dueToday=bookings.future %>
@@ -93,6 +97,8 @@
                                     data-userInfo="<%= element.user.id %>">user-info</button></td>
                             <td><a href="/hotel/admin/receptionist/cancellations/<%= element.id %>"
                                     class="btn btn-danger btn-sm">Cancel</a>
+                            <td><a href="/hotel/admin/receptionist/bookings/<%= element.id %>"
+                                    class="btn btn-info btn-sm">view</a>
                             </td>
                         </tr>
                         <% } %>
@@ -119,6 +125,7 @@
                         </th>
                         <th>Checked Out on</th>
                         <th></th>
+                        <th></th>
 
                     </thead>
                     <tbody>
@@ -132,6 +139,8 @@
                             <td><%= element.checkOut.toISOString().split('T')[0] %></td>
                             <td><button class="btn btn-primary btn-sm userinfo"
                                     data-userInfo="<%= element.user.id %>">user-info</button></td>
+                            <td><a href="/hotel/admin/receptionist/bookings/<%= element.id %>"
+                                    class="btn btn-info btn-sm">view</a>
                         </tr>
                         <% } %>
                     </tbody>
@@ -158,6 +167,7 @@
                         <th>Checked In on</th>
                         <th></th>
                         <th></th>
+                        <th></th>
 
                     </thead>
                     <tbody>
@@ -171,8 +181,10 @@
                             <td><%= element.checkIn.toISOString().split('T')[0] %></td>
                             <td><button class="btn btn-primary btn-sm userinfo"
                                     data-userInfo="<%= element.user.id %>">user-info</button></td>
-                            <td><a href="/hotel/admin/receptionist/extension/<%= element.id %>"
+                            <td><a href="/hotel/admin/receptionist/extensions/<%= element.id %>"
                                     class="btn btn-warning btn-sm">Extend Stay</a>
+                            <td><a href="/hotel/admin/receptionist/bookings/<%= element.id %>"
+                                    class="btn btn-info btn-sm">view</a>
                         </tr>
                         <% } %>
                     </tbody>

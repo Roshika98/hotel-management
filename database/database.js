@@ -117,7 +117,7 @@ class Database {
             // TODO update the search filter by adding current date so only checkins for today are searched
             const checkinDate = new Date();
             const dateString = checkinDate.toISOString().split('T')[0];
-            const details = await Booking.findOne({ user: customer, checkIn: new Date(`${dateString}`), status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
+            const details = await Booking.findOne({ user: customer._id, checkIn: new Date(`${dateString}`), status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
             return details;
         };
         if (arguments.length === 2) {
@@ -285,6 +285,10 @@ class Database {
         return booking;
     }
 
+    async extendBooking(id, dateString, total) {
+        const booking = await Booking.findByIdAndUpdate(id, { checkOut: dateString, total: total });
+        return booking;
+    }
 
 
     // *------------------------DELETE OPERATIONS--------------------------------
