@@ -55,7 +55,81 @@
                 </div>
 
             </div>
-            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                <div id="typography">
+                    <div class="card-title">
+                        <h4>Create a Hall Reservation</h4>
+                    </div>
+                </div>
+
+                <div>
+                    <form action="/hotel/admin/receptionist/hallReservations" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="reserveDate">reserve date</label>
+                                <input type="date" class="form-control" id="reserveDate" name="reserveDate">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Select Hall</label>
+                                <select id="hall" class="form-control" name="hall">
+                                    <option selected value="0">Grown Banquet Hall</option>
+                                    <option value="1">Master Banquet Hall</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <button type="button" class="btn btn-primary" id="hallCheck">Check
+                                    Availability</button>
+                            </div>
+                        </div>
+                        <div id="txtDisplay" class="text-warning">Hall Not available</div>
+                        <div id="orderContent">
+                            <div id="typography">
+                                <div class="card-title">
+                                    <h5>Customer Details</h5>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="text" class="form-control" name="fname" placeholder="First name"
+                                        id="fname">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="lname" placeholder="Last name"
+                                        id="lname">
+                                </div>
+                            </div><br>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="email" class="form-control" name="email" placeholder="email"
+                                        id="email">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="mobile" placeholder="mobile"
+                                        id="mobile">
+                                </div>
+                            </div><br>
+                            <div class="form-row">
+                                <div class="col">
+                                    <textarea class="form-control" name="address" id="address" cols="30" rows="1"
+                                        placeholder="address"></textarea>
+                                </div>
+                            </div><br>
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" name="guests" placeholder="Guest Count"
+                                        id="guests">
+                                </div>
+                                <!-- <div class="col">
+                                    <input type="text" class="form-control" placeholder="mobile" id="mobile">
+                                </div> -->
+                            </div><br>
+                            <button type="submit" class="btn btn-primary">Create Reservation</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
             <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
             <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
         </div>

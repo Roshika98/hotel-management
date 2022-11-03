@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const hallBookingSchema = new Schema({
-    hall: [{
+    hall: {
         type: Schema.Types.ObjectId,
         ref: 'Hall'
-    }],
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -13,11 +13,7 @@ const hallBookingSchema = new Schema({
     bookedDate: Date,
     reserveDate: Date,
     guestCount: Number,
-    total: Number,
-    menuType: {
-        type: Schema.Types.ObjectId,
-        ref: 'Menu'
-    }
+    total: Number
 });
 
 

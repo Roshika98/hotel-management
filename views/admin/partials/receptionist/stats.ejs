@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header card-header-success">
+        <h4 class="card-title">Reports</h4>
+        <!-- <p class="card-category">Created using Roboto Font Family</p> -->
+
+    </div>
+    <div class="card-body">
+        <!-- Tab panes -->
+        <!-- <div class="tab-content"> -->
+
+
+
+        <div class="form-row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary" id="dailyreport">Daily Reservations</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary" id="monthlyreport">Monthly Financial</button>
+            </div>
+
+        </div><br>
+        <div class="form-row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary">Room Status</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary">Hall Status</button>
+            </div>
+
+        </div><br>
+
+    </div>
+
+</div>
+</div>
+<a href="http://localhost:3000/hotel/admin/receptionist/reports/daily" target="_blank" rel="noopener noreferrer"
+    style="display: none;" id="daily"> Sales
+    Report</a>
+<a href="http://localhost:3000/hotel/admin/receptionist/reports/financial" target="_blank" rel="noopener noreferrer"
+    style="display: none;" id="financial">
+    Sales Report</a>
+
+
+<script>
+    const pageIndicator = document.getElementById('stats');
+    const daily = document.getElementById('daily');
+    const financial = document.getElementById('financial');
+    const dailyreport = document.getElementById('dailyreport');
+    const monthlyreport = document.getElementById('monthlyreport');
+    pageIndicator.classList.add('active');
+
+    dailyreport.onclick(() => { daily.click() });
+    monthlyreport.onclick(() => { financial.click() });
+
+</script>

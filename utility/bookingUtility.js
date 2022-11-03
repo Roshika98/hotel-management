@@ -66,6 +66,8 @@ class BookingUtility {
             pckg = await database.getPackageDetails('Full Board');
         }
         const payment = await this.estimatePayment(params);
+        var newDate = new Date();
+        var today = newDate.toISOString().split('T')[0];
         const bookingParams = {
             roomCount: deluxeCount + superiorCount + familyCount,
             roomNumbers: bookedRooms,
@@ -76,7 +78,8 @@ class BookingUtility {
             total: payment.total,
             adults: params.adults,
             children: params.children,
-            package: pckg
+            package: pckg,
+            bookedDate: today
         };
         console.log(bookedRooms);
         const newBooking = await database.createRoomReservation(bookingParams);

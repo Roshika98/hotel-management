@@ -2,6 +2,7 @@ const express = require('express');
 const database = require('../../database/database');
 const router = express.Router();
 const receptionUtil = require('../../utility/receptionUtility');
+const reports = require('./reports');
 const adminLayout = 'admin/adminLayout';
 
 const scripts = {
@@ -12,6 +13,8 @@ const scripts = {
     cancellation: '/core/js/admin/receptionist/cancellationController.js',
     extension: '/core/js/admin/receptionist/extensionController.js'
 }
+
+router.use('/reports', reports);
 
 router.get('', (req, res) => {
     // res.send("Hello this is receptionist");
@@ -76,13 +79,20 @@ router.get('/extensions/:id', async (req, res) => {
     res.render('admin/partials/receptionist/processExtensions', { layout: adminLayout, empType, script: scripts.extension, details });
 });
 
+router.get('/statistics', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    res.render('admin/partials/receptionist/stats', { layout: adminLayout, empType, script: '' });
+});
+
 // router.get('/extend', async (req, res) => {
 //     const result = await receptionUtil.extendCustomerStay('635e2abd07a215f10f9fded9', 2);
 //     res.send("heloo");
 // });
 
-
-
+// router.get('/test', async (req, res) => {
+//     const data = await database.getMonthlyHallStatus();
+//     res.send('done');
+// });
 
 
 
@@ -132,6 +142,30 @@ router.post('/extensions', async (req, res) => {
     const result = await receptionUtil.performCustomerExtension(req.body.id, req.body.days);
     res.render('admin/partials/receptionist/content/extendDetails', { layout: false, result });
 });
+
+// !---------------------HALL OPERATIONS-------------------------------------
+
+router.post('/data/hallChecks', async (req, res) => {
+    console.log(req.body);
+    var status = null;
+    if (req.body.hall === 0) {
+        status = await database.checkHallAvailability('Grown Banquet Hall', req.body.reserveDate);
+    } else {
+        status = await database.checkHallAvailability('Master Banquet Hall', req.body.reserveDate);
+    }
+    res.send({ status: status });
+});
+
+router.post('/hallReservations', async (req, res) => {
+    console.log(req.body);
+    const result = await receptionUtil.createHallBooking(req.body);
+    res.redirect('/hotel/admin/receptionist');
+});
+
+
+
+
+
 
 module.exports = router;
 

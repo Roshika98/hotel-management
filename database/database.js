@@ -3,7 +3,11 @@ const Package = require('../models/package');
 const RoomType = require('../models/roomType');
 const Room = require('../models/room');
 const User = require('../models/user');
+const Hall = require('../models/hall');
+const HallBooking = require('../models/hallBooking');
+const HallType = require('../models/hallType');
 const TempReserve = require('../models/tempReserve');
+// const hallBooking = require('../models/hallBooking');
 
 class Database {
     constructor() {
@@ -235,6 +239,29 @@ class Database {
     }
 
 
+    //# -----------------------HALL FUNCTIONS---------------------------------------------
+
+    async checkHallAvailability(type, reserveDate) {
+        console.log(type + ' ' + reserveDate);
+        console.log('print type');
+        const hType = await HallType.findOne({ hallType: type });
+        console.log(hType);
+        const h = await Hall.findOne({ hallType: hType });
+        console.log(h);
+        const reserved = await HallBooking.find({ hall: h._id, reserveDate: reserveDate });
+        console.log(reserved);
+        if (reserved.length > 0) { return false }
+        else return true;
+    }
+
+
+    async getHall(type) {
+        const hType = await HallType.findOne({ hallType: type });
+        const h = await Hall.findOne({ hallType: hType }).populate('hallType');
+        return h;
+    }
+
+
 
     // *----------------- CREATE OPERATIONS----------------------
 
@@ -264,6 +291,11 @@ class Database {
         }
         const tempReserve = await TempReserve.create(params);
         return tempReserve;
+    }
+
+    async createHallBooking(params) {
+        const newHallBooking = await HallBooking.create(params);
+        return newHallBooking;
     }
 
     // *-----------------UPDATE OPERATIONS-------------------------
@@ -297,6 +329,87 @@ class Database {
         const tempData = await TempReserve.findOneAndDelete({ sessionID: `${id}` });
         return tempData;
     }
+
+
+    // !---------------------REPORT DATA-----------------------------------------
+
+    async dailyReservationsData() {
+        var newDate = new Date();
+        var today = newDate.toISOString().split('T')[0];
+        const dailyBookings = await Booking.find({ status: 'booked', bookedDate: today }).populate('package');
+        console.log(dailyBookings);
+        return dailyBookings;
+    }
+
+    async getMonthlyBookingsData() {
+        var newDate = new Date();
+        var month = newDate.getMonth();
+        var year = newDate.getFullYear();
+        const monthlyRoomData = await Booking.aggregate([
+            {
+                $project:
+                {
+                    total: "$total",
+                    year: { $year: "$checkOut" },
+                    month: { $month: "$checkOut" }
+                }
+            },
+            { $match: { "month": parseInt(month) + 1, "year": year } }
+        ]);
+        const monthlyHallData = await HallBooking.aggregate([
+            {
+                $project:
+                {
+                    total: "$total",
+                    year: { $year: "$reserveDate" },
+                    month: { $month: "$reserveDate" }
+                }
+            },
+            { $match: { "month": parseInt(month) + 1, "year": year } }
+        ])
+        return { roomData: monthlyRoomData, hallData: monthlyHallData };
+    }
+
+    async getMonthlyRoomStatus() {
+
+    }
+
+    async getMonthlyHallStatus() {
+        const masterHall = await Hall.findOne({ hallNo: 1 });
+        const grownHall = await Hall.findOne({ hallNo: 2 });
+        var masterHallCount = 0;
+        var grownHallCount = 0;
+        var newDate = new Date();
+        var month = newDate.getMonth();
+        var year = newDate.getFullYear();
+        const hallDetails = await HallBooking.aggregate([
+            {
+                $project:
+                {
+                    hall: "$hall",
+                    total: "$total",
+                    year: { $year: "$reserveDate" },
+                    month: { $month: "$reserveDate" }
+                }
+            },
+            { $match: { "month": parseInt(month) + 1, "year": year, hall: grownHall } }
+        ]);
+        console.log(hallDetails);
+        for (let i = 0; i < hallDetails.length; i++) {
+            const element = hallDetails[i];
+            console.log(element._id);
+            console.log(element.hall.id);
+            console.log(masterHall.id);
+            if (element.hall.id === masterHall.id) {
+                masterHallCount += 1;
+            } else if (element.hall.id === grownHall.id) {
+                grownHallCount += 1;
+            }
+        }
+        console.log({ master: masterHallCount, grown: grownHallCount });
+        return { master: masterHallCount, grown: grownHallCount };
+    }
+
 }
 
 
