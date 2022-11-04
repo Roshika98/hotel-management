@@ -104,9 +104,9 @@ class ReceptionUtility {
             const element = dailyBookings[i];
             roomCount += element.roomCount;
             guests += element.adults;
-            if (element.package.pacakgeType === 'Half Board') {
+            if (element.package.packageType === 'Half Board') {
                 halfBoardCount += 1;
-            } else if (element.package.pacakgeType === 'Full Board') {
+            } else if (element.package.packageType === 'Full Board') {
                 fullBoardCount += 1;
             }
         }
@@ -130,6 +130,11 @@ class ReceptionUtility {
 
     async getMonthlyRoomStatusReport() {
 
+    }
+
+    async getMonthlyHallStatusReport() {
+        const data = await database.getMonthlyHallStatus();
+        return data;
     }
 
 }

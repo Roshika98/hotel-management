@@ -7,6 +7,7 @@ const Hall = require('../models/hall');
 const HallBooking = require('../models/hallBooking');
 const HallType = require('../models/hallType');
 const TempReserve = require('../models/tempReserve');
+const mongoose = require('mongoose');
 // const hallBooking = require('../models/hallBooking');
 
 class Database {
@@ -336,7 +337,7 @@ class Database {
     async dailyReservationsData() {
         var newDate = new Date();
         var today = newDate.toISOString().split('T')[0];
-        const dailyBookings = await Booking.find({ status: 'booked', bookedDate: today }).populate('package');
+        const dailyBookings = await Booking.find({ status: 'booked', bookedDate: today }).populate(['package']);
         console.log(dailyBookings);
         return dailyBookings;
     }
@@ -377,12 +378,10 @@ class Database {
     async getMonthlyHallStatus() {
         const masterHall = await Hall.findOne({ hallNo: 1 });
         const grownHall = await Hall.findOne({ hallNo: 2 });
-        var masterHallCount = 0;
-        var grownHallCount = 0;
         var newDate = new Date();
         var month = newDate.getMonth();
         var year = newDate.getFullYear();
-        const hallDetails = await HallBooking.aggregate([
+        const masterhallDetails = await HallBooking.aggregate([
             {
                 $project:
                 {
@@ -392,22 +391,22 @@ class Database {
                     month: { $month: "$reserveDate" }
                 }
             },
-            { $match: { "month": parseInt(month) + 1, "year": year, hall: grownHall } }
+            { $match: { "month": parseInt(month) + 1, "year": year, hall: mongoose.Types.ObjectId(masterHall.id) } }
         ]);
-        console.log(hallDetails);
-        for (let i = 0; i < hallDetails.length; i++) {
-            const element = hallDetails[i];
-            console.log(element._id);
-            console.log(element.hall.id);
-            console.log(masterHall.id);
-            if (element.hall.id === masterHall.id) {
-                masterHallCount += 1;
-            } else if (element.hall.id === grownHall.id) {
-                grownHallCount += 1;
-            }
-        }
-        console.log({ master: masterHallCount, grown: grownHallCount });
-        return { master: masterHallCount, grown: grownHallCount };
+        const grownHallDetails = await HallBooking.aggregate([
+            {
+                $project:
+                {
+                    hall: "$hall",
+                    total: "$total",
+                    year: { $year: "$reserveDate" },
+                    month: { $month: "$reserveDate" }
+                }
+            },
+            { $match: { "month": parseInt(month) + 1, "year": year, hall: mongoose.Types.ObjectId(grownHall.id) } }
+        ]);
+        console.log({ master: masterhallDetails.length, grown: grownHallDetails.length });
+        return { master: masterhallDetails.length, grown: grownHallDetails.length };
     }
 
 }

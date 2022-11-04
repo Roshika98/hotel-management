@@ -23,7 +23,7 @@ router.get('/success', (req, res) => {
 router.get('/logout', (req, res) => {
     req.logout((err) => {
         req.session.destroy();
-        res.send('user logged out');
+        res.redirect('/hotel/admin/auth');
     });
 });
 
