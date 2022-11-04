@@ -45,7 +45,17 @@ router.get('/payments/rooms', async (req, res) => {
         res.redirect('/hotel/customer/bookings');
 });
 
+router.get('/about/rooms', (req, res) => {
+    res.render('customer/partials/roomInfo', { layout: custLayout, script: '' });
+});
 
+router.get('/about/halls', (req, res) => {
+    res.render('customer/partials/hallInfo', { layout: custLayout, script: '' });
+});
+
+router.get('/termsconditions', (req, res) => {
+    res.render('customer/partials/termsConditions', { layout: custLayout, script: '' });
+});
 
 // router.get('/auth', (req, res) => {
 //     res.render('customer/partials/login', { layout: custLayout });
