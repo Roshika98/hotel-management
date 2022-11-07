@@ -1,0 +1,80 @@
+<div class="card card-nav-tabs text-center">
+    <h4 class="card-header card-header-success">
+        Process Check-Out
+    </h4>
+    <div class="card-body">
+        <h4 class="card-title">Customer : <%= checkedIn.user.name %></h4>
+        <p class="card-text">E-mail : <span class="text-info"> <%= checkedIn.user.email %> </span></p>
+        <p class="card-text">Package : <%= checkedIn.package.packageType %> &nbsp; | &nbsp; Room Count :
+            <%= checkedIn.roomCount %> </p>
+        <p class="card-text">Duration of the stay : <span
+                class="text-warning"><%= checkedIn.checkIn.toDateString() %></span> To
+            <span class="text-warning"><%= checkedIn.checkOut.toDateString() %></span>
+        </p>
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Room No
+                </th>
+                <th>
+                    Room Type
+                </th>
+                <th>
+                    Max Guests
+                </th>
+
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < checkedIn.roomNumbers.length; i++ ) { %>
+                <% var element=checkedIn.roomNumbers[i] %>
+                <tr>
+                    <td class="text-warning"><%= element.roomNo %></td>
+                    <td><%= element.roomType.roomType %></td>
+                    <td><%= element.roomType.maxGuests %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="row text-center">
+
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal">Check-Out</button>
+
+        <a href="/hotel/admin/receptionist/checkouts" class="btn btn-danger">Cancel</a>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Process Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Amount to Pay: $ <%= checkedIn.total-checkedIn.advance %></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="/hotel/admin/receptionist/checkouts/<%= checkedIn.id %>" method="post">
+                    <button type="submit" class="btn btn-primary">Process Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const pageIndicator = document.getElementById('checkout');
+    pageIndicator.classList.add('active');
+</script>

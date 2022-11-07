@@ -5,6 +5,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     email: { type: String },
+    mobile: String,
+    address: String,
+    name: String,
     googleId: String,
     googleProfName: String,
     profPicUrl: String,
@@ -12,7 +15,10 @@ const userSchema = new Schema({
     facebookProfName: String,
     twitterID: String,
     twitterProfName: String,
-    isLoyaltyCustomer: Boolean
+    isLoyaltyCustomer: {
+        type: Boolean,
+        default: false
+    }
 });
 
 

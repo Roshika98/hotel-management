@@ -1,0 +1,66 @@
+<link rel="stylesheet" type="text/css" href="/core/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="/core/css/util.css">
+<link rel="stylesheet" type="text/css" href="/core/css/main.css">
+
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="breadcrumb-hero">
+        <div class="container">
+            <div class="breadcrumb-hero">
+                <h2>Bookings</h2>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ol>
+            <li><a href="/hotel/customer">Home</a></li>
+            <li>Bookings</li>
+        </ol>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<section id="services" class="services ">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="icon-box" data-aos="fade-up">
+                    <form action="/hotel/customer/bookings" method="get">
+                        <div class="row">
+                            <div class="col-md-2 form-group">
+                                <label for="checkIn" class="form-label">Check-in</label>
+                                <input type="date" name="checkIn" class="form-control" id="checkIn" required>
+                            </div>
+                            <div class="col-md-2 form-group">
+                                <label for="checkOut" class="form-label">Check-out</label>
+                                <input type="date" name="checkOut" class="form-control" id="checkOut" required>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="rooms" class="form-label">Rooms</label>
+                                <input type="number" value="1" name="rooms" class="form-control" id="rooms" required>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="adults" class="form-label">Adults</label>
+                                <input type="number" value="0" name="adults" class="form-control" id="adults" required>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="children" class="form-label">Children</label>
+                                <input type="number" value="0" name="children" class="form-control" id="children"
+                                    required>
+                            </div>
+                            <div class="text-center col-md-3">
+                                <br>
+                                <button class="login100-form-btn btn-s" type="submit">Check Availability</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

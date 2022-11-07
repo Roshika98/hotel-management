@@ -1,0 +1,137 @@
+<link rel="stylesheet" type="text/css" href="/core/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="/core/css/util.css">
+<link rel="stylesheet" type="text/css" href="/core/css/main.css">
+<link rel="stylesheet" href="/core/css/multiStepForm.css">
+
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="breadcrumb-hero">
+        <div class="container">
+            <div class="breadcrumb-hero">
+                <h2>Bookings</h2>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ol>
+            <li><a href="/hotel/customer">Home</a></li>
+            <li>Bookings</li>
+        </ol>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<section id="contact" class="contact">
+    <div class="container">
+        <!-- multistep form -->
+        <form id="multistepsform">
+            <!-- progressbar -->
+            <ul id="progressbar">
+                <li class="items">Personal Details</li>
+                <li class="items">Payment Details</li>
+                <!-- <li>Social Profiles</li> -->
+
+            </ul>
+            <!-- fieldsets -->
+            <!-- <fieldset>
+                <h2 class="fs-title"></h2>
+                <h3 class="fs-subtitle"></h3>
+                <input type="text" name="email" placeholder="Email" />
+                <input type="password" name="pass" placeholder="Password" />
+                <input type="password" name="cpass" placeholder="Confirm Password" />
+                <input type="button" name="next" class="next action-button" value="Next" />
+            </fieldset> -->
+
+            <fieldset>
+                <h2 class="fs-title">Personal Details</h2>
+                <h3 class="fs-subtitle">Are you a Loyalty Member? <a href="">log in</a></h3>
+                <input type="text" name="fname" placeholder="First Name" id="fname" />
+                <input type="text" name="lname" placeholder="Last Name" id="lname" />
+                <input type="email" name="email" placeholder="abc@gmail.com" id="email" />
+                <input type="text" name="phone" id="phone" placeholder="07x-xxxxxxx">
+                <textarea name="address" placeholder="Address" id="address"></textarea>
+                <!-- <input type="button" name="previous" class="previous action-button" value="Previous" /> -->
+
+                <input type="button" name="next" class="next action-button" value="Next" />
+            </fieldset>
+            <fieldset>
+                <h2 class="fs-title">Payment Details</h2>
+                <h3 class="fs-subtitle">20% of total estimated price will have to be paid via online</h3>
+                <br>
+                <h3 class="fs-title">Estimated total : $ <%= paymentInfo.total %></h3>
+                <h3 class="fs-title">Advance Payment : $ <%= paymentInfo.advance %> </h3>
+                <!-- <input type="text" name="twitter" placeholder="Twitter" />
+                <input type="text" name="facebook" placeholder="Facebook" />
+                <input type="text" name="gplus" placeholder="Google Plus" /> -->
+
+                <input type="button" name="previous" class="previous action-button" value="Previous" />
+                <input type="submit" name="submit" class="submit action-button" value="Submit" id="submit" />
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+<style>
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <h4>Reservation Confirmation &nbsp;<span class="close">&times;</span></h4>
+
+        <p>Reservation Successfull!</p>
+    </div>
+
+</div>

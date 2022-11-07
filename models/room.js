@@ -6,7 +6,7 @@ const roomSchema = new Schema({
         type: Number,
     },
     roomType: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'RoomType'
     }
 });

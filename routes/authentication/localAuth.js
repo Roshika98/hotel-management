@@ -18,7 +18,7 @@ router.get('/success', (req, res) => {
 router.post('/signup', async (req, res) => {
     var { email, password } = req.body;
     console.log(email + " " + password);
-    const user = new User({ email: email });
+    const user = new User({ email: email, isLoyaltyCustomer: true });
     const newUser = await User.register(user, password);
     console.log(newUser);
     res.redirect('/hotel/customer/auth');

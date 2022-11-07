@@ -1,0 +1,48 @@
+<div class="card card-nav-tabs text-center">
+    <h4 class="card-header card-header-success">
+        Process Check-In
+    </h4>
+    <div class="card-body">
+        <h4 class="card-title">Customer : <%= reservation.user.name %></h4>
+        <p class="card-text">E-mail : <span class="text-info"> <%= reservation.user.email %> </span></p>
+        <p class="card-text">Package : <%= reservation.package.packageType %> &nbsp; | &nbsp; Room Count :
+            <%= reservation.roomCount %> </p>
+        <p class="card-text">Duration of the stay : <span
+                class="text-warning"><%= reservation.checkIn.toDateString() %></span> To
+            <span class="text-warning"><%= reservation.checkOut.toDateString() %></span>
+        </p>
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Room No
+                </th>
+                <th>
+                    Room Type
+                </th>
+                <th>
+                    Max Guests
+                </th>
+
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < reservation.roomNumbers.length; i++ ) { %>
+                <% var element=reservation.roomNumbers[i] %>
+                <tr>
+                    <td class="text-warning"><%= element.roomNo %></td>
+                    <td><%= element.roomType.roomType %></td>
+                    <td><%= element.roomType.maxGuests %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="row text-center">
+
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <form action="/hotel/admin/receptionist/checkIn/<%= reservation.id %>" method="post">
+            <button class="btn btn-success" type="submit">Check-In</button>
+        </form>
+        <a href="/hotel/admin/receptionist" class="btn btn-danger">Cancel</a>
+    </div>
+</div>

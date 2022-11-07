@@ -1,0 +1,31 @@
+<div class="col-xl-6 col-lg-12">
+    <% if (details!==null) { %>
+    <div class="card card-chart">
+        <div class="card-header card-header-success">
+            <div class="text-end pt-1">
+                <p class="text-sm text-white mb-0 text-capitalize font-weight-bolder">Booking Details</p>
+                <h4 class="mb-0"><%= details.user.name %> </h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Package Type : <span class="text-info"><%= details.package.packageType %></span>
+            </h4>
+            <h5 class="card-title">Rooms : <span class="text-info"><%= details.roomCount %></span></h5>
+            <h5 class="card-title">Check-in : <span class="text-info">
+                    <%= details.checkIn.toDateString()+' '%></span> - Check-Out : <span class="text-info">
+                    <%= details.checkOut.toDateString() %></span></h5>
+
+        </div>
+        <div class="card-footer">
+
+            <form action="/hotel/admin/receptionist/reservation/<%= details.id %>" method="get">
+                <button type="submit" class="btn btn-warning itemCart" data-itemCode="<%= details.id %>"
+                    id="processBooking">Process
+                    Check-in</button>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+    <h4 class="text-warning">No reservations found!</h4>
+    <% } %>
+</div>

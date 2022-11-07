@@ -1,0 +1,100 @@
+<div class="card card-nav-tabs text-center">
+    <h4 class="card-header card-header-success" id="bookingID" data-bookingID="<%= details.id %>">
+        Process Extension
+    </h4>
+    <div class="card-body">
+        <h4 class="card-title">Customer : <%= details.user.name %></h4>
+        <p class="card-text">E-mail : <span class="text-info"> <%= details.user.email %> </span></p>
+        <p class="card-text">Package : <%= details.package.packageType %> &nbsp; | &nbsp; Room Count :
+            <%= details.roomCount %> </p>
+        <p class="card-text">Duration of the stay : <span
+                class="text-warning"><%= details.checkIn.toDateString() %></span> To
+            <span class="text-warning"><%= details.checkOut.toDateString() %></span>
+        </p>
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Room No
+                </th>
+                <th>
+                    Room Type
+                </th>
+                <th>
+                    Max Guests
+                </th>
+
+            </thead>
+            <tbody>
+                <% for( let i = 0; i < details.roomNumbers.length; i++ ) { %>
+                <% var element=details.roomNumbers[i] %>
+                <tr>
+                    <td class="text-warning"><%= element.roomNo %></td>
+                    <td><%= element.roomType.roomType %></td>
+                    <td><%= element.roomType.maxGuests %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <br>
+        <h5 class="card-header card-header-warning">
+            Extension Details
+        </h5>
+        <br>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <!-- <label for="extendDays">Extend By</label> -->
+                <input type="number" class="form-control" id="extendDays" min="1" placeholder="Extend By(Days)">
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary" type="submit" id="checkExtension">Check Availability</button>
+            </div>
+
+        </div>
+        <br>
+
+        <h4><span class="text-warning">Status : </span><span id="displayTxt"></span></h4>
+
+
+        <div class="card-footer text-muted">
+
+            <button class="btn btn-success" type="submit" id="extendSub">Extend</button>
+
+            <a href="/hotel/admin/receptionist/bookings" class="btn btn-danger" id="cancel">Cancel</a>
+        </div>
+    </div>
+
+
+    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal" style="display:none ;"
+        id="modalTrigger"></button>
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Updated Payment Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="dynamicContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const pageIndicator = document.getElementById('bookings');
+        pageIndicator.classList.add('active');
+    </script>

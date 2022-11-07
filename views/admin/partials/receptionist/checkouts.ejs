@@ -1,0 +1,98 @@
+<div class="card">
+    <div class="card-header card-header-success">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Today's Check outs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#earlyCheckout" role="tab"
+                    aria-controls="profile" aria-selected="false">Check Out Early</a>
+            </li>
+        </ul>
+
+    </div>
+    <div class="card-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                <div id="typography">
+                    <div class="card-title">
+                        <h4>Checked Ins</h4>
+                    </div>
+                </div>
+                <br>
+                <% if (checkedIns.length>0) { %>
+                <table class="table">
+                    <thead class=" text-primary">
+                        <th>
+                            Reservation No
+                        </th>
+                        <th>
+                            Customer Name
+                        </th>
+                        <th>Package</th>
+                        <th>
+                            Rooms
+                        </th>
+                        <th></th>
+
+                    </thead>
+                    <tbody>
+                        <% for( let i = 0; i < checkedIns.length; i++ ) { %>
+                        <% var checkIn=checkedIns[i] %>
+                        <tr>
+                            <td><%= checkIn.id %></td>
+                            <td><%= checkIn.user.name %></td>
+                            <td><%= checkIn.package.packageType %></td>
+                            <td>[
+                                <% for( let j = 0; j < checkIn.roomNumbers.length; j++ ) { %>
+                                <% if (j!=0) { %>
+                                ,
+                                <% } %>
+                                <%= checkIn.roomNumbers[j].roomNo %>&nbsp;
+                                <% } %>
+                                ]
+                            </td>
+                            <td><a href="/hotel/admin/receptionist/checkouts/<%= checkIn.id %>"
+                                    class="btn btn-primary btn-sm">Check-out</a></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <h5 class="text-warning">No Checkouts for today</h5>
+                <% } %>
+            </div>
+            <div class="tab-pane" id="earlyCheckout" role="tabpanel" aria-labelledby="home-tab">
+                <div id="typography">
+                    <div class="card-title">
+                        <h4>Search Reservations</h4>
+                    </div>
+                </div>
+                <br>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label class="bmd-label-floating">E-mail</label>
+                        <input type="email" value="" class="form-control" id="email" />
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label class="bmd-label-floating">Search Name</label>
+                        <input type="text" value="" class="form-control" id="name" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <button type="button" class="btn btn-primary" id="bookingSearch">Search Reservations</button>
+                </div>
+                <hr class="white horizontal my-0">
+                <br>
+                <div class="row" id="dynamicContent">
+
+                </div>
+            </div>
+        </div>
+    </div>
