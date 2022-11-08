@@ -130,6 +130,12 @@ async function createAnEmployee(username, password) {
     console.log(newEmployee);
 }
 
+async function createAManager(username, password) {
+    const employee = new Employee({ username: username, empType: 'manager' });
+    const newEmployee = await Employee.register(employee, password);
+    console.log(newEmployee);
+}
+
 async function createHalls() {
     const hallType1 = await HallType.insertMany([{
         hallType: 'Master Banquet Hall',
@@ -160,6 +166,7 @@ async function addData() {
     // await Booking.createCollection();
     // await createBooking();
     // await createAnEmployee('EMP001', 'Hello');
-    await createHalls();
+    await createAManager('EMP002', 'manager');
+    // await createHalls();
     // await HallBooking.createCollection();
 }
