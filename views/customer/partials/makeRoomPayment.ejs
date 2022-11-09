@@ -1,7 +1,8 @@
-<link rel="stylesheet" type="text/css" href="/core/fonts/iconic/css/material-design-iconic-font.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="/core/fonts/iconic/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" type="text/css" href="/core/css/util.css">
 <link rel="stylesheet" type="text/css" href="/core/css/main.css">
-<link rel="stylesheet" href="/core/css/multiStepForm.css">
+<link rel="stylesheet" href="/core/css/payment.css"> -->
+<script src="https://js.stripe.com/v3/"></script>
 
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -24,50 +25,69 @@
 <section id="contact" class="contact">
     <div class="container">
         <!-- multistep form -->
-        <form id="multistepsform">
-            <!-- progressbar -->
-            <ul id="progressbar">
-                <li class="items">Personal Details</li>
-                <li class="items">Payment Details</li>
-                <!-- <li>Social Profiles</li> -->
+        <div class="card text-center w-75 mx-auto border-success">
 
-            </ul>
-            <!-- fieldsets -->
-            <!-- <fieldset>
-                <h2 class="fs-title"></h2>
-                <h3 class="fs-subtitle"></h3>
-                <input type="text" name="email" placeholder="Email" />
-                <input type="password" name="pass" placeholder="Password" />
-                <input type="password" name="cpass" placeholder="Confirm Password" />
-                <input type="button" name="next" class="next action-button" value="Next" />
-            </fieldset> -->
-
-            <fieldset>
+            <div class="card-header">
                 <h2 class="fs-title">Personal Details</h2>
-                <h3 class="fs-subtitle">Are you a Loyalty Member? <a href="">log in</a></h3>
-                <input type="text" name="fname" placeholder="First Name" id="fname" />
-                <input type="text" name="lname" placeholder="Last Name" id="lname" />
-                <input type="email" name="email" placeholder="abc@gmail.com" id="email" />
-                <input type="text" name="phone" id="phone" placeholder="07x-xxxxxxx">
-                <textarea name="address" placeholder="Address" id="address"></textarea>
-                <!-- <input type="button" name="previous" class="previous action-button" value="Previous" /> -->
+            </div>
 
-                <input type="button" name="next" class="next action-button" value="Next" />
-            </fieldset>
-            <fieldset>
-                <h2 class="fs-title">Payment Details</h2>
-                <h3 class="fs-subtitle">20% of total estimated price will have to be paid via online</h3>
-                <br>
-                <h3 class="fs-title">Estimated total : $ <%= paymentInfo.total %></h3>
-                <h3 class="fs-title">Advance Payment : $ <%= paymentInfo.advance %> </h3>
-                <!-- <input type="text" name="twitter" placeholder="Twitter" />
-                <input type="text" name="facebook" placeholder="Facebook" />
-                <input type="text" name="gplus" placeholder="Google Plus" /> -->
+            <div class="card-body">
+                <form id="payment-form" class="row g-3">
+                    <fieldset>
+                        <h5 class="fs-subtitle">Are you a Loyalty Member? <a href="">log in</a></h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fname" class="form-label">First Name</label>
+                                <input class="form-control" type="text" name="fname" placeholder="First Name"
+                                    id="fname" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lname" class="form-label">Last Name</label>
+                                <input class="form-control" type="text" name="lname" placeholder="Last Name"
+                                    id="lname" />
+                            </div>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input class="form-control" type="email" name="email" placeholder="abc@gmail.com"
+                                    id="email" />
+                            </div>
+                            <div class="col">
+                                <label for="phone" class="form-label">Mobile No</label>
+                                <input class="form-control" type="text" name="phone" id="phone"
+                                    placeholder="07x-xxxxxxx">
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" name="address" placeholder="Address" id="address"></textarea>
+                        </div><br>
 
-                <input type="button" name="previous" class="previous action-button" value="Previous" />
-                <input type="submit" name="submit" class="submit action-button" value="Submit" id="submit" />
-            </fieldset>
-        </form>
+
+                        <input type="submit" name="submit" class="btn btn-success" value="Next" id="submit" />
+                    </fieldset>
+                    <!-- <fieldset>
+                    <h2 class="fs-title">Payment Details</h2>
+                    <h3 class="fs-subtitle">20% of total estimated price will have to be paid via online</h3>
+                    <br>
+                    <h3 class="fs-title">Estimated total : $ <%= paymentInfo.total %></h3>
+                    <h3 class="fs-title">Advance Payment : $ <%= paymentInfo.advance %> </h3>
+    
+    
+                    <div id="payment-element">
+                        
+                    </div>
+    
+    
+                    <input type="button" name="previous" class="previous action-button" value="Previous" />
+                    <input type="submit" name="submit" class="submit action-button" value="Submit" id="submit" />
+                </fieldset> -->
+                </form>
+            </div>
+
+        </div>
+
     </div>
 </section>
 

@@ -12,39 +12,42 @@ btn.style.display = 'none';
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
+// * PAYMENT VARIABLES---------------------------
 
-var index = 0;
-listItems[index].classList.add('active');
-multiStepForm();
 
-for (let i = 0; i < nextBtns.length; i++) {
-    const element = nextBtns[i];
-    element.addEventListener('click', (event) => {
-        index += 1;
-        listItems[index].classList.add('active');
-        multiStepForm();
-    });
-}
 
-for (let i = 0; i < prevBtns.length; i++) {
-    const element = prevBtns[i];
-    element.addEventListener('click', (event) => {
-        index -= 1;
-        listItems[index + 1].classList.remove('active');
-        multiStepForm();
-    });
-}
+// var index = 0;
+// listItems[index].classList.add('active');
+// multiStepForm();
 
-function multiStepForm() {
-    for (let i = 0; i < steps.length; i++) {
-        const element = steps[i];
-        if (i == index) {
-            element.style.display = 'initial';
-        } else {
-            element.style.display = 'none';
-        }
-    }
-}
+// for (let i = 0; i < nextBtns.length; i++) {
+//     const element = nextBtns[i];
+//     element.addEventListener('click', (event) => {
+//         index += 1;
+//         listItems[index].classList.add('active');
+//         multiStepForm();
+//     });
+// }
+
+// for (let i = 0; i < prevBtns.length; i++) {
+//     const element = prevBtns[i];
+//     element.addEventListener('click', (event) => {
+//         index -= 1;
+//         listItems[index + 1].classList.remove('active');
+//         multiStepForm();
+//     });
+// }
+
+// function multiStepForm() {
+//     for (let i = 0; i < steps.length; i++) {
+//         const element = steps[i];
+//         if (i == index) {
+//             element.style.display = 'initial';
+//         } else {
+//             element.style.display = 'none';
+//         }
+//     }
+// }
 
 function getFormData() {
     var obj = {
@@ -62,8 +65,8 @@ submit.addEventListener('click', async (event) => {
     event.stopPropagation();
     const params = JSON.stringify(getFormData());
     const response = await axios.post('http://localhost:3000/hotel/customer/reservations/rooms', params, { headers: { 'Content-Type': 'application/json', } });
-    // window.location = 'http://localhost:3000/hotel/customer/bookings';
-    btn.click();
+    window.location = `http://localhost:3000/hotel/customer/payments/details/${response.data}`;
+    // btn.click();
 });
 
 
@@ -86,3 +89,6 @@ window.onclick = function (event) {
         window.location = 'http://localhost:3000/hotel/customer/bookings';
     }
 }
+
+
+
