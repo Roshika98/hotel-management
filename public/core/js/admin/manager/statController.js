@@ -79,4 +79,5 @@ async function renderChart() {
 }
 
 
+
 renderChart().catch((e) => window.alert(e.message));
