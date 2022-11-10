@@ -51,7 +51,16 @@ router.get('/payments/userinfo', async (req, res) => {
 router.get('/payments/details/:id', async (req, res) => {
     const id = req.params.id;
     // TODO---------- get the booking details from database to get the advance payment amount----
-    res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess });
+    res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess, id });
+});
+
+router.get('/payments/confirmation/:id', async (req, res) => {
+    const bookingID = req.params.id;
+    const paymentID = req.query.payment_intent;
+    // const update = await database.confirmAdvancePayment(bookingID, paymentID);
+    console.log(req.body);
+    console.log(req.query);
+    res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '' });
 });
 
 router.get('/about/rooms', (req, res) => {
@@ -72,8 +81,10 @@ router.get('/config', (req, res) => {
     });
 });
 
-router.get('/create-payment-intent', async (req, res) => {
-    const paymentIntent = await payment.createAPaymentIntent();
+router.get('/create-payment-intent/:id', async (req, res) => {
+    const id = req.params.id;
+    const booking = await database.getBookingDetails(id);
+    const paymentIntent = await payment.createAPaymentIntent(booking);
     res.send({ clientSecret: paymentIntent.client_secret });
 });
 

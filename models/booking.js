@@ -26,7 +26,8 @@ const bookingSchema = new Schema({
         enum: ['booked', 'checkedIn', 'checkedOut', 'cancelled'],
         default: 'booked'
     },
-    bookedDate: Date
+    bookedDate: Date,
+    advancePayID: String
 });
 
 

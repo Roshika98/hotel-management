@@ -8,7 +8,7 @@ class Payment {
 
     }
 
-    async createAPaymentIntent() {
+    async createAPaymentIntent(data) {
         const customer = await stripe.customers.create({
             name: 'Jenny Rosen',
             description: 'My First Test Customer (created for API docs)',
@@ -21,12 +21,13 @@ class Payment {
             },
         });
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: 2000,
+            amount: parseInt(data.advance) * 100,
             currency: 'usd',
             payment_method_types: ['card'],
             description: 'Software development services',
             customer: customer.id
         });
+        console.log(paymentIntent);
         return paymentIntent;
     }
 }

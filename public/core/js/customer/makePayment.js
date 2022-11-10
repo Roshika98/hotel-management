@@ -13,10 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // On page load, we create a PaymentIntent on the server so that we have its clientSecret to
     // initialize the instance of Elements below. The PaymentIntent settings configure which payment
     // method types to display in the PaymentElement.
+    const id = document.getElementById('idholder').getAttribute('data-bookingID');
     const {
         error: backendError,
         clientSecret
-    } = await fetch('/hotel/customer/create-payment-intent').then(r => r.json());
+    } = await fetch(`/hotel/customer/create-payment-intent/${id}`).then(r => r.json());
     if (backendError) {
         console.log(backendError.message);
     }
@@ -29,35 +30,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     paymentElement.mount('#payment-element');
 
     // When the form is submitted...
-    // const form = document.getElementById('payment-form');
-    // let submitted = false;
-    // form.addEventListener('submit', async (e) => {
-    //     e.preventDefault();
+    const form = document.getElementById('payment-form');
+    let submitted = false;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    //     // Disable double submission of the form
-    //     if (submitted) { return; }
-    //     submitted = true;
-    //     form.querySelector('button').disabled = true;
+        // Disable double submission of the form
+        if (submitted) { return; }
+        submitted = true;
+        form.querySelector('button').disabled = true;
 
-    //     const nameInput = document.querySelector('#name');
+        const nameInput = document.querySelector('#name');
 
-    //     // Confirm the card payment given the clientSecret
-    //     // from the payment intent that was just created on
-    //     // the server.
-    //     const { error: stripeError } = await stripe.confirmPayment({
-    //         elements,
-    //         confirmParams: {
-    //             return_url: `${window.location.origin}/return.html`,
-    //         }
-    //     });
+        // Confirm the card payment given the clientSecret
+        // from the payment intent that was just created on
+        // the server.
+        const { error: stripeError } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: `http://localhost:3000/hotel/customer/payments/confirmation/${id}`,
+            }
+        });
 
-    //     if (stripeError) {
-    //         addMessage(stripeError.message);
+        if (stripeError) {
+            addMessage(stripeError.message);
 
-    //         // reenable the form.
-    //         submitted = false;
-    //         form.querySelector('button').disabled = false;
-    //         return;
-    //     }
-    // });
+            // reenable the form.
+            submitted = false;
+            form.querySelector('button').disabled = false;
+            return;
+        }
+    });
 });

@@ -323,6 +323,11 @@ class Database {
         return booking;
     }
 
+    async confirmAdvancePayment(bookingID, paymentID) {
+        const booking = await Booking.findByIdAndUpdate(bookingID, { advancePayID: paymentID });
+        return booking;
+    }
+
 
     // *------------------------DELETE OPERATIONS--------------------------------
 
