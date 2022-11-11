@@ -7,7 +7,7 @@ const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const Router = require('./routes');
-const server = require('http').createServer(app);
+// const server = require('http').createServer(app);
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
@@ -19,7 +19,7 @@ const strategies = require('./security/strategy');
 
 
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const dbUrl = process.env.MONGODB_URL;
 const storeOpt = {
     mongoUrl: dbUrl,
@@ -87,12 +87,14 @@ app.use(express.json());
 
 
 
-
+app.get('/', (req, res) => {
+    res.redirect('/hotel/customer');
+});
 app.use('/hotel/admin', Router.admin);
 app.use('/hotel/customer', Router.customer);
 
 
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log('listening on port ' + port);
 });
