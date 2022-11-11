@@ -23,7 +23,7 @@ bookingSearch.addEventListener('click', async (event) => {
         name: custName.value
     }
     const params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/bookings', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/data/bookings`, params, { headers: { 'Content-Type': 'application/json' } });
     setUpDynamicContent(response.data);
 });
 
@@ -45,7 +45,7 @@ hallCheck.addEventListener('click', async (event) => {
         hall: parseInt(hall.value)
     };
     var params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/hallChecks', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/data/hallChecks`, params, { headers: { 'Content-Type': 'application/json' } });
     console.log(response.data.status);
     if (response.data.status) {
         txtDisplay.style.display = 'none';

@@ -8,7 +8,7 @@ for (let i = 0; i < userInfoBtns.length; i++) {
     const element = userInfoBtns[i];
     element.addEventListener('click', async (event) => {
         var id = element.getAttribute('data-userInfo');
-        const response = await axios.get(`http://localhost:3000/hotel/admin/receptionist/userInfo/${id}`);
+        const response = await axios.get(`${window.location.origin}/hotel/admin/receptionist/userInfo/${id}`);
         setUpDynamicContent(response.data);
     });
 }

@@ -12,7 +12,7 @@ for (let i = 0; i < userInfoBtns.length; i++) {
     const element = userInfoBtns[i];
     element.addEventListener('click', async (event) => {
         var id = element.getAttribute('data-userInfo');
-        const response = await axios.get(`http://localhost:3000/hotel/admin/receptionist/userInfo/${id}`);
+        const response = await axios.get(`${window.location.origin}/hotel/admin/receptionist/userInfo/${id}`);
         setUpDynamicContent(response.data);
     });
 }
@@ -32,7 +32,7 @@ bookingSearch.addEventListener('click', async (event) => {
         name: custName.value
     }
     const params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/cancelations', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/data/cancelations`, params, { headers: { 'Content-Type': 'application/json' } });
     setUpCancelationDynamic(response.data);
 });
 

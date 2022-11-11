@@ -16,7 +16,7 @@ checkExtension.addEventListener('click', async (event) => {
         id: bookingID.getAttribute('data-bookingID')
     }
     var params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/extensions', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/data/extensions`, params, { headers: { 'Content-Type': 'application/json' } });
     if (response.data.status) {
         console.log("Hello");
         submitExtension.style.display = '';
@@ -36,7 +36,7 @@ submitExtension.addEventListener('click', async (event) => {
         id: bookingID.getAttribute('data-bookingID')
     }
     var params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/extensions', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/extensions`, params, { headers: { 'Content-Type': 'application/json' } });
     modalDynamicContent.innerHTML = response.data;
     modalTrigger.click();
 });

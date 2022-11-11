@@ -64,8 +64,8 @@ submit.addEventListener('click', async (event) => {
     event.preventDefault();
     event.stopPropagation();
     const params = JSON.stringify(getFormData());
-    const response = await axios.post('http://localhost:3000/hotel/customer/reservations/rooms', params, { headers: { 'Content-Type': 'application/json', } });
-    window.location = `http://localhost:3000/hotel/customer/payments/details/${response.data}`;
+    const response = await axios.post(`${window.location.origin}/hotel/customer/reservations/rooms`, params, { headers: { 'Content-Type': 'application/json', } });
+    window.location = `${window.location.origin}/hotel/customer/payments/details/${response.data}`;
     // btn.click();
 });
 

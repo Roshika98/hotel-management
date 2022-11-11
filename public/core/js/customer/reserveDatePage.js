@@ -23,4 +23,5 @@ checkInDate.addEventListener('input', (event) => {
     }
 });
 
+// console.log(window.location.origin);
 

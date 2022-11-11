@@ -15,7 +15,7 @@ bookingSearch.addEventListener('click', async (event) => {
         name: custName.value
     }
     const params = JSON.stringify(obj);
-    const response = await axios.post('http://localhost:3000/hotel/admin/receptionist/data/checkIns', params, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post(`${window.location.origin}/hotel/admin/receptionist/data/checkIns`, params, { headers: { 'Content-Type': 'application/json' } });
     setUpDynamicContent(response.data);
 });
 
