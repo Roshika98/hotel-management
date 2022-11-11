@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,7 +38,7 @@
     "passport-twitter": "^1.0.4",
     "path": "^0.12.7",
     "puppeteer": "^19.2.2",
-    "stripe": "^10.7.0",
+    "stripe": "^10.17.0",
     "uuid": "^8.3.2"
   }
 }

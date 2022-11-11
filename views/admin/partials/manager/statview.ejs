@@ -1,0 +1,106 @@
+<script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+<script src="https://unpkg.com/@mongodb-js/charts-embed-dom"></script>
+
+
+<div class="card">
+    <div class="card-header card-header-success">
+        <!-- <h2 class="card-title">Hello there!</h2> -->
+        <!-- <p class="card-category">Created using Roboto Font Family</p> -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Reservations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab"
+                    aria-controls="messages" aria-selected="false">Room Revenue</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Guests</a>
+            </li>
+
+            <!-- <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+                    aria-controls="settings" aria-selected="false">Settings</a>
+            </li> -->
+        </ul>
+    </div>
+    <div class="card-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                <div id="chart1"></div>
+
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                <div id="typography">
+                    <div class="card-title">
+                        <h4>Expected Guests based on Check-in date</h4>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="reserveDate">From</label>
+                        <input type="date" class="form-control" id="guestfrom" name="guestfrom">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="reserveDate">Until</label>
+                        <input type="date" class="form-control" id="guestuntil" name="guestuntil">
+                    </div>
+                    <div class="form-group col-md-1"><br>
+                        <button type="button" class="btn btn-primary btn-sm" id="guestfilter">filter</button>
+                    </div>
+                    <div class="form-group col-md-1"><br>
+                        <button type="button" class="btn btn-warning btn-sm" id="guestreset">reset</button>
+                    </div>
+                </div>
+
+                <div id="chart2"></div>
+
+            </div>
+            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                <div id="typography">
+                    <div class="card-title">
+                        <h4>Revenue Based on Check Out date</h4>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="reserveDate">From</label>
+                        <input type="date" class="form-control" id="revenuefrom" name="revenuefrom">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="reserveDate">Until</label>
+                        <input type="date" class="form-control" id="revenueuntil" name="revenueuntil">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <br>
+                        <button type="button" class="btn btn-primary btn-sm" id="revenuefilter">filter</button>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <br>
+                        <button type="button" class="btn btn-warning btn-sm" id="revenuereset">reset</button>
+                    </div>
+                </div>
+                <div id="chart3"></div>
+            </div>
+            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- </div> -->
+    </div>
+</div>
+<script>
+    const pageIndicator = document.getElementById('stats');
+    pageIndicator.classList.add('active');
+</script>

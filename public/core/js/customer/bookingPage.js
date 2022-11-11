@@ -22,7 +22,7 @@ setMinCheckOutDate();
 proceedReservation.addEventListener('click', async (event) => {
     const params = JSON.stringify(getReservationBasicDetails());
     const response = await axios.post('http://localhost:3000/hotel/customer/bookings/rooms', params, { headers: { 'Content-Type': 'application/json', } });
-    window.location = 'http://localhost:3000/hotel/customer/payments/rooms';
+    window.location = 'http://localhost:3000/hotel/customer/payments/userinfo';
 });
 
 

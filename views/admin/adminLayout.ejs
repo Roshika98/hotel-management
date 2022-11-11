@@ -98,6 +98,30 @@
                     </div>
                 </div>
 
+                <% } else { %>
+
+                <div class="sidebar-wrapper">
+                    <ul class="nav">
+                        <li class="nav-item" id="homepage">
+                            <a class="nav-link" href="/hotel/admin/manager/home">
+                                <i class="material-icons">dashboard</i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="stats">
+                            <a class="nav-link" href="/hotel/admin/manager/statistics">
+                                <i class="material-icons">bubble_chart</i>
+                                <p>statistics</p>
+                            </a>
+                        </li>
+                    </ul><br><br><br><br><br><br>
+                    <div class="sidebar-footer position-absolute w-100 bottom-0 ">
+                        <div class="mx-3">
+                            <a class="btn btn-danger mt-4 w-100" href="/hotel/admin/auth/logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
 
                 <% } %>
 
