@@ -8,7 +8,7 @@ const scripts = {
 }
 
 router.get('', (req, res) => {
-    res.send("Hello this is manager");
+    res.redirect('/hotel/admin/manager/home');
 });
 
 router.get('/home', (req, res) => {
