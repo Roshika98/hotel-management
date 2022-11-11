@@ -3,13 +3,16 @@ const router = express.Router();
 const auth = require('./authentication');
 const database = require('../database/database');
 const bookingUtil = require('../utility/bookingUtility');
+const payment = require('../payments/payment');
+
 
 const custLayout = 'customer/layout';
 
 const scripts = {
     booking: '/core/js/customer/bookingPage.js',
     paymentRoom: '/core/js/customer/paymentPage.js',
-    dateReserve: '/core/js/customer/reserveDatePage.js'
+    dateReserve: '/core/js/customer/reserveDatePage.js',
+    paymentProcess: '/core/js/customer/makePayment.js'
 }
 
 // router.use('/auth/google', auth.googleAuth);
@@ -35,7 +38,7 @@ router.get('/bookings', async (req, res) => {
         res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve });
 });
 
-router.get('/payments/rooms', async (req, res) => {
+router.get('/payments/userinfo', async (req, res) => {
     const reserveData = await database.getTempReserveData(req.sessionID);
     if (reserveData !== null) {
         const paymentInfo = await bookingUtil.estimatePayment(reserveData);
@@ -43,6 +46,21 @@ router.get('/payments/rooms', async (req, res) => {
         res.render('customer/partials/makeRoomPayment', { layout: custLayout, script: scripts.paymentRoom, paymentInfo });
     } else
         res.redirect('/hotel/customer/bookings');
+});
+
+router.get('/payments/details/:id', async (req, res) => {
+    const id = req.params.id;
+    // TODO---------- get the booking details from database to get the advance payment amount----
+    res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess, id });
+});
+
+router.get('/payments/confirmation/:id', async (req, res) => {
+    const bookingID = req.params.id;
+    const paymentID = req.query.payment_intent;
+    // const update = await database.confirmAdvancePayment(bookingID, paymentID);
+    console.log(req.body);
+    console.log(req.query);
+    res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '' });
 });
 
 router.get('/about/rooms', (req, res) => {
@@ -55,6 +73,19 @@ router.get('/about/halls', (req, res) => {
 
 router.get('/termsconditions', (req, res) => {
     res.render('customer/partials/termsConditions', { layout: custLayout, script: '' });
+});
+
+router.get('/config', (req, res) => {
+    res.send({
+        publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+});
+
+router.get('/create-payment-intent/:id', async (req, res) => {
+    const id = req.params.id;
+    const booking = await database.getBookingDetails(id);
+    const paymentIntent = await payment.createAPaymentIntent(booking);
+    res.send({ clientSecret: paymentIntent.client_secret });
 });
 
 // router.get('/auth', (req, res) => {
@@ -87,8 +118,12 @@ router.post('/reservations/rooms', async (req, res) => {
     console.log(req.body);
     const reserveData = await database.getTempReserveData(req.sessionID);
     const booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
-    res.sendStatus(200);
+    res.send(booking);
 });
+
+
+
+
 
 module.exports = router;
 

@@ -1,0 +1,48 @@
+<!-- <link rel="stylesheet" type="text/css" href="/core/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="/core/css/util.css">
+<link rel="stylesheet" type="text/css" href="/core/css/main.css"> -->
+<link rel="stylesheet" href="/core/css/payment.css">
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="breadcrumb-hero">
+        <div class="container">
+            <div class="breadcrumb-hero">
+                <h2>Bookings</h2>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ol>
+            <li><a href="/hotel/customer">Home</a></li>
+            <li>Bookings</li>
+        </ol>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<section id="contact" class="contact">
+    <div class="container">
+        <!-- multistep form -->
+        <div class="card text-center mx-auto border-success" style="max-width: 540px;">
+
+            <div class="card-header">
+                <h2 class="fs-title">Payment Info</h2>
+            </div>
+
+            <div class="card-body">
+                <form id="payment-form">
+                    <div id="payment-element">
+
+                    </div>
+                    <br>
+                    <button id="submit" class="btn btn-success">Process</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<div id="idholder" data-bookingID="<%= id %>" style="display: none;"></div>

@@ -85,6 +85,8 @@ class BookingUtility {
         const newBooking = await database.createRoomReservation(bookingParams);
         const deleteData = await database.deleteTempReserveData(id);
         console.log(newBooking);
+        return newBooking.id;
+
     }
 }
 
