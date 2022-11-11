@@ -57,7 +57,7 @@ router.get('/payments/details/:id', async (req, res) => {
 router.get('/payments/confirmation/:id', async (req, res) => {
     const bookingID = req.params.id;
     const paymentID = req.query.payment_intent;
-    // const update = await database.confirmAdvancePayment(bookingID, paymentID);
+    const update = await database.confirmAdvancePayment(bookingID, paymentID);
     console.log(req.body);
     console.log(req.query);
     res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '' });
