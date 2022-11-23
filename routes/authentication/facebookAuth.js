@@ -15,9 +15,7 @@ router.get('/redirect', passport.authenticate('facebook', {
 
 router.get('/success', (req, res) => {
     if (req.isAuthenticated()) {
-        res.send('Welcome ' + req.user.facebookProfName);
-        console.log(req.user);
-        // console.log(req.user.id);
+        res.redirect('/hotel/customer');
     }
     else res.redirect('/hotel/customer/auth/google/failure');
 

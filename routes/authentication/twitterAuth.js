@@ -11,13 +11,11 @@ router.get('/redirect', passport.authenticate('twitter', {
 }));
 
 router.get('/success', (req, res) => {
-    // if (req.isAuthenticated()) {
-    //     res.send('Welcome ' + req.user.googleProfName);
-    //     // console.log(req.user);
-    //     // console.log(req.user.id);
-    // }
-    // else res.redirect('/hotel/customer/auth/twitter/failure');
-    res.send(req.user);
+    if (req.isAuthenticated()) {
+        res.redirect('/hotel/customer');
+    }
+    else res.redirect('/hotel/customer/auth/twitter/failure');
+    // res.send(req.user);
 });
 
 router.get('/failure', (req, res) => {

@@ -6,10 +6,7 @@ const User = require('../../models/user');
 router.get('/success', (req, res) => {
     console.log('Success came');
     if (req.isAuthenticated()) {
-        console.log('inside success');
-        console.log(req.user);
-        res.send('Welcome basic login ' + req.user.email);
-
+        res.redirect('/hotel/customer');
     }
     else res.redirect('/hotel/customer/auth/google/failure');
 });

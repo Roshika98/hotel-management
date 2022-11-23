@@ -9,12 +9,12 @@ const userSchema = new Schema({
     address: String,
     name: String,
     googleId: String,
-    googleProfName: String,
-    profPicUrl: String,
+    profPicUrl: {
+        type: String,
+        default: 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-default-avatar-profile-icon-vector-social-media-user-image-vector-illustration-227787227.jpg'
+    },
     facebookID: String,
-    facebookProfName: String,
     twitterID: String,
-    twitterProfName: String,
     isLoyaltyCustomer: {
         type: Boolean,
         default: false
