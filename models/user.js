@@ -21,7 +21,8 @@ const userSchema = new Schema({
     isLoyaltyCustomer: {
         type: Boolean,
         default: false
-    }
+    },
+    stripeCustID: String
 });
 
 

@@ -1,6 +1,5 @@
 const database = require('../database/database');
-const User = require('../models/user');
-const Booking = require('../models/booking');
+
 
 class BookingUtility {
 
@@ -9,13 +8,7 @@ class BookingUtility {
     }
 
     async estimatePayment(params) {
-        const checkIn = new Date(params.checkIn);
-        const checkOut = new Date(params.checkOut);
-        const oneDay = 24 * 60 * 60 * 1000;
-        const diffDays = Math.round(Math.abs((checkIn - checkOut) / oneDay));
-        const deluxe = await database.getDeluxeRoomDetails();
-        const superior = await database.getSuperiorRoomDetails();
-        const family = await database.getFamilyRoomDetails();
+        const { deluxe, superior, family, diffDays } = await this.#estimatePaymentUtil(params);
         var estimatedPrice = 0;
         var deluxeCount = parseInt(params.deluxe);
         var superiorCount = parseInt(params.superior);
@@ -29,7 +22,30 @@ class BookingUtility {
         return { total: estimatedPrice, advance: Math.ceil((estimatedPrice * 20) / 100) };
     };
 
-    async createBooking(params, userData, id) {
+    async #estimatePaymentUtil(params) {
+        const checkIn = new Date(params.checkIn);
+        const checkOut = new Date(params.checkOut);
+        const oneDay = 24 * 60 * 60 * 1000;
+        const diffDays = Math.round(Math.abs((checkIn - checkOut) / oneDay));
+        const deluxe = await database.getDeluxeRoomDetails();
+        const superior = await database.getSuperiorRoomDetails();
+        const family = await database.getFamilyRoomDetails();
+        return { deluxe, superior, family, diffDays };
+    }
+
+    async createBooking() {
+        var bookingid;
+        if (arguments.length === 3) {
+            bookingid = await this.#createStandardUserBooking(arguments[0], arguments[1], arguments[2]);
+        } else if (arguments.length === 4) {
+            bookingid = await this.#createLoyaltyMemberBooking(arguments[0], arguments[1], arguments[2], arguments[3]);
+        }
+        return bookingid;
+    }
+
+
+
+    async #createStandardUserBooking(params, userData, id) {
         var { deluxeCount, superiorCount, familyCount, bookedRooms } = await this.#BookRooms(params);
         var newAddress = await this.#createAddress(userData.address);
         const newUser = await database.createStandardUser({
@@ -38,15 +54,30 @@ class BookingUtility {
             address: newAddress,
             name: userData.fname + ' ' + userData.lname,
         });
+        return await this.#bookingUtil(params, deluxeCount, superiorCount, familyCount, bookedRooms, newUser, id);
+    }
+
+    async #createLoyaltyMemberBooking(params, newData, id, user) {
+        var { deluxeCount, superiorCount, familyCount, bookedRooms } = await this.#BookRooms(params);
+        if (user.address && user.mobile) {
+            return await this.#bookingUtil(params, deluxeCount, superiorCount, familyCount, bookedRooms, user, id);
+        } else {
+            var newAddress = await this.#createAddress(newData.address);
+            var newUser = await database.updateLoyaltyMember(user, newData, newAddress);
+            return await this.#bookingUtil(params, deluxeCount, superiorCount, familyCount, bookedRooms, user, id);
+        }
+    }
+
+
+    async #bookingUtil(params, deluxeCount, superiorCount, familyCount, bookedRooms, newUser, id) {
         var pckg = await this.#getPackageInfo(params);
         const payment = await this.estimatePayment(params);
         var newDate = new Date();
         var today = newDate.toISOString().split('T')[0];
-        const newBooking = await this.#createBookingRecord(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today);
+        const newBooking = await this.#makeReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today);
         const deleteData = await database.deleteTempReserveData(id);
         console.log(newBooking);
         return newBooking.id;
-
     }
 
     async #getPackageInfo(params) {
@@ -61,7 +92,7 @@ class BookingUtility {
         return pckg;
     }
 
-    async #createBookingRecord(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today) {
+    async #makeReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today) {
         const bookingParams = {
             roomCount: deluxeCount + superiorCount + familyCount,
             roomNumbers: bookedRooms,
@@ -75,7 +106,7 @@ class BookingUtility {
             package: pckg,
             bookedDate: today
         };
-        console.log(bookedRooms);
+        // console.log(bookedRooms);
         const newBooking = await database.createRoomReservation(bookingParams);
         return newBooking;
     }
@@ -116,6 +147,11 @@ class BookingUtility {
             }
         }
         return { deluxeCount, superiorCount, familyCount, bookedRooms };
+    }
+
+    async updateCustomerStripeID(id, stripeID) {
+        const updateResult = await database.updateCustomerStripeID(id, stripeID);
+        return updateResult;
     }
 
 }

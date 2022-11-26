@@ -30,7 +30,6 @@ router.get('/bookings', async (req, res) => {
         const deluxeDouble = await database.getDeluxeRoomDetails();
         const superiorDouble = await database.getSuperiorRoomDetails();
         const deluxeFamily = await database.getFamilyRoomDetails();
-        // console.log(result);
         res.render('customer/partials/makeReservation', { layout: custLayout, params, user, availableRooms, deluxeDouble, superiorDouble, deluxeFamily, script: scripts.booking });
     } else
         res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve, user });
@@ -41,7 +40,6 @@ router.get('/payments/userinfo', async (req, res) => {
     const reserveData = await database.getTempReserveData(req.sessionID);
     if (reserveData !== null) {
         const paymentInfo = await bookingUtil.estimatePayment(reserveData);
-        // console.log(paymentInfo);
         res.render('customer/partials/makeRoomPayment', { layout: custLayout, script: scripts.paymentRoom, user, paymentInfo });
     } else
         res.redirect('/hotel/customer/bookings');
@@ -50,7 +48,6 @@ router.get('/payments/userinfo', async (req, res) => {
 router.get('/payments/details/:id', async (req, res) => {
     const user = checkUserAuth(req);
     const id = req.params.id;
-    // TODO---------- get the booking details from database to get the advance payment amount----
     res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess, id, user });
 });
 
@@ -86,7 +83,6 @@ router.get('/config', (req, res) => {
 router.get('/create-payment-intent/:id', async (req, res) => {
     const id = req.params.id;
     const booking = await database.getBookingDetails(id);
-    // console.log(booking);
     const paymentIntent = await payment.createAPaymentIntent(booking);
     res.send({ clientSecret: paymentIntent.client_secret });
 });
@@ -104,14 +100,25 @@ router.post('/bookings/rooms', async (req, res) => {
     const basicDetails = req.body;
     const tempHolder = await database.createTempReserveData(req.sessionID, basicDetails);
     console.log(tempHolder);
-    res.send('done');
+    const user = checkUserAuth(req);
+    if (req.isAuthenticated() && user.address && user.mobile) {
+        const reserveData = await database.getTempReserveData(req.sessionID);
+        const booking = await bookingUtil.createBooking(reserveData, {}, req.sessionID, user);
+        res.send(`/hotel/customer/payments/details/${booking}`)
+    } else {
+        res.send('/hotel/customer/payments/userinfo');
+    }
 });
 
 router.post('/reservations/rooms', async (req, res) => {
-    console.log(req.body);
     const reserveData = await database.getTempReserveData(req.sessionID);
-    const booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
-    res.send(booking);
+    var booking = null;
+    if (req.isAuthenticated()) {
+        console.log(req.isAuthenticated());
+        booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID, req.user);
+    } else
+        booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
+    res.redirect(`/hotel/customer/payments/details/${booking}`);
 });
 
 

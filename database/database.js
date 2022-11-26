@@ -269,7 +269,7 @@ class Database {
 
     async createStandardUser(data) {
         const newUser = await User.create(data);
-        console.log(newUser);
+        // console.log(newUser);
         return newUser;
     }
 
@@ -332,6 +332,16 @@ class Database {
     async confirmAdvancePayment(bookingID, paymentID) {
         const booking = await Booking.findByIdAndUpdate(bookingID, { advancePayID: paymentID });
         return booking;
+    }
+
+    async updateLoyaltyMember(user, newData, newAddress) {
+        const updateduser = await User.findByIdAndUpdate(user.id, { mobile: newData.phone, address: newAddress });
+        return updateduser;
+    }
+
+    async updateCustomerStripeID(id, stripeID) {
+        const updateduser = await User.findByIdAndUpdate(id, { stripeCustID: stripeID });
+        return updateduser;
     }
 
 
