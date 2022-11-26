@@ -8,6 +8,7 @@ const HallBooking = require('../models/hallBooking');
 const HallType = require('../models/hallType');
 const TempReserve = require('../models/tempReserve');
 const mongoose = require('mongoose');
+const Address = require('../models/address');
 // const hallBooking = require('../models/hallBooking');
 
 class Database {
@@ -113,7 +114,7 @@ class Database {
 
         // Define two overloaded functions
         var function1 = async function (id) {
-            const booking = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user' }, { path: 'package' }]);
+            const booking = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user', populate: 'address' }, { path: 'package' }]);
             return booking;
         };
 
@@ -268,7 +269,7 @@ class Database {
 
     async createStandardUser(data) {
         const newUser = await User.create(data);
-        console.log(newUser);
+        // console.log(newUser);
         return newUser;
     }
 
@@ -299,6 +300,11 @@ class Database {
         return newHallBooking;
     }
 
+    async createNewAddress(params) {
+        const newAddress = await Address.create(params);
+        return newAddress;
+    }
+
     // *-----------------UPDATE OPERATIONS-------------------------
 
     async updateCheckInStatus(id) {
@@ -326,6 +332,16 @@ class Database {
     async confirmAdvancePayment(bookingID, paymentID) {
         const booking = await Booking.findByIdAndUpdate(bookingID, { advancePayID: paymentID });
         return booking;
+    }
+
+    async updateLoyaltyMember(user, newData, newAddress) {
+        const updateduser = await User.findByIdAndUpdate(user.id, { mobile: newData.phone, address: newAddress });
+        return updateduser;
+    }
+
+    async updateCustomerStripeID(id, stripeID) {
+        const updateduser = await User.findByIdAndUpdate(id, { stripeCustID: stripeID });
+        return updateduser;
     }
 
 

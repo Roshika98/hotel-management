@@ -32,7 +32,60 @@
             </div>
 
             <div class="card-body">
-                <form id="payment-form" class="row g-3">
+                <form id="payment-form" class="row g-3" action="/hotel/customer/reservations/rooms" method="post">
+                    <% if (user) { %>
+                    <fieldset>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input class="form-control" type="email" name="email" value="<%= user.email %>"
+                                    id="email" disabled />
+                            </div>
+                            <div class="col">
+                                <label for="phone" class="form-label">Mobile No</label>
+                                <input class="form-control" type="text" name="phone" id="phone"
+                                    placeholder="07x-xxxxxxx">
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <label for="address" class="form-label">Address</label>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="address" class="form-label">Address Line 1</label>
+                                <input type="text" class="form-control" name="address[line1]"
+                                    placeholder="Address Line 1" id="address" />
+                            </div>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" name="address[city]" placeholder="city"
+                                    id="city" />
+                            </div>
+                            <div class="col">
+                                <label for="state" class="form-label">state/province</label>
+                                <input type="text" class="form-control" name="address[state]" placeholder="state"
+                                    id="state" />
+                            </div>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="postalCode" class="form-label">postal-Code</label>
+                                <input type="text" class="form-control" name="address[postalCode]"
+                                    placeholder="postalCode" id="postalCode" />
+                            </div>
+                            <div class="col">
+                                <label for="country" class="form-label">Country</label>
+                                <select name="address[country]" id="country" class="form-select">
+                                    <option value="">----</option>
+                                </select>
+                            </div>
+                        </div><br>
+
+                        <input type="submit" name="submit" class="btn btn-success" value="Next" id="submit" />
+                    </fieldset>
+                    <% } else {%>
                     <fieldset>
                         <h5 class="fs-subtitle">Are you a Loyalty Member? <a href="">log in</a></h5>
                         <div class="row g-3">
@@ -61,28 +114,44 @@
                         </div><br>
                         <div class="row">
                             <label for="address" class="form-label">Address</label>
-                            <textarea class="form-control" name="address" placeholder="Address" id="address"></textarea>
                         </div><br>
-
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="address" class="form-label">Address Line 1</label>
+                                <input type="text" class="form-control" name="address[line1]"
+                                    placeholder="Address Line 1" id="address" />
+                            </div>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" name="address[city]" placeholder="city"
+                                    id="city" />
+                            </div>
+                            <div class="col">
+                                <label for="state" class="form-label">state/province</label>
+                                <input type="text" class="form-control" name="address[state]" placeholder="state"
+                                    id="state" />
+                            </div>
+                        </div><br>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="postalCode" class="form-label">postal-Code</label>
+                                <input type="text" class="form-control" name="address[postalCode]"
+                                    placeholder="postalCode" id="postalCode" />
+                            </div>
+                            <div class="col">
+                                <label for="country" class="form-label">Country</label>
+                                <select name="address[country]" id="country" class="form-select">
+                                    <option value="">----</option>
+                                </select>
+                            </div>
+                        </div><br>
 
                         <input type="submit" name="submit" class="btn btn-success" value="Next" id="submit" />
                     </fieldset>
-                    <!-- <fieldset>
-                    <h2 class="fs-title">Payment Details</h2>
-                    <h3 class="fs-subtitle">20% of total estimated price will have to be paid via online</h3>
-                    <br>
-                    <h3 class="fs-title">Estimated total : $ <%= paymentInfo.total %></h3>
-                    <h3 class="fs-title">Advance Payment : $ <%= paymentInfo.advance %> </h3>
-    
-    
-                    <div id="payment-element">
-                        
-                    </div>
-    
-    
-                    <input type="button" name="previous" class="previous action-button" value="Previous" />
-                    <input type="submit" name="submit" class="submit action-button" value="Submit" id="submit" />
-                </fieldset> -->
+                    <% } %>
+
                 </form>
             </div>
 
@@ -90,68 +159,3 @@
 
     </div>
 </section>
-
-<style>
-    /* The Modal (background) */
-    .modal {
-        display: none;
-        /* Hidden by default */
-        position: fixed;
-        /* Stay in place */
-        z-index: 1;
-        /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%;
-        /* Full width */
-        height: 100%;
-        /* Full height */
-        overflow: auto;
-        /* Enable scroll if needed */
-        background-color: rgb(0, 0, 0);
-        /* Fallback color */
-        background-color: rgba(0, 0, 0, 0.4);
-        /* Black w/ opacity */
-    }
-
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        /* Could be more or less, depending on screen size */
-    }
-
-    /* The Close Button */
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
-
-<!-- Trigger/Open The Modal -->
-<button id="myBtn">Open Modal</button>
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <h4>Reservation Confirmation &nbsp;<span class="close">&times;</span></h4>
-
-        <p>Reservation Successfull!</p>
-    </div>
-
-</div>

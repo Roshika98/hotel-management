@@ -7,7 +7,6 @@ const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const Router = require('./routes');
-// const server = require('http').createServer(app);
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
@@ -42,13 +41,13 @@ const sessionConfig = {
     saveUninitialized: true,
 };
 
-// passport.use(strategies.googleStrategy);
+passport.use(strategies.googleStrategy);
 
-// passport.use(strategies.facebookStrategy);
+passport.use(strategies.facebookStrategy);
 
-// passport.use(strategies.twitterStrategy);
+passport.use(strategies.twitterStrategy);
 
-// passport.use(strategies.localStrategy);
+passport.use(strategies.localStrategy);
 
 passport.use('employee', strategies.employeeStrategy);
 

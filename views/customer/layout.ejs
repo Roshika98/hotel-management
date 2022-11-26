@@ -50,6 +50,7 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
     </head>
 
     <body>
@@ -64,41 +65,57 @@
                     <!-- <a href="index.html"><img src="/customer/assets/img/favicon.png" alt="" class="img-fluid"></a> -->
                 </div>
 
+                <% if (user) { %>
+                <style>
+                    .profile-img {
+                        margin-top: -5px;
+                        margin-right: 5px;
+                        float: left;
+                        background: 50% 50% no-repeat;
+                        /* 50% 50% centers image in div */
+                        background-size: auto 100%;
+                        /* Interchange this value depending on prefering width vs. height */
+                        width: 40px;
+                        height: 40px;
+                    }
+                </style>
                 <nav id="navbar" class="navbar">
                     <ul>
                         <li><a class="active" href="/hotel/customer">Home</a></li>
-                        <!-- <li class="dropdown"><a href="#"><span>About</span> <i class="bi bi-chevron-down"></i></a>
-                            <ul>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="team.html">Team</a></li>
-                                <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i
-                                            class="bi bi-chevron-right"></i></a>
-                                    <ul>
-                                        <li><a href="#">Deep Drop Down 1</a></li>
-                                        <li><a href="#">Deep Drop Down 2</a></li>
-                                        <li><a href="#">Deep Drop Down 3</a></li>
-                                        <li><a href="#">Deep Drop Down 4</a></li>
-                                        <li><a href="#">Deep Drop Down 5</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li> -->
-
                         <li><a href="/hotel/customer/about/rooms">Explore Rooms</a></li>
                         <li><a href="/hotel/customer/about/halls">Explore Halls</a></li>
                         <li><a href="/hotel/customer/bookings">Bookings</a></li>
+                        <li class="dropdown">
+                            <!-- <a href="#"><span><img src="" alt=""></span></a> -->
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                aria-expanded="false">
+                                <!-- The Profile picture inserted via div class below, with shaping provided by Bootstrap -->
 
-                        <!-- <li><a href="portfolio.html">Portfolio</a></li>
-                        <li><a href="blog.html">Blog</a></li> -->
-
-
+                                <img src="<%= user.profPicUrl %>" referrerpolicy="no-referrer"
+                                    class="img-rounded profile-img" style="border-radius: 50%;">
+                                </img>
+                            </a>
+                            <ul>
+                                <li><a href="about.html">My Account</a></li>
+                                <li><a href="/hotel/customer/auth/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <% } else { %>
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li><a class="active" href="/hotel/customer">Home</a></li>
+                        <li><a href="/hotel/customer/about/rooms">Explore Rooms</a></li>
+                        <li><a href="/hotel/customer/about/halls">Explore Halls</a></li>
+                        <li><a href="/hotel/customer/bookings">Bookings</a></li>
                         <!-- ! Uncomment on SE Project area -->
-                        <!-- <li><a class="getstarted" href="/hotel/customer/signup">Get Started</a></li>
-                        <li><a href="/hotel/customer/auth">Login</a></li> -->
+                        <li><a class="getstarted" href="/hotel/customer/signup">Get Started</a></li>
+                        <li><a href="/hotel/customer/auth">Login</a></li>
                     </ul>
                     <i class="bi bi-list mobile-nav-toggle"></i>
                 </nav><!-- .navbar -->
-
+                <% } %>
             </div>
         </header><!-- End Header -->
 
