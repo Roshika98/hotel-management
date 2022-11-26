@@ -10,24 +10,25 @@ class Payment {
 
     async createAPaymentIntent(data) {
         const customer = await stripe.customers.create({
-            name: 'Jenny Rosen',
+            name: data.user.name,
             description: 'My First Test Customer (created for API docs)',
             address: {
-                line1: '510 Townsend St',
-                postal_code: '98140',
-                city: 'San Francisco',
-                state: 'CA',
-                country: 'US',
+                line1: data.user.address.line1,
+                postal_code: data.user.address.postal_code,
+                city: data.user.address.city,
+                state: data.user.address.state,
+                country: data.user.address.country,
             },
         });
+        console.log(customer);
         const paymentIntent = await stripe.paymentIntents.create({
             amount: parseInt(data.advance) * 100,
             currency: 'usd',
             payment_method_types: ['card'],
-            description: 'Software development services',
+            description: 'Advance payment for room reservation',
             customer: customer.id
         });
-        console.log(paymentIntent);
+        // console.log(paymentIntent);
         return paymentIntent;
     }
 }

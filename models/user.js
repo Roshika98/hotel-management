@@ -6,7 +6,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     email: { type: String },
     mobile: String,
-    address: String,
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: 'Address'
+    },
     name: String,
     googleId: String,
     profPicUrl: {
