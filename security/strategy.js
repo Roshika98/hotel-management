@@ -33,7 +33,7 @@ const facebookStrategy = new FacebookStrategy({
 const twitterStrategy = new TwitterStrategy({
     consumerKey: process.env.TWITTER_CLIENT_ID,
     consumerSecret: process.env.TWITTER_CLIENT_SECRET,
-    callbackURL: '/hotel/customer/auth/twitter/redirect',
+    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/twitter/redirect',
     includeEmail: true
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);

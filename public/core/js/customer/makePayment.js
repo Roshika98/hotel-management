@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (stripeError) {
-            addMessage(stripeError.message);
+            console.log(stripeError.message);
 
             // reenable the form.
             submitted = false;
