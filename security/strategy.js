@@ -8,7 +8,7 @@ const Employee = require('../models/employee');
 const googleStrategy = new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/hotel/customer/auth/google/redirect'
+    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/google/redirect'
 }, (accessToken, refreshToken, profile, cb) => {
     User.findOrCreate({ googleId: profile.id, name: profile.displayName },
         { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
@@ -19,7 +19,7 @@ const googleStrategy = new GoogleStrategy({
 const facebookStrategy = new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: '/hotel/customer/auth/facebook/redirect',
+    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/facebook/redirect',
     profileFields: ['id', 'displayName', 'email', 'picture'],
     auth_type: 'reauthenticate'
 }, (accessToken, refreshToken, profile, cb) => {
