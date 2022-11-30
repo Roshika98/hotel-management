@@ -8,7 +8,7 @@ const Employee = require('../models/employee');
 const googleStrategy = new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/google/redirect'
+    callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/google/redirect' : '/hotel/customer/auth/google/redirect',
 }, (accessToken, refreshToken, profile, cb) => {
     User.findOrCreate({ googleId: profile.id, name: profile.displayName },
         { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
@@ -19,9 +19,9 @@ const googleStrategy = new GoogleStrategy({
 const facebookStrategy = new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/facebook/redirect',
+    callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/facebook/redirect' : '/hotel/customer/auth/facebook/redirect',
     profileFields: ['id', 'displayName', 'email', 'picture'],
-    auth_type: 'reauthenticate'
+    passReqToCallback: true
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
     User.findOrCreate({ facebookID: profile.id, name: profile.displayName },
@@ -33,7 +33,7 @@ const facebookStrategy = new FacebookStrategy({
 const twitterStrategy = new TwitterStrategy({
     consumerKey: process.env.TWITTER_CLIENT_ID,
     consumerSecret: process.env.TWITTER_CLIENT_SECRET,
-    callbackURL: 'https://se-project.onrender.com/hotel/customer/auth/twitter/redirect',
+    callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/twitter/redirect' : '/hotel/customer/auth/twitter/redirect',
     includeEmail: true
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
