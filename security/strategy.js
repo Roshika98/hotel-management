@@ -20,10 +20,10 @@ const facebookStrategy = new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/facebook/redirect' : '/hotel/customer/auth/facebook/redirect',
-    // profileFields: ['id', 'displayName', 'email', 'picture'],
-    passReqToCallback: true
+    profileFields: ['email', 'photos'],
+    // passReqToCallback: true
 }, (accessToken, refreshToken, profile, cb) => {
-    // console.log(profile);
+    console.log(profile);
     User.findOrCreate({ facebookID: profile.id, name: profile.displayName },
         { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
             return cb(err, user);
