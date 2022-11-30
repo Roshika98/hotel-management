@@ -20,7 +20,7 @@ const facebookStrategy = new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/facebook/redirect' : '/hotel/customer/auth/facebook/redirect',
-    profileFields: ['id', 'displayName', 'email', 'picture'],
+    // profileFields: ['id', 'displayName', 'email', 'picture'],
     passReqToCallback: true
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
