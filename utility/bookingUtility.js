@@ -43,7 +43,32 @@ class BookingUtility {
         return bookingid;
     }
 
+    async confirmBooking(bookingID, paymentID) {
+        const tempbooking = await database.getTemporaryBookingDetail(bookingID);
+        const params = {
+            roomCount: tempbooking.roomCount,
+            roomNumbers: tempbooking.roomNumbers,
+            user: tempbooking.user,
+            checkIn: tempbooking.checkIn,
+            checkOut: tempbooking.checkOut,
+            advance: tempbooking.advance,
+            total: tempbooking.total,
+            adults: tempbooking.adults,
+            children: tempbooking.children,
+            package: tempbooking.package,
+            bookedDate: tempbooking.bookedDate,
+            advancePayID: paymentID
+        };
+        const confirmedBooking = await database.confirmRoomBooking(params);
+        const removeTempBooking = await database.deleteTempBooking(bookingID);
+        return confirmedBooking;
+    }
 
+    async discardBooking(id, sessionID) {
+        const removeTempBooking = await database.deleteTempBooking(id);
+        const removeSessionData = await database.deleteTempReserveData(sessionID);
+        return removeTempBooking;
+    }
 
     async #createStandardUserBooking(params, userData, id) {
         var { deluxeCount, superiorCount, familyCount, bookedRooms } = await this.#BookRooms(params);
@@ -74,7 +99,7 @@ class BookingUtility {
         const payment = await this.estimatePayment(params);
         var newDate = new Date();
         var today = newDate.toISOString().split('T')[0];
-        const newBooking = await this.#makeReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today);
+        const newBooking = await this.#makeTemparoryReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today);
         const deleteData = await database.deleteTempReserveData(id);
         console.log(newBooking);
         return newBooking.id;
@@ -92,7 +117,7 @@ class BookingUtility {
         return pckg;
     }
 
-    async #makeReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today) {
+    async #makeTemparoryReservation(deluxeCount, superiorCount, familyCount, bookedRooms, newUser, params, payment, pckg, today) {
         const bookingParams = {
             roomCount: deluxeCount + superiorCount + familyCount,
             roomNumbers: bookedRooms,
@@ -107,7 +132,7 @@ class BookingUtility {
             bookedDate: today
         };
         // console.log(bookedRooms);
-        const newBooking = await database.createRoomReservation(bookingParams);
+        const newBooking = await database.createTempRoomReservation(bookingParams);
         return newBooking;
     }
 

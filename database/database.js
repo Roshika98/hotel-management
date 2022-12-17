@@ -9,6 +9,7 @@ const HallType = require('../models/hallType');
 const TempReserve = require('../models/tempReserve');
 const mongoose = require('mongoose');
 const Address = require('../models/address');
+const TempBooking = require('../models/tempBooking');
 // const hallBooking = require('../models/hallBooking');
 
 class Database {
@@ -132,6 +133,11 @@ class Database {
             && !Array.isArray(arguments[0])) {
             return function1(arguments[0]);
         }
+    }
+
+    async getTemporaryBookingDetail(id) {
+        const booking = await TempBooking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user', populate: 'address' }, { path: 'package' }]);
+        return booking;
     }
 
 
@@ -279,6 +285,12 @@ class Database {
         return newBooking;
     }
 
+    //!-----Used for creating a temp reservation for rooms---
+    async createTempRoomReservation(data) {
+        const newTemp = await TempBooking.create(data);
+        return newTemp;
+    }
+
     async createTempReserveData(id, data) {
         const params = {
             sessionID: id,
@@ -305,6 +317,11 @@ class Database {
         return newAddress;
     }
 
+    async confirmRoomBooking(data) {
+        const booking = await Booking.create(data);
+        return booking;
+    }
+
     // *-----------------UPDATE OPERATIONS-------------------------
 
     async updateCheckInStatus(id) {
@@ -329,10 +346,6 @@ class Database {
         return booking;
     }
 
-    async confirmAdvancePayment(bookingID, paymentID) {
-        const booking = await Booking.findByIdAndUpdate(bookingID, { advancePayID: paymentID });
-        return booking;
-    }
 
     async updateLoyaltyMember(user, newData, newAddress) {
         const updateduser = await User.findByIdAndUpdate(user.id, { mobile: newData.phone, address: newAddress });
@@ -350,6 +363,11 @@ class Database {
     async deleteTempReserveData(id) {
         const tempData = await TempReserve.findOneAndDelete({ sessionID: `${id}` });
         return tempData;
+    }
+
+    async deleteTempBooking(id) {
+        const temp = await TempBooking.findByIdAndDelete(id);
+        return temp;
     }
 
 

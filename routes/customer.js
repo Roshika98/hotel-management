@@ -35,6 +35,10 @@ router.get('/bookings', async (req, res) => {
         res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve, user });
 });
 
+router.get('/bookings/discards', (req, res) => {
+    res.send('cancelled');
+});
+
 router.get('/payments/userinfo', async (req, res) => {
     const user = checkUserAuth(req);
     const reserveData = await database.getTempReserveData(req.sessionID);
@@ -55,7 +59,7 @@ router.get('/payments/confirmation/:id', async (req, res) => {
     const user = checkUserAuth(req);
     const bookingID = req.params.id;
     const paymentID = req.query.payment_intent;
-    const update = await database.confirmAdvancePayment(bookingID, paymentID);
+    const confirmBooking = await bookingUtil.confirmBooking(bookingID, paymentID);
     res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '', user });
 });
 
@@ -82,9 +86,9 @@ router.get('/config', (req, res) => {
 
 router.get('/create-payment-intent/:id', async (req, res) => {
     const id = req.params.id;
-    const booking = await database.getBookingDetails(id);
+    const booking = await database.getTemporaryBookingDetail(id);
     const paymentIntent = await payment.createAPaymentIntent(booking);
-    res.send({ clientSecret: paymentIntent.client_secret });
+    res.send({ clientSecret: paymentIntent.client_secret, paymentID: paymentIntent.id, reserveID: id });
 });
 
 router.get('/signup', (req, res) => {
@@ -119,6 +123,15 @@ router.post('/reservations/rooms', async (req, res) => {
     } else
         booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
     res.redirect(`/hotel/customer/payments/details/${booking}`);
+});
+
+router.post('/payments/cancel/:id', async (req, res) => {
+    const bookingID = req.params.id;
+    var cancelation = await bookingUtil.discardBooking(bookingID, req.sessionID);
+    var cancelPayment = await payment.cancelPaymentIntent(req.body.paymentIntentID);
+    console.log(bookingID);
+    console.log(req.body.paymentIntentID);
+    res.sendStatus(200);
 });
 
 

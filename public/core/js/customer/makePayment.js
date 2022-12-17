@@ -1,4 +1,12 @@
+const alertPlaceholder = document.getElementById('timeoutalert');
 document.addEventListener('DOMContentLoaded', async () => {
+
+    var cancelReserevation = document.getElementById('cancelbooking');
+    const timerDisplay = document.getElementById('timer');
+    const form = document.getElementById('payment-form');
+    const timeoutperiod = 180000;
+    var currTime = 1000;
+
     // Load the publishable key from the server. The publishable key
     // is set in your .env file.
     const { publishableKey } = await fetch('/hotel/customer/config').then((r) => r.json());
@@ -16,7 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const id = document.getElementById('idholder').getAttribute('data-bookingID');
     const {
         error: backendError,
-        clientSecret
+        clientSecret,
+        paymentID, reserveID
     } = await fetch(`/hotel/customer/create-payment-intent/${id}`).then(r => r.json());
     if (backendError) {
         console.log(backendError.message);
@@ -29,8 +38,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     const paymentElement = elements.create('payment');
     paymentElement.mount('#payment-element');
 
+    // Start the timeout period & start countdown
+    currTime = timeoutperiod / 1000;
+    const countdownID = setInterval(() => {
+        currTime -= 1;
+        var minutes = Math.trunc(currTime / 60);
+        var seconds = currTime % 60;
+        var minDisplay = minutes < 10 ? '0' + minutes : minutes;
+        var secondsDisplay = seconds < 10 ? '0' + seconds : seconds;
+        timerDisplay.innerText = minDisplay + ':' + secondsDisplay;
+    }, 1000);
+
+    const timeoutID = setTimeout(async () => {
+        console.log('Time out!!!!!!');
+        alert('payment timed out. please wait while you are being redirected', 'danger');
+        form.querySelector('button').disabled = true;
+        cancelReserevation.disabled = true;
+        clearInterval(countdownID);
+        await cancelProcedure(paymentID, reserveID);
+    }, timeoutperiod);
+
+
+    // setup cancelation
+    cancelReserevation.addEventListener('click', async () => {
+        await cancelProcedure(paymentID, reserveID);
+    });
+
     // When the form is submitted...
-    const form = document.getElementById('payment-form');
+
     let submitted = false;
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -39,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (submitted) { return; }
         submitted = true;
         form.querySelector('button').disabled = true;
+        cancelReserevation.disabled = true;
 
         const nameInput = document.querySelector('#name');
 
@@ -54,11 +90,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (stripeError) {
             console.log(stripeError.message);
-
+            alert(stripeError.message, 'warning');
             // reenable the form.
             submitted = false;
             form.querySelector('button').disabled = false;
+            cancelReserevation.disabled = false;
             return;
         }
     });
 });
+
+
+function alert(message, type) {
+    var wrapper = document.createElement('div')
+    wrapper.innerHTML = '<div class="alert alert-' + type + '" role="alert">' + message + '</div>'
+
+    alertPlaceholder.append(wrapper)
+}
+
+
+async function cancelProcedure(paymentID, reserveID) {
+    var params = JSON.stringify({ paymentIntentID: paymentID });
+    var result = await axios.post(`${window.location.origin}/hotel/customer/payments/cancel/${reserveID}`, params, { headers: { 'Content-Type': 'application/json', } });
+    window.location = `${window.location.origin}/hotel/customer/bookings`;
+}
+
