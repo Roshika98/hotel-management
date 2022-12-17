@@ -43,6 +43,17 @@ class BookingUtility {
         return bookingid;
     }
 
+    async getRemainingTimePayment(sessionID) {
+        const startTime = await database.getTimerData(sessionID);
+        console.log(startTime);
+        const endTime = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))));
+        console.log(endTime);
+        var remainingTime = endTime - startTime;
+        remainingTime = Math.trunc(remainingTime / 1000);
+        console.log(parseInt(process.env.PAYMENT_TIMEOUT) - remainingTime);
+        return parseInt(process.env.PAYMENT_TIMEOUT) - remainingTime;
+    }
+
     async confirmBooking(bookingID, paymentID) {
         const tempbooking = await database.getTemporaryBookingDetail(bookingID);
         const params = {
@@ -60,13 +71,13 @@ class BookingUtility {
             advancePayID: paymentID
         };
         const confirmedBooking = await database.confirmRoomBooking(params);
-        const removeTempBooking = await database.deleteTempBooking(bookingID);
         return confirmedBooking;
     }
 
     async discardBooking(id, sessionID) {
         const removeTempBooking = await database.deleteTempBooking(id);
         const removeSessionData = await database.deleteTempReserveData(sessionID);
+        const removeTimer = await database.deletePaymentTimerData(sessionID);
         return removeTempBooking;
     }
 

@@ -10,6 +10,7 @@ const TempReserve = require('../models/tempReserve');
 const mongoose = require('mongoose');
 const Address = require('../models/address');
 const TempBooking = require('../models/tempBooking');
+const PaymentTime = require('../models/paymentTime');
 // const hallBooking = require('../models/hallBooking');
 
 class Database {
@@ -140,6 +141,10 @@ class Database {
         return booking;
     }
 
+    async getTimerData(sesstionID) {
+        const timerData = await PaymentTime.findOne({ sessionID: sesstionID });
+        return timerData.initTime;
+    }
 
     async getCheckedInCustomers() {
         var dateVal = new Date();
@@ -322,6 +327,13 @@ class Database {
         return booking;
     }
 
+    async createPaymentTimerData(sessionID) {
+        var currTime = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))));
+        const newtimerData = await PaymentTime.create({ sessionID: sessionID, initTime: currTime });
+        console.log(newtimerData);
+        return newtimerData;
+    }
+
     // *-----------------UPDATE OPERATIONS-------------------------
 
     async updateCheckInStatus(id) {
@@ -370,6 +382,14 @@ class Database {
         return temp;
     }
 
+    async deletePaymentTimerData(sessionID) {
+        const data = await PaymentTime.find({ sessionID: sessionID });
+        for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+            await PaymentTime.findByIdAndDelete(element.id);
+        }
+        return 0;
+    }
 
     // !---------------------REPORT DATA-----------------------------------------
 

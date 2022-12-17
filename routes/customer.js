@@ -60,7 +60,13 @@ router.get('/payments/confirmation/:id', async (req, res) => {
     const bookingID = req.params.id;
     const paymentID = req.query.payment_intent;
     const confirmBooking = await bookingUtil.confirmBooking(bookingID, paymentID);
+    const deleteTempData = await bookingUtil.discardBooking(bookingID, req.sessionID);
     res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '', user });
+});
+
+router.get('/payment/time', async (req, res) => {
+    const timerData = await bookingUtil.getRemainingTimePayment(req.sessionID);
+    res.send({ timerVal: timerData });
 });
 
 router.get('/about/rooms', (req, res) => {
@@ -108,6 +114,7 @@ router.post('/bookings/rooms', async (req, res) => {
     if (req.isAuthenticated() && user.address && user.mobile) {
         const reserveData = await database.getTempReserveData(req.sessionID);
         const booking = await bookingUtil.createBooking(reserveData, {}, req.sessionID, user);
+        await database.createPaymentTimerData(req.sessionID);
         res.send(`/hotel/customer/payments/details/${booking}`)
     } else {
         res.send('/hotel/customer/payments/userinfo');
@@ -122,6 +129,7 @@ router.post('/reservations/rooms', async (req, res) => {
         booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID, req.user);
     } else
         booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
+    await database.createPaymentTimerData(req.sessionID);
     res.redirect(`/hotel/customer/payments/details/${booking}`);
 });
 

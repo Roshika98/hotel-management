@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     var cancelReserevation = document.getElementById('cancelbooking');
     const timerDisplay = document.getElementById('timer');
     const form = document.getElementById('payment-form');
-    const timeoutperiod = 180000;
-    var currTime = 1000;
+    var timeoutperiod = 0;
+    var currTime = 0;
+
 
     // Load the publishable key from the server. The publishable key
     // is set in your .env file.
@@ -39,7 +40,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     paymentElement.mount('#payment-element');
 
     // Start the timeout period & start countdown
-    currTime = timeoutperiod / 1000;
+    const { timerVal } = await fetch('/hotel/customer/payment/time').then((r) => r.json());
+    console.log(timerVal);
+    if (timerVal <= 0) {
+        alert('payment timed out. please wait while you are being redirected', 'danger');
+        disableFormSubmission();
+        await cancelProcedure(paymentID, reserveID);
+    }
+
+    timeoutperiod = timerVal;
+    currTime = timeoutperiod;
+
     const countdownID = setInterval(() => {
         currTime -= 1;
         var minutes = Math.trunc(currTime / 60);
@@ -52,15 +63,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const timeoutID = setTimeout(async () => {
         console.log('Time out!!!!!!');
         alert('payment timed out. please wait while you are being redirected', 'danger');
-        form.querySelector('button').disabled = true;
-        cancelReserevation.disabled = true;
+        disableFormSubmission();
         clearInterval(countdownID);
         await cancelProcedure(paymentID, reserveID);
-    }, timeoutperiod);
+    }, timeoutperiod * 1000);
 
 
     // setup cancelation
     cancelReserevation.addEventListener('click', async () => {
+        disableFormSubmission();
         await cancelProcedure(paymentID, reserveID);
     });
 
@@ -73,8 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Disable double submission of the form
         if (submitted) { return; }
         submitted = true;
-        form.querySelector('button').disabled = true;
-        cancelReserevation.disabled = true;
+        disableFormSubmission();
 
         const nameInput = document.querySelector('#name');
 
@@ -98,6 +108,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
     });
+
+    function disableFormSubmission() {
+        form.querySelector('button').disabled = true;
+        cancelReserevation.disabled = true;
+    }
 });
 
 
