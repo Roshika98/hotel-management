@@ -19,7 +19,7 @@ class Database {
     }
 
     async getUserInfo(id) {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate('address');
         return user;
     }
 
@@ -363,6 +363,21 @@ class Database {
         const updateduser = await User.findByIdAndUpdate(user.id, { mobile: newData.phone, address: newAddress });
         return updateduser;
     }
+
+
+    async updateUserProfile(id, params) {
+        const user = await this.getUserInfo(id);
+        if (user.address) {
+            console.log(params.address);
+            var newAddress = await Address.findByIdAndUpdate(user.address.id, params.address);
+            await User.findByIdAndUpdate(id, { name: params.name, mobile: params.phone });
+        } else {
+            var newAddress = await this.createNewAddress(params.address);
+            var updatedinfo = await this.updateLoyaltyMember(user, { phone: params.phone }, newAddress);
+            await User.findByIdAndUpdate(id, { name: params.name });
+        }
+    }
+
 
     async updateCustomerStripeID(id, stripeID) {
         const updateduser = await User.findByIdAndUpdate(id, { stripeCustID: stripeID });

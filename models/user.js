@@ -22,7 +22,8 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
-    stripeCustID: String
+    stripeCustID: String,
+    loyaltyPoints: { type: Number, default: 0 }
 });
 
 

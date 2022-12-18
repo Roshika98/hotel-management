@@ -22,6 +22,15 @@ router.get('', (req, res) => {
     res.render('customer/partials/welcomePage', { layout: custLayout, script: '', user });
 });
 
+router.get('/myAccount', async (req, res) => {
+    if (checkUserAuth(req)) {
+        const user = await database.getUserInfo(req.user.id);
+        console.log(user);
+        res.render('customer/partials/myAccount', { layout: custLayout, script: '', user });
+    } else
+        res.redirect('/hotel/customer/auth');
+});
+
 router.get('/bookings', async (req, res) => {
     const user = checkUserAuth(req);
     const params = req.query;
@@ -105,6 +114,10 @@ router.get('/signup', (req, res) => {
 
 // *-----------------------POST REQUESTS-------------------------
 
+router.post('/myAccount/update/:id', async (req, res) => {
+    const result = await database.updateUserProfile(req.user.id, req.body);
+    res.redirect('/hotel/customer/myAccount');
+});
 
 router.post('/bookings/rooms', async (req, res) => {
     const basicDetails = req.body;

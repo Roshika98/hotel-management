@@ -5,7 +5,10 @@ const addressSchema = new Schema({
     line1: String,
     city: String,
     state: String,
-    country: String,
+    country: {
+        type: String,
+        default: 'LK'
+    },
     postal_code: String
 });
 

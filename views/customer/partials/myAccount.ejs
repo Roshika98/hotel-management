@@ -1,0 +1,235 @@
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="breadcrumb-hero">
+        <div class="container">
+            <div class="breadcrumb-hero">
+                <h2>My Account</h2>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ol>
+            <li><a href="/hotel/customer">Home</a></li>
+            <li>MyAccount</li>
+        </ol>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+
+
+<section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+            <div class="col-lg-8 entries">
+
+
+                <article class="entry entry-single">
+
+
+                    <div class="blog-author d-flex align-items-center">
+
+                        <img src="<%= user.profPicUrl %>" class="rounded-circle float-left" alt="">
+                        <div>
+                            <% if (user.name) { %>
+                            <h2><%= user.name %></h2>
+                            <% } else { %>
+                            <h2>Please Set up your name</h2>
+                            <% } %>
+                        </div>
+
+                    </div>
+
+                    <div class="entry-content">
+                        <blockquote>
+                            <h3 class="entry-title">Loyalty Points : <%= user.loyaltyPoints %> </h3>
+                        </blockquote>
+                    </div>
+
+
+
+
+                    <h2 class="entry-title">
+                        Edit User Details
+                    </h2>
+
+
+                    <div class="entry-content">
+
+
+                        <form id="userupdate-form" class="row g-3"
+                            action="/hotel/customer/myAccount/update/<%= user.id %>" method="post">
+
+                            <% if (user.address) { %>
+                            <fieldset>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="email" class="form-label">E-mail</label>
+                                        <input class="form-control" type="email" name="email" value="<%= user.email %>"
+                                            id="email" disabled />
+                                    </div>
+                                    <div class="col">
+                                        <label for="phone" class="form-label">Mobile No</label>
+                                        <input class="form-control" type="text" name="phone" id="phone"
+                                            placeholder="07x-xxxxxxx" value="<%= user.mobile %>">
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input class="form-control" type="text" name="name" value="<%= user.name %>"
+                                            id="name" />
+                                    </div>
+                                </div><br>
+                                <h4 class="entry-title">Edit Address</h4>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="address" class="form-label">Address Line 1</label>
+                                        <input type="text" class="form-control" name="address[line1]"
+                                            placeholder="Address Line 1" id="address"
+                                            value="<%= user.address.line1 %>" />
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" name="address[city]" placeholder="city"
+                                            id="city" value="<%= user.address.city %>" />
+                                    </div>
+                                    <div class="col">
+                                        <label for="state" class="form-label">state/province</label>
+                                        <input type="text" class="form-control" name="address[state]"
+                                            placeholder="state" id="state" value="<%= user.address.state %>" />
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="postalCode" class="form-label">postal-Code</label>
+                                        <input type="text" class="form-control" name="address[postal_code]"
+                                            placeholder="postalCode" id="postal_code"
+                                            value="<%= user.address.postal_code %>" />
+                                    </div>
+                                    <!-- <div class="col">
+                                            <label for="country" class="form-label">Country</label>
+                                            <select name="address[country]" id="country" class="form-select">
+                                                <option value="">----</option>
+                                            </select>
+                                        </div> -->
+                                </div><br>
+
+                                <input type="submit" name="submit" class="btn btn-success" value="Update Info"
+                                    id="submit" />
+                            </fieldset>
+                            <% } else { %>
+
+                            <fieldset>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="email" class="form-label">E-mail</label>
+                                        <input class="form-control" type="email" name="email" value="<%= user.email %>"
+                                            id="email" disabled />
+                                    </div>
+                                    <div class="col">
+                                        <label for="phone" class="form-label">Mobile No</label>
+                                        <input class="form-control" type="text" name="phone" id="phone"
+                                            placeholder="07x-xxxxxxx">
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input class="form-control" type="text" name="name" id="name" />
+                                    </div>
+                                </div><br>
+                                <h4 class="entry-title">Edit Address</h4>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="address" class="form-label">Address Line 1</label>
+                                        <input type="text" class="form-control" name="address[line1]"
+                                            placeholder="Address Line 1" id="address" />
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" name="address[city]" placeholder="city"
+                                            id="city" />
+                                    </div>
+                                    <div class="col">
+                                        <label for="state" class="form-label">state/province</label>
+                                        <input type="text" class="form-control" name="address[state]"
+                                            placeholder="state" id="state" />
+                                    </div>
+                                </div><br>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="postal_code" class="form-label">postal-Code</label>
+                                        <input type="text" class="form-control" name="address[postal_code]"
+                                            placeholder="postalCode" id="postal_code" />
+                                    </div>
+                                    <!-- <div class="col">
+                                            <label for="country" class="form-label">Country</label>
+                                            <select name="address[country]" id="country" class="form-select">
+                                                <option value="">----</option>
+                                            </select>
+                                        </div> -->
+                                </div><br>
+
+                                <input type="submit" name="submit" class="btn btn-success" value="Update Info"
+                                    id="submit" />
+                            </fieldset>
+
+                            <% } %>
+                        </form>
+
+
+                    </div>
+
+                    <!-- <div class="entry-footer">
+                        <i class="bi bi-folder"></i>
+                        <ul class="cats">
+                            <li><a href="#">Business</a></li>
+                        </ul>
+
+                        <i class="bi bi-tags"></i>
+                        <ul class="tags">
+                            <li><a href="#">Creative</a></li>
+                            <li><a href="#">Tips</a></li>
+                            <li><a href="#">Marketing</a></li>
+                        </ul>
+                    </div> -->
+
+                </article><!-- End blog entry -->
+
+
+
+
+            </div>
+
+
+
+            <div class="col-lg-4">
+
+                <div class="sidebar">
+
+
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <ul>
+                            <li class="active"><a href="/hotel/customer/myAccount">My Account </a></li>
+                            <li><a href="#">My Reservations</a></li>
+
+                        </ul>
+                    </div><!-- End sidebar categories-->
+
+
+                </div><!-- End sidebar -->
+
+            </div><!-- End blog sidebar -->
+
+
+        </div>
+    </div>
+</section>
