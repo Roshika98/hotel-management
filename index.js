@@ -89,6 +89,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.redirect('/hotel/customer');
 });
+app.get('/hotel', (req, res) => {
+    res.redirect('/hotel/customer');
+});
 app.use('/hotel/admin', Router.admin);
 app.use('/hotel/customer', Router.customer);
 

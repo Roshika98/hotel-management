@@ -9,6 +9,8 @@ const HallType = require('../models/hallType');
 const TempReserve = require('../models/tempReserve');
 const mongoose = require('mongoose');
 const Address = require('../models/address');
+const TempBooking = require('../models/tempBooking');
+const PaymentTime = require('../models/paymentTime');
 // const hallBooking = require('../models/hallBooking');
 
 class Database {
@@ -17,7 +19,7 @@ class Database {
     }
 
     async getUserInfo(id) {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate('address');
         return user;
     }
 
@@ -134,6 +136,15 @@ class Database {
         }
     }
 
+    async getTemporaryBookingDetail(id) {
+        const booking = await TempBooking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user', populate: 'address' }, { path: 'package' }]);
+        return booking;
+    }
+
+    async getTimerData(sesstionID) {
+        const timerData = await PaymentTime.findOne({ sessionID: sesstionID });
+        return timerData.initTime;
+    }
 
     async getCheckedInCustomers() {
         var dateVal = new Date();
@@ -235,6 +246,14 @@ class Database {
         return reserved;
     }
 
+
+    async getAllReservationsForUser(user) {
+        const reservations = await Booking.find({ user: user._id })
+            .populate([{ path: 'package' }])
+            .sort({ bookedDate: -1 });
+        return reservations;
+    }
+
     async reserveAvailableRooms(params) {
         const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
 
@@ -279,6 +298,12 @@ class Database {
         return newBooking;
     }
 
+    //!-----Used for creating a temp reservation for rooms---
+    async createTempRoomReservation(data) {
+        const newTemp = await TempBooking.create(data);
+        return newTemp;
+    }
+
     async createTempReserveData(id, data) {
         const params = {
             sessionID: id,
@@ -305,6 +330,18 @@ class Database {
         return newAddress;
     }
 
+    async confirmRoomBooking(data) {
+        const booking = await Booking.create(data);
+        return booking;
+    }
+
+    async createPaymentTimerData(sessionID) {
+        var currTime = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))));
+        const newtimerData = await PaymentTime.create({ sessionID: sessionID, initTime: currTime });
+        console.log(newtimerData);
+        return newtimerData;
+    }
+
     // *-----------------UPDATE OPERATIONS-------------------------
 
     async updateCheckInStatus(id) {
@@ -329,15 +366,26 @@ class Database {
         return booking;
     }
 
-    async confirmAdvancePayment(bookingID, paymentID) {
-        const booking = await Booking.findByIdAndUpdate(bookingID, { advancePayID: paymentID });
-        return booking;
-    }
 
     async updateLoyaltyMember(user, newData, newAddress) {
         const updateduser = await User.findByIdAndUpdate(user.id, { mobile: newData.phone, address: newAddress });
         return updateduser;
     }
+
+
+    async updateUserProfile(id, params) {
+        const user = await this.getUserInfo(id);
+        if (user.address) {
+            console.log(params.address);
+            var newAddress = await Address.findByIdAndUpdate(user.address.id, params.address);
+            await User.findByIdAndUpdate(id, { name: params.name, mobile: params.phone });
+        } else {
+            var newAddress = await this.createNewAddress(params.address);
+            var updatedinfo = await this.updateLoyaltyMember(user, { phone: params.phone }, newAddress);
+            await User.findByIdAndUpdate(id, { name: params.name });
+        }
+    }
+
 
     async updateCustomerStripeID(id, stripeID) {
         const updateduser = await User.findByIdAndUpdate(id, { stripeCustID: stripeID });
@@ -352,6 +400,19 @@ class Database {
         return tempData;
     }
 
+    async deleteTempBooking(id) {
+        const temp = await TempBooking.findByIdAndDelete(id);
+        return temp;
+    }
+
+    async deletePaymentTimerData(sessionID) {
+        const data = await PaymentTime.find({ sessionID: sessionID });
+        for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+            await PaymentTime.findByIdAndDelete(element.id);
+        }
+        return 0;
+    }
 
     // !---------------------REPORT DATA-----------------------------------------
 

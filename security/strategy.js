@@ -10,8 +10,8 @@ const googleStrategy = new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV === 'production' ? 'https://se-project.onrender.com/hotel/customer/auth/google/redirect' : '/hotel/customer/auth/google/redirect',
 }, (accessToken, refreshToken, profile, cb) => {
-    User.findOrCreate({ googleId: profile.id, name: profile.displayName },
-        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
+    User.findOrCreate({ googleId: profile.id },
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true, name: profile.displayName }, (err, user) => {
             return cb(err, user);
         });
 });
@@ -24,8 +24,8 @@ const facebookStrategy = new FacebookStrategy({
     // passReqToCallback: true
 }, (accessToken, refreshToken, profile, cb) => {
     console.log(profile);
-    User.findOrCreate({ facebookID: profile.id, name: profile.displayName },
-        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
+    User.findOrCreate({ facebookID: profile.id },
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true, name: profile.displayName }, (err, user) => {
             return cb(err, user);
         });
 });
@@ -37,8 +37,8 @@ const twitterStrategy = new TwitterStrategy({
     includeEmail: true
 }, (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
-    User.findOrCreate({ twitterID: profile.id, name: profile.displayName },
-        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true }, (err, user) => {
+    User.findOrCreate({ twitterID: profile.id },
+        { email: profile.emails[0].value, profPicUrl: profile.photos[0].value, isLoyaltyCustomer: true, name: profile.displayName }, (err, user) => {
             return cb(err, user);
         });
 });

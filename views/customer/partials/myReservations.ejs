@@ -1,0 +1,84 @@
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="breadcrumb-hero">
+        <div class="container">
+            <div class="breadcrumb-hero">
+                <h2>My Reservations</h2>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ol>
+            <li><a href="/hotel/customer">Home</a></li>
+            <li>MyReservations</li>
+        </ol>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+
+
+<section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+            <div class="col-lg-8 entries">
+                <article class="entry entry-single">
+                    <h2 class="entry-title">
+                        My Reservations
+                    </h2>
+
+
+                    <div class="entry-content">
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" scope="col">ID</th>
+                                    <th scope="col" class="text-center"># Rooms</th>
+                                    <th scope="col" class="text-center">Package</th>
+                                    <th scope="col" class="text-center">check-In</th>
+                                    <th scope="col" class="text-center">check-out</th>
+                                    <th scope="col" class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for( let i = 0; i < reservations.length; i++ ) { %>
+                                <tr>
+                                    <td><%= reservations[i].id %></td>
+                                    <td class="text-center"><%= reservations[i].roomCount %></td>
+                                    <td><%= reservations[i].package.packageType %></td>
+                                    <td><%= reservations[i].checkIn.toDateString() %></td>
+                                    <td><%= reservations[i].checkOut.toDateString() %></td>
+                                    <td class="text-center"><%= reservations[i].status %></td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="sidebar">
+
+
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <ul>
+                            <li class="active"><a href="/hotel/customer/myAccount">My Account </a></li>
+                            <li><a href="/hotel/customer/myReservations">My Reservations</a></li>
+
+                        </ul>
+                    </div><!-- End sidebar categories-->
+
+
+                </div><!-- End sidebar -->
+
+            </div><!-- End blog sidebar -->
+        </div>
+    </div>
+</section>

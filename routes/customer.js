@@ -22,6 +22,26 @@ router.get('', (req, res) => {
     res.render('customer/partials/welcomePage', { layout: custLayout, script: '', user });
 });
 
+router.get('/myAccount', async (req, res) => {
+    if (checkUserAuth(req)) {
+        const user = await database.getUserInfo(req.user.id);
+        console.log(user);
+        res.render('customer/partials/myAccount', { layout: custLayout, script: '', user });
+    } else
+        res.redirect('/hotel/customer/auth');
+});
+
+router.get('/myReservations', async (req, res) => {
+    if (checkUserAuth(req)) {
+        const reservations = await database.getAllReservationsForUser(req.user);
+        var user = checkUserAuth(req);
+        console.log(reservations);
+        res.render('customer/partials/myReservations', { layout: custLayout, script: '', user, reservations });
+    } else {
+        res.redirect('/hotel/customer/auth');
+    }
+});
+
 router.get('/bookings', async (req, res) => {
     const user = checkUserAuth(req);
     const params = req.query;
@@ -33,6 +53,10 @@ router.get('/bookings', async (req, res) => {
         res.render('customer/partials/makeReservation', { layout: custLayout, params, user, availableRooms, deluxeDouble, superiorDouble, deluxeFamily, script: scripts.booking });
     } else
         res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve, user });
+});
+
+router.get('/bookings/discards', (req, res) => {
+    res.send('cancelled');
 });
 
 router.get('/payments/userinfo', async (req, res) => {
@@ -55,8 +79,14 @@ router.get('/payments/confirmation/:id', async (req, res) => {
     const user = checkUserAuth(req);
     const bookingID = req.params.id;
     const paymentID = req.query.payment_intent;
-    const update = await database.confirmAdvancePayment(bookingID, paymentID);
+    const confirmBooking = await bookingUtil.confirmBooking(bookingID, paymentID);
+    const deleteTempData = await bookingUtil.discardBooking(bookingID, req.sessionID);
     res.render('customer/partials/paymentSuccess', { layout: custLayout, script: '', user });
+});
+
+router.get('/payment/time', async (req, res) => {
+    const timerData = await bookingUtil.getRemainingTimePayment(req.sessionID);
+    res.send({ timerVal: timerData });
 });
 
 router.get('/about/rooms', (req, res) => {
@@ -82,9 +112,9 @@ router.get('/config', (req, res) => {
 
 router.get('/create-payment-intent/:id', async (req, res) => {
     const id = req.params.id;
-    const booking = await database.getBookingDetails(id);
+    const booking = await database.getTemporaryBookingDetail(id);
     const paymentIntent = await payment.createAPaymentIntent(booking);
-    res.send({ clientSecret: paymentIntent.client_secret });
+    res.send({ clientSecret: paymentIntent.client_secret, paymentID: paymentIntent.id, reserveID: id });
 });
 
 router.get('/signup', (req, res) => {
@@ -95,6 +125,10 @@ router.get('/signup', (req, res) => {
 
 // *-----------------------POST REQUESTS-------------------------
 
+router.post('/myAccount/update/:id', async (req, res) => {
+    const result = await database.updateUserProfile(req.user.id, req.body);
+    res.redirect('/hotel/customer/myAccount');
+});
 
 router.post('/bookings/rooms', async (req, res) => {
     const basicDetails = req.body;
@@ -104,6 +138,7 @@ router.post('/bookings/rooms', async (req, res) => {
     if (req.isAuthenticated() && user.address && user.mobile) {
         const reserveData = await database.getTempReserveData(req.sessionID);
         const booking = await bookingUtil.createBooking(reserveData, {}, req.sessionID, user);
+        await database.createPaymentTimerData(req.sessionID);
         res.send(`/hotel/customer/payments/details/${booking}`)
     } else {
         res.send('/hotel/customer/payments/userinfo');
@@ -118,7 +153,17 @@ router.post('/reservations/rooms', async (req, res) => {
         booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID, req.user);
     } else
         booking = await bookingUtil.createBooking(reserveData, req.body, req.sessionID);
+    await database.createPaymentTimerData(req.sessionID);
     res.redirect(`/hotel/customer/payments/details/${booking}`);
+});
+
+router.post('/payments/cancel/:id', async (req, res) => {
+    const bookingID = req.params.id;
+    var cancelation = await bookingUtil.discardBooking(bookingID, req.sessionID);
+    var cancelPayment = await payment.cancelPaymentIntent(req.body.paymentIntentID);
+    console.log(bookingID);
+    console.log(req.body.paymentIntentID);
+    res.sendStatus(200);
 });
 
 

@@ -41,6 +41,13 @@ class Payment {
             email: data.email
         });
     }
+
+    async cancelPaymentIntent(id) {
+        const paymentIntent = await stripe.paymentIntents.cancel(id);
+        return paymentIntent;
+    }
+
+
 }
 
 module.exports = new Payment();
