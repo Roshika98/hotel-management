@@ -55,8 +55,9 @@ router.get('/bookings', async (req, res) => {
         res.render('customer/partials/bookings', { layout: custLayout, script: scripts.dateReserve, user });
 });
 
-router.get('/bookings/discards', (req, res) => {
-    res.send('cancelled');
+router.get('/bookings/discards', async (req, res) => {
+    await database.deleteTempReserveData(req.sessionID);
+    res.redirect('/hotel/customer/bookings');
 });
 
 router.get('/payments/userinfo', async (req, res) => {

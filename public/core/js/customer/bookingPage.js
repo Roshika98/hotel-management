@@ -8,6 +8,7 @@ const checkInDate = document.getElementById('checkIn');
 const checkOutDate = document.getElementById('checkOut');
 const checkAvailability = document.getElementById('availabilityCheck');
 const proceedReservation = document.getElementById('proceed');
+const alertPlaceholder = document.getElementById('alertdiv');
 
 const deluxePrices = [parseInt(deluxeRoomCount.getAttribute('data-standard')), parseInt(deluxeRoomCount.getAttribute('data-halfBoard')), parseInt(deluxeRoomCount.getAttribute('data-fullBoard'))];
 const superiorPrices = [parseInt(superiorRoomCount.getAttribute('data-standard')), parseInt(superiorRoomCount.getAttribute('data-halfBoard')), parseInt(superiorRoomCount.getAttribute('data-fullBoard'))];
@@ -20,10 +21,13 @@ setMinCheckOutDate();
 
 
 proceedReservation.addEventListener('click', async (event) => {
-    const params = JSON.stringify(getReservationBasicDetails());
-    const response = await axios.post(`${window.location.origin}/hotel/customer/bookings/rooms`, params, { headers: { 'Content-Type': 'application/json', } });
-    window.location = `${window.location.origin}` + `${response.data}`;
-    // console.log(`${window.location.origin}` + `${response.data}`);
+    if (superiorRoomCount.value + familyRoomCount.value + deluxeRoomCount.value <= 0) {
+        alert("you haven't selected any room!", 'warning');
+    } else {
+        const params = JSON.stringify(getReservationBasicDetails());
+        const response = await axios.post(`${window.location.origin}/hotel/customer/bookings/rooms`, params, { headers: { 'Content-Type': 'application/json', } });
+        window.location = `${window.location.origin}` + `${response.data}`;
+    }
 });
 
 
@@ -99,5 +103,12 @@ function getReservationBasicDetails() {
         children: document.getElementById('children').value
     }
     return params;
+}
+
+function alert(message, type) {
+    var wrapper = document.createElement('div')
+    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+    alertPlaceholder.append(wrapper)
 }
 

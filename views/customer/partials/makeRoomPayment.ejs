@@ -44,7 +44,7 @@
                             <div class="col">
                                 <label for="phone" class="form-label">Mobile No</label>
                                 <input class="form-control" type="text" name="phone" id="phone"
-                                    placeholder="07x-xxxxxxx">
+                                    placeholder="07x-xxxxxxx" required>
                             </div>
                         </div><br>
                         <div class="row">
@@ -54,36 +54,37 @@
                             <div class="col">
                                 <label for="address" class="form-label">Address Line 1</label>
                                 <input type="text" class="form-control" name="address[line1]"
-                                    placeholder="Address Line 1" id="address" />
+                                    placeholder="Address Line 1" id="address" required />
                             </div>
                         </div><br>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="city" class="form-label">City</label>
                                 <input type="text" class="form-control" name="address[city]" placeholder="city"
-                                    id="city" />
+                                    id="city" required />
                             </div>
                             <div class="col">
                                 <label for="state" class="form-label">state/province</label>
                                 <input type="text" class="form-control" name="address[state]" placeholder="state"
-                                    id="state" />
+                                    id="state" required />
                             </div>
                         </div><br>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="postalCode" class="form-label">postal-Code</label>
                                 <input type="text" class="form-control" name="address[postalCode]"
-                                    placeholder="postalCode" id="postalCode" />
+                                    placeholder="postalCode" id="postalCode" required />
                             </div>
                             <div class="col">
                                 <label for="country" class="form-label">Country</label>
-                                <select name="address[country]" id="country" class="form-select">
+                                <select name="address[country]" id="country" class="form-select" required>
                                     <option value="">----</option>
                                 </select>
                             </div>
                         </div><br>
 
                         <input type="submit" name="submit" class="btn btn-success" value="Next" id="submit" />
+                        <a href="/hotel/customer/bookings/discards" class="btn btn-danger">Cancel</a>
                     </fieldset>
                     <% } else {%>
                     <fieldset>
@@ -91,25 +92,25 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="fname" class="form-label">First Name</label>
-                                <input class="form-control" type="text" name="fname" placeholder="First Name"
-                                    id="fname" />
+                                <input class="form-control" type="text" name="fname" placeholder="First Name" id="fname"
+                                    required />
                             </div>
                             <div class="col-md-6">
                                 <label for="lname" class="form-label">Last Name</label>
-                                <input class="form-control" type="text" name="lname" placeholder="Last Name"
-                                    id="lname" />
+                                <input class="form-control" type="text" name="lname" placeholder="Last Name" id="lname"
+                                    required />
                             </div>
                         </div><br>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="email" class="form-label">E-mail</label>
                                 <input class="form-control" type="email" name="email" placeholder="abc@gmail.com"
-                                    id="email" />
+                                    id="email" required />
                             </div>
                             <div class="col">
                                 <label for="phone" class="form-label">Mobile No</label>
                                 <input class="form-control" type="text" name="phone" id="phone"
-                                    placeholder="07x-xxxxxxx">
+                                    placeholder="07x-xxxxxxx" required>
                             </div>
                         </div><br>
                         <div class="row">
@@ -119,36 +120,37 @@
                             <div class="col">
                                 <label for="address" class="form-label">Address Line 1</label>
                                 <input type="text" class="form-control" name="address[line1]"
-                                    placeholder="Address Line 1" id="address" />
+                                    placeholder="Address Line 1" id="address" required />
                             </div>
                         </div><br>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="city" class="form-label">City</label>
                                 <input type="text" class="form-control" name="address[city]" placeholder="city"
-                                    id="city" />
+                                    id="city" required />
                             </div>
                             <div class="col">
                                 <label for="state" class="form-label">state/province</label>
                                 <input type="text" class="form-control" name="address[state]" placeholder="state"
-                                    id="state" />
+                                    id="state" required />
                             </div>
                         </div><br>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="postalCode" class="form-label">postal-Code</label>
                                 <input type="text" class="form-control" name="address[postalCode]"
-                                    placeholder="postalCode" id="postalCode" />
+                                    placeholder="postalCode" id="postalCode" required />
                             </div>
                             <div class="col">
                                 <label for="country" class="form-label">Country</label>
-                                <select name="address[country]" id="country" class="form-select">
+                                <select name="address[country]" id="country" class="form-select" required>
                                     <option value="">----</option>
                                 </select>
                             </div>
                         </div><br>
 
                         <input type="submit" name="submit" class="btn btn-success" value="Next" id="submit" />
+                        <a href="/hotel/customer/bookings/discards" class="btn btn-danger">Cancel</a>
                     </fieldset>
                     <% } %>
 
