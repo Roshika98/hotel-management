@@ -102,9 +102,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log(stripeError.message);
             alert(stripeError.message, 'warning');
             // reenable the form.
-            submitted = false;
-            form.querySelector('button').disabled = false;
-            cancelReserevation.disabled = false;
+            // submitted = false;
+            // form.querySelector('button').disabled = false;
+            // cancelReserevation.disabled = false;
+            await cancelProcedure(paymentID, reserveID);
             return;
         }
     });

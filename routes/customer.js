@@ -31,6 +31,17 @@ router.get('/myAccount', async (req, res) => {
         res.redirect('/hotel/customer/auth');
 });
 
+router.get('/myReservations', async (req, res) => {
+    if (checkUserAuth(req)) {
+        const reservations = await database.getAllReservationsForUser(req.user);
+        var user = checkUserAuth(req);
+        console.log(reservations);
+        res.render('customer/partials/myReservations', { layout: custLayout, script: '', user, reservations });
+    } else {
+        res.redirect('/hotel/customer/auth');
+    }
+});
+
 router.get('/bookings', async (req, res) => {
     const user = checkUserAuth(req);
     const params = req.query;

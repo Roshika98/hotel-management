@@ -246,6 +246,14 @@ class Database {
         return reserved;
     }
 
+
+    async getAllReservationsForUser(user) {
+        const reservations = await Booking.find({ user: user._id })
+            .populate([{ path: 'package' }])
+            .sort({ bookedDate: -1 });
+        return reservations;
+    }
+
     async reserveAvailableRooms(params) {
         const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
 
