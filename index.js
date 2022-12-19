@@ -9,6 +9,8 @@ const path = require('path');
 const Router = require('./routes');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const flash = require('connect-flash');
+const flashMiddleware = require('./middleware/flashMiddleware');
 const MongoDBStore = require('connect-mongo');
 const passport = require('passport');
 const User = require('./models/user');
@@ -82,7 +84,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
+app.use(flash(), flashMiddleware);
 
 
 

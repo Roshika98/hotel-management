@@ -22,7 +22,8 @@ router.get('/success', (req, res) => {
 });
 
 router.get('/failure', (req, res) => {
-    res.send("error!!!!");
+    req.flash('error', 'Something went wrong!');
+    res.redirect('/hotel/customer/auth');
 });
 
 

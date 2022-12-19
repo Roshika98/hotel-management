@@ -73,7 +73,9 @@ router.get('/payments/userinfo', async (req, res) => {
 router.get('/payments/details/:id', async (req, res) => {
     const user = checkUserAuth(req);
     const id = req.params.id;
-    res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess, id, user });
+    const price = await database.getAdvanceAmount(id);
+    console.log('$ ' + price);
+    res.render('customer/partials/acceptPayment', { layout: custLayout, script: scripts.paymentProcess, id, user, price });
 });
 
 router.get('/payments/confirmation/:id', async (req, res) => {

@@ -263,6 +263,11 @@ class Database {
         return reservations;
     }
 
+    async getAdvanceAmount(id) {
+        const tempBooking = await TempBooking.findById(id);
+        return tempBooking.advance;
+    }
+
     async reserveAvailableRooms(params) {
         const availableRooms = await this.getAvailableRooms(params.checkIn, params.checkOut);
 

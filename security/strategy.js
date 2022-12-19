@@ -51,7 +51,7 @@ const localStrategy = new LocalStrategy({
         if (err) return done(err);
         if (!user) {
             // TODO- Instead of passing an object with message use req.flash('failure','message');
-            return done(null, false, { message: 'Unknown user ' + username });
+            return done(null, false, req.flash('error', 'unknown user!'));
         }
         user.authenticate(password, function (err, users, passwordError) {
             if (passwordError) {

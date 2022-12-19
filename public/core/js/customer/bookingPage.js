@@ -16,7 +16,12 @@ const familyPrices = [parseInt(familyRoomCount.getAttribute('data-standard')), p
 
 var estimatedPrice = 0;
 setEstimatedValue();
-checkInDate.setAttribute('min', new Date().toISOString().split('T')[0]);
+var minDate = new Date();
+minDate.setDate(minDate.getDate() + 1);
+var maxDate = new Date();
+maxDate.setDate(minDate.getDate() + 60);
+checkInDate.setAttribute('min', minDate.toISOString().split('T')[0]);
+checkInDate.setAttribute('max', maxDate.toISOString().split('T')[0]);
 setMinCheckOutDate();
 
 
@@ -66,6 +71,7 @@ function setMinCheckOutDate() {
     var dateValue = new Date(checkInDate.value);
     dateValue.setDate(dateValue.getDate() + 1);
     checkOutDate.setAttribute('min', dateValue.toISOString().split('T')[0]);
+    checkOutDate.setAttribute('max', maxDate.toISOString().split('T')[0]);
 }
 
 function setEstimatedValue() {
