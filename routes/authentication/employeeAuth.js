@@ -17,7 +17,10 @@ router.get('/success', (req, res) => {
             res.redirect('/hotel/admin/receptionist');
         else res.redirect('/hotel/admin/manager');
     }
-    else res.redirect('/hotel/admin/auth');
+    else {
+        req.flash('error', 'username or password is wrong');
+        res.redirect('/hotel/admin/auth');
+    }
 });
 
 router.get('/logout', (req, res) => {
@@ -37,10 +40,14 @@ router.post('/signup', async (req, res) => {
     res.redirect('/hotel/admin/auth'); // TODO--- when a new user is created redirect accordingly
 });
 
+router.get('/failure', (req, res) => {
+    req.flash('error', 'username or password is wrong');
+    res.redirect('/hotel/admin/auth');
+});
 
 
 
-router.post('', passport.authenticate('employee', { failureRedirect: '/hotel/admin/auth' }), (req, res) => {
+router.post('', passport.authenticate('employee', { failureRedirect: '/hotel/admin/auth/failure' }), (req, res) => {
     // console.log(req.body);
     res.redirect('/hotel/admin/auth/success');
 });
