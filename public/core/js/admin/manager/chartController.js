@@ -56,19 +56,23 @@ async function renderChart() {
 
     await chart5.render(document.getElementById('chart5'));
     await chart5.setTheme('dark');
+    await chart5.setMaxDataAge(60 * 3);
 
     await chart3.render(document.getElementById('chart3'));
     await chart3.setTheme('dark');
+    await chart3.setMaxDataAge(60 * 3);
 
     await chart4.render(document.getElementById('chart4'));
     await chart4.setTheme('dark');
+    await chart4.setMaxDataAge(60 * 3);
 
     await chart1.render(document.getElementById("chart1"));
     await chart1.setTheme('dark');
+    await chart1.setMaxDataAge(60 * 3);
 
     await chart2.render(document.getElementById('chart2'));
     await chart2.setTheme('dark');
-
+    await chart2.setMaxDataAge(60 * 3);
 }
 
 

@@ -4,6 +4,13 @@ const receptionUtil = require('../../utility/receptionUtility');
 const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const path = require('path');
+const adminLayout = 'admin/adminLayout';
+
+
+router.get('', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    res.render('admin/partials/receptionist/stats', { layout: adminLayout, empType, script: '' });
+});
 
 router.get('/daily', async (req, res) => {
     const data = await receptionUtil.getDailyReservationsReport();
@@ -44,3 +51,8 @@ router.get('/hallStatus', async (req, res) => {
 });
 
 module.exports = router;
+
+
+function getEmployeeDetails(req) {
+    return req.user.empType;
+}

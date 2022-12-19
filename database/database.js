@@ -116,18 +116,27 @@ class Database {
 
         // Define two overloaded functions
         var function1 = async function (id) {
-            const booking = await Booking.findById(id).populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user', populate: 'address' }, { path: 'package' }]);
+            const booking = await Booking.findById(id)
+                .populate([{ path: 'roomNumbers', populate: 'roomType' }, { path: 'user', populate: 'address' }, { path: 'package' }]);
             return booking;
         };
 
         var function2 = async function (email, custName) {
-            const customer = await User.findOne({ email: email });
-            // TODO update the search filter by adding current date so only checkins for today are searched
+            const customer = await User.find({ email: email });
             const checkinDate = new Date();
             const dateString = checkinDate.toISOString().split('T')[0];
-            const details = await Booking.findOne({ user: customer._id, checkIn: new Date(`${dateString}`), status: 'booked' }).populate(['roomNumbers', 'user', 'package']);
+            var details = null;
+            for (let i = 0; i < customer.length; i++) {
+                const element = customer[i];
+                details = await Booking.findOne({ user: element._id, checkIn: new Date(`${dateString}`), status: 'booked' })
+                    .populate(['roomNumbers', 'user', 'package']);
+                if (details) return details;
+            }
+            // details = await Booking.findOne({ user: customer._id, checkIn: new Date(`${dateString}`), status: 'booked' })
+            //     .populate(['roomNumbers', 'user', 'package']);
             return details;
         };
+
         if (arguments.length === 2) {
             return function2(arguments[0], arguments[1]);
         } else if (arguments.length === 1
@@ -213,7 +222,7 @@ class Database {
                             }]
                         }
                     ]
-                }
+                }, { status: { $nin: ['checkedOut', 'cancelled'] } }
             ]
         });
         if (reserved.length == 0) return await this.getAllRooms();

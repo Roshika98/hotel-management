@@ -2,7 +2,7 @@ const express = require('express');
 const database = require('../../database/database');
 const router = express.Router();
 const receptionUtil = require('../../utility/receptionUtility');
-const reports = require('./reports');
+
 const adminLayout = 'admin/adminLayout';
 
 const scripts = {
@@ -14,7 +14,7 @@ const scripts = {
     extension: '/core/js/admin/receptionist/extensionController.js'
 }
 
-router.use('/reports', reports);
+// router.use('/reports', reports);
 
 router.get('', (req, res) => {
     // res.send("Hello this is receptionist");
@@ -85,10 +85,6 @@ router.get('/extensions/:id', async (req, res) => {
     res.render('admin/partials/receptionist/processExtensions', { layout: adminLayout, empType, script: scripts.extension, details });
 });
 
-router.get('/statistics', async (req, res) => {
-    const empType = getEmployeeDetails(req);
-    res.render('admin/partials/receptionist/stats', { layout: adminLayout, empType, script: '' });
-});
 
 // router.get('/extend', async (req, res) => {
 //     const result = await receptionUtil.extendCustomerStay('635e2abd07a215f10f9fded9', 2);

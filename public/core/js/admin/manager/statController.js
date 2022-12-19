@@ -39,9 +39,10 @@ const chart3 = sdk.createChart({
 async function renderChart() {
 
     await chart1.render(document.getElementById("chart1"));
-
+    await chart1.setMaxDataAge(60 * 5);
 
     await chart3.render(document.getElementById('chart3'));
+    await chart3.setMaxDataAge(60 * 5);
     revenuefilter.addEventListener('click', async (event) => {
         var from = revenuefrom.value;
         var until = revenueuntil.value;
@@ -59,6 +60,7 @@ async function renderChart() {
     });
 
     await chart2.render(document.getElementById('chart2'));
+    await chart2.setMaxDataAge(60 * 5);
     guestfilter.addEventListener('click', async (event) => {
         var from = guestfrom.value;
         var until = guestuntil.value;
