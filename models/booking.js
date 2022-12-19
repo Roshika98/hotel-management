@@ -14,6 +14,7 @@ const bookingSchema = new Schema({
     checkIn: Date,
     checkOut: Date,
     advance: Number,
+    discount: { type: Number, default: 0 },
     total: Number,
     adults: Number,
     children: Number,

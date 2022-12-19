@@ -41,6 +41,12 @@ router.get('/checkouts/:id', async (req, res) => {
     res.render('admin/partials/receptionist/processCheckout', { layout: adminLayout, empType, script: '', checkedIn });
 });
 
+
+router.get('/checkouts/discount/:id', async (req, res) => {
+    const updateData = await receptionUtil.applyDiscount(req.params.id);
+    res.redirect('/hotel/admin/receptionist/checkouts/' + req.params.id);
+});
+
 router.get('/bookings', async (req, res) => {
     const empType = getEmployeeDetails(req);
     const bookings = await receptionUtil.getAllBookingsToDisplay();
@@ -130,6 +136,7 @@ router.post('/checkIn/:id', async (req, res) => {
 
 router.post('/checkouts/:id', async (req, res) => {
     const result = await database.performCheckout(req.params.id);
+    const loyalty = await receptionUtil.applyLoyalty(req.params.id);
     res.redirect('/hotel/admin/receptionist/checkouts');
 });
 

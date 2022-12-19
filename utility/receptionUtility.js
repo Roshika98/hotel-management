@@ -7,6 +7,32 @@ class ReceptionUtility {
 
     }
 
+
+    async applyDiscount(bookingID) {
+        const booking = await database.getBookingDetails(bookingID);
+        var newLoyaltypoints = booking.user.loyaltyPoints - 5000;
+        const updateuser = await database.updateLoyaltyPoints(booking.user.id, newLoyaltypoints);
+        var discount = booking.total * 15 / 100;
+        const updatebooking = await database.updateDiscount(bookingID, discount);
+        return;
+    }
+
+    async applyLoyalty(bookingID) {
+        const booking = await database.getBookingDetails(bookingID);
+        if (booking.user.isLoyaltyCustomer) {
+            var newLoyalty = this.#calculateLoyalty(booking.user.loyaltyPoints, booking.total);
+            const updateUser = await database.updateLoyaltyPoints(booking.user.id, newLoyalty);
+        }
+        return;
+    }
+
+    #calculateLoyalty(curr, total) {
+        if (total < 50) curr += 1000;
+        else if (total < 100) curr += 1500;
+        else curr += 2000;
+        return curr;
+    }
+
     async extendCustomerStay(bookingID, count) {
         const booking = await database.getBookingDetails(bookingID);
         var checkOutDate = new Date(booking.checkOut);

@@ -386,6 +386,16 @@ class Database {
         }
     }
 
+    async updateLoyaltyPoints(id, points) {
+        const updateduser = await User.findByIdAndUpdate(id, { loyaltyPoints: points });
+        return;
+    }
+
+    async updateDiscount(id, discount) {
+        const updateBooking = await Booking.findByIdAndUpdate(id, { discount: discount });
+        return;
+    }
+
 
     async updateCustomerStripeID(id, stripeID) {
         const updateduser = await User.findByIdAndUpdate(id, { stripeCustID: stripeID });

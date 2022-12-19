@@ -62,13 +62,26 @@
                 </button>
             </div>
             <div class="modal-body">
+                <% if (checkedIn.discount>0) { %>
+                <h4>Applied Discount: $ <%= checkedIn.discount %></h4>
+                <h4>Amount to Pay: $ <%= checkedIn.total-checkedIn.advance-checkedIn.discount %></h4>
+                <% } else { %>
                 <h4>Amount to Pay: $ <%= checkedIn.total-checkedIn.advance %></h4>
+                <% } %>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <% if (checkedIn.user.isLoyaltyCustomer) { %>
+                <% if (checkedIn.user.loyaltyPoints<5000) { %>
+                <button type="button" disabled>Apply 15%</button>
+                <% } else { %>
+                <a href="/hotel/admin/receptionist/checkouts/discount/<%= checkedIn.id %>" class="btn btn-info">Apply
+                    15%</a>
+                <% } %>
+                <% } %>
                 <form action="/hotel/admin/receptionist/checkouts/<%= checkedIn.id %>" method="post">
                     <button type="submit" class="btn btn-primary">Process Payment</button>
                 </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
