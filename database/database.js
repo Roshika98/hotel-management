@@ -63,6 +63,28 @@ class Database {
         return details;
     }
 
+    async getRates() {
+        const deluxe = await RoomType.findOne({ roomType: 'deluxe double room' });
+        const superior = await RoomType.findOne({ roomType: 'superior double room' });
+        const deluxeFam = await RoomType.findOne({ roomType: 'deluxe family room' });
+        const masterH = await HallType.findOne({ hallType: 'Master Banquet Hall' });
+        const grownH = await HallType.findOne({ hallType: 'Grown Banquet Hall' });
+        var params = {
+            deluxeStandard: deluxe.standardPrice,
+            deluxeHalf: deluxe.halfBoardPrice,
+            deluxeFull: deluxe.fullBoardPrice,
+            superiorStandard: superior.standardPrice,
+            superiorHalf: superior.halfBoardPrice,
+            superiorFull: superior.fullBoardPrice,
+            deluxeFamStandard: deluxeFam.standardPrice,
+            deluxeFamHalf: deluxeFam.halfBoardPrice,
+            deluxeFamFull: deluxeFam.fullBoardPrice,
+            masterRate: masterH.rate,
+            grownRate: grownH.rate
+        };
+        return params;
+    }
+
     async getTempReserveData(id) {
         const data = await TempReserve.findOne({ sessionID: `${id}` });
         return data;
@@ -323,6 +345,30 @@ class Database {
         return booking;
     }
 
+    async updateRoomRates(params) {
+        const deluxe = await RoomType.findOneAndUpdate({ roomType: 'deluxe double room' }, {
+            standardPrice: params.deluxeStandard,
+            halfBoardPrice: params.deluxeHalf,
+            fullBoardPrice: params.deluxeFull,
+        });
+        const superior = await RoomType.findOneAndUpdate({ roomType: 'superior double room' }, {
+            standardPrice: params.superiorStandard,
+            halfBoardPrice: params.superiorHalf,
+            fullBoardPrice: params.superiorFull,
+        });
+        const deluxeFam = await RoomType.findOneAndUpdate({ roomType: 'deluxe family room' }, {
+            standardPrice: params.deluxeFamStandard,
+            halfBoardPrice: params.deluxeFamHalf,
+            fullBoardPrice: params.deluxeFamFull,
+        });
+        return;
+    }
+
+    async updateHallRates(params) {
+        const masterH = await HallType.findOneAndUpdate({ hallType: 'Master Banquet Hall' }, { rate: params.masterRate });
+        const grownH = await HallType.findOneAndUpdate({ hallType: 'Grown Banquet Hall' }, { rate: params.grownRate });
+        return;
+    }
 
     // *------------------------DELETE OPERATIONS--------------------------------
 

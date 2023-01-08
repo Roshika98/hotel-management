@@ -1,0 +1,138 @@
+<div class="card">
+    <div class="card-header card-header-success">
+        <!-- <h2 class="card-title">Hello there!</h2> -->
+        <!-- <p class="card-category">Created using Roboto Font Family</p> -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Room Rates</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Hall Rates</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="card-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+                <form action="/hotel/admin/receptionist/roomRates" method="post">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th>
+                                Room Type
+                            </th>
+                            <th>Room only</th>
+                            <th>
+                                Half-Board
+                            </th>
+                            <th>
+                                Full-Board
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Deluxe Double Room</td>
+                                <td>$ <input type="number" name="deluxeStandard" id="deluxeStandard" min="0"
+                                        value="<%= rates.deluxeStandard %>"></td>
+                                <td>$ <input type="number" name="deluxeHalf" id="deluxeHalf" min="0"
+                                        value="<%= rates.deluxeHalf %>"></td>
+                                <td>$ <input type="number" name="deluxeFull" id="deluxeFull" min="0"
+                                        value="<%= rates.deluxeFull %>"></td>
+                            </tr>
+                            <tr>
+                                <td>Superior Double Room</td>
+                                <td>$ <input type="number" name="superiorStandard" id="superiorStandard" min="0"
+                                        value="<%= rates.superiorStandard %>"></td>
+                                <td>$ <input type="number" name="superiorHalf" id="superiorHalf" min="0"
+                                        value="<%= rates.superiorHalf %>"></td>
+                                <td>$ <input type="number" name="superiorFull" id="superiorFull" min="0"
+                                        value="<%= rates.superiorFull %>"></td>
+                            </tr>
+                            <tr>
+                                <td>Deluxe Family Room</td>
+                                <td>$ <input type="number" name="deluxeFamStandard" id="deluxeFamStandard" min="0"
+                                        value="<%= rates.deluxeFamStandard %>"></td>
+                                <td>$ <input type="number" name="deluxeFamHalf" id="deluxeFamHalf" min="0"
+                                        value="<%= rates.deluxeFamHalf %>"></td>
+                                <td>$ <input type="number" name="deluxeFamFull" id="deluxeFamFull" min="0"
+                                        value="<%= rates.deluxeFamFull %>"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-success">Update Rates</button>
+
+                </form>
+
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+
+                <form action="/hotel/admin/receptionist/hallRates" method="post">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th>
+                                Hall Type
+                            </th>
+                            <th>Rate</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Master Banquet Hall</td>
+                                <td>Rs <input type="number" name="masterRate" id="masterRate" min="0"
+                                        value="<%= rates.masterRate %>"></td>
+                            </tr>
+                            <tr>
+                                <td>Grown Banquet Hall</td>
+                                <td>Rs <input type="number" name="grownRate" id="grownRate" min="0"
+                                        value="<%= rates.grownRate %>"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-success">Update Rates</button>
+                </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- <button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal" style="display:none ;"
+    id="modalTrigger"></button> -->
+
+<!-- Modal -->
+
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Customer Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="dynamicContent2">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<script>
+    const pageIndicator = document.getElementById('rates');
+    pageIndicator.classList.add('active');
+</script>

@@ -79,6 +79,12 @@ router.get('/extensions/:id', async (req, res) => {
     res.render('admin/partials/receptionist/processExtensions', { layout: adminLayout, empType, script: scripts.extension, details });
 });
 
+router.get('/rates', async (req, res) => {
+    const empType = getEmployeeDetails(req);
+    const rates = await database.getRates();
+    res.render('admin/partials/receptionist/rates', { layout: adminLayout, empType, script: '', rates });
+});
+
 router.get('/statistics', async (req, res) => {
     const empType = getEmployeeDetails(req);
     res.render('admin/partials/receptionist/stats', { layout: adminLayout, empType, script: '' });
@@ -141,6 +147,18 @@ router.post('/cancellations/:id', async (req, res) => {
 router.post('/extensions', async (req, res) => {
     const result = await receptionUtil.performCustomerExtension(req.body.id, req.body.days);
     res.render('admin/partials/receptionist/content/extendDetails', { layout: false, result });
+});
+
+router.post('/roomRates', async (req, res) => {
+    // console.log(req.body);
+    const result = await database.updateRoomRates(req.body);
+    res.redirect('/hotel/admin/receptionist/rates');
+});
+
+router.post('/hallRates', async (req, res) => {
+    // console.log(req.body);
+    const result = await database.updateHallRates(req.body);
+    res.redirect('/hotel/admin/receptionist/rates');
 });
 
 // !---------------------HALL OPERATIONS-------------------------------------
