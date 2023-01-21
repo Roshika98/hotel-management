@@ -10,9 +10,9 @@ router.use('/receptionist', authMiddleware.isReceptionistAuth, employee.receptio
 router.use('/manager', authMiddleware.isManagerAuth, employee.manager);
 
 
-// router.get('', (req, res) => {
-//     res.render('admin/adminLayout', { layout: false });
-// });
+router.get('', (req, res) => {
+    res.redirect('/hotel/admin/auth');
+});
 
 
 
